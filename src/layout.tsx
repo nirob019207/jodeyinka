@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
 import "./globals.css";
 
-import { Inter, Montserrat } from "next/font/google";
+import { Inter, Montserrat, Poppins } from "next/font/google";
 import { Outfit } from "next/font/google"; // Import Outfit font
-
+import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
-  title: "Jodeyinka",
+  title: "Expat Global Girls | Stay with local and meet travel partner",
   description:
-    "Jodeyinka",
+    "Share your journey, save on stays, and find your perfect travel companion your adventure starts now",
 };
 
 const montserrat = Montserrat({
@@ -38,12 +38,10 @@ export default function RootLayout({
       <body
         className={`${montserrat.variable} ${outfit.variable} ${inter.variable}`}
       >
-        <div>
-        {children}
-
-        </div>
-        
-    
+       <div>
+          {children}
+       </div>
+        <Toaster />
       </body>
     </html>
   );
