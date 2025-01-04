@@ -7,8 +7,8 @@ import Link from "next/link";
 export const Navbar = () => {
   return (
     <div className="bg-[#090043] font-inter">
-      <div className="container mx-auto bg-[#00000080] flex justify-between pt-[100px]">
-        <div className="w-[548px]">
+      <div className="container mx-auto bg-[#00000080] flex justify-between pt-[100px] pb-[350px] px-0">
+        <div className="md:w-[548px] w-full">
           <Image src={logo} alt="Logo" />
           <h1 className="text-[24px] md:text-[32px] lg:text-[45px] font-medium text-[#F2F4F7] mt-6 md:mt-12 text-center">
             Exclusive Memberships, Best Opportunities
