@@ -1,14 +1,15 @@
 import React from "react";
 import Image from "next/image";
-import { FaArrowRight } from "react-icons/fa";
+
 import aboutImage from "@/asset/about/about.svg";
 import membership from "@/asset/about/membership.svg";
 import { MdArrowRightAlt } from "react-icons/md";
 
 const AboutUs = () => {
   return (
-    <div>
-      <div className="container px-0  flex flex-col lg:flex-row  relative bottom-[176px]">
+    // absolute code : absolute mx-auto md:ml-[352px] top-[500px]
+    <div className="bg-[#F6F6F6]">
+      <div className="container px-0  flex flex-col lg:flex-row  relative bottom-[176px] ">
         {/* About Us Section */}
         <div className="bg-[#DEE8F7] rounded-bl-xl rounded-br-xl shadow-lg flex-1 relative">
           <div className="absolute top-0 left-0 w-full bg-gradient-to-l from-[#0061FF] to-[#003A99] text-white py-2 px-4">
@@ -63,7 +64,7 @@ const AboutUs = () => {
               </p>
             </div>
           </div>
-          <ul className="text-gray-700 p-6  list-disc list-inside">
+          <ul className="text-gray-700 p-6">
             <div className="flex gap-1">
               <MdArrowRightAlt className=" text-[24px] text-[#0B75D5]" />
               <p className="text-[#475467]">
