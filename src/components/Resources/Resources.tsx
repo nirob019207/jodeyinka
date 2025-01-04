@@ -56,14 +56,14 @@ const Resources = () => {
               />
 
               {/* Content */}
-              <div className="p-4">
+              <div className="px-4">
                 <h3 className="text-[24px] font-medium text-default mt-4">
                   {resource.title}
                 </h3>
                 <p className="text-gray mt-2">
                   {resource.description}
                 </p>
-                <div className="mt-4">
+                <div className="mt-6 pb-7">
                   <button
                     className="border border-[#DDDDDD] w-full py-3 text-center text-blue-600  font-medium rounded-[8px]"
                   >
