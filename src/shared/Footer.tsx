@@ -1,8 +1,15 @@
 import Link from "next/link";
 import { Facebook, Youtube, Twitter, Linkedin } from "lucide-react";
+import Contact from "@/components/Contact/Contact";
+import CyberDefense from "@/components/CyberDefence/CyberDefence";
 
 export default function Footer() {
   return (
+    <div>
+      <div>
+        <Contact/>
+        <CyberDefense/>
+      </div>
     <div className="containter mx-auto font-inter">
       <footer className="bg-[#002F4E] text-white px-6 py-12">
         <div className="container mx-auto grid gap-8 md:grid-cols-12">
@@ -128,6 +135,7 @@ export default function Footer() {
           </div>
         </div>
       </footer>
+    </div>
     </div>
   );
 }

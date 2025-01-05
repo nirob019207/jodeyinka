@@ -5,6 +5,13 @@
 body {
   font-family: Arial, Helvetica, sans-serif;
 }
+#cyber {
+  background: 
+    url("../asset/cyberDefend.svg");
+
+  background-repeat: no-repeat;
+  background-size: cover;
+}
 
 @layer base {
   :root {
