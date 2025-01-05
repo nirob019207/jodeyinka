@@ -4,8 +4,8 @@ import React, { useState } from "react";
 import "keen-slider/keen-slider.min.css";
 import { useKeenSlider } from "keen-slider/react";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
-import media1 from "@/asset/media/media-1.svg"
-import media2 from "@/asset/media/media-2.svg"
+import media1 from "@/asset/media/media-1.svg";
+import media2 from "@/asset/media/media-2.svg";
 import Image from "next/image";
 import { MdArrowRightAlt } from "react-icons/md";
 
@@ -14,8 +14,19 @@ const MediaCarousel = () => {
 
   const [sliderRef, slider] = useKeenSlider({
     loop: true,
+    breakpoints: {
+      "(min-width: 640px)": {
+        slides: { perView: 1, spacing: 15 },
+      },
+      "(min-width: 768px)": {
+        slides: { perView: 2, spacing: 15 },
+      },
+      "(min-width: 1024px)": {
+        slides: { perView: 2, spacing: 15 },
+      },
+    },
     slides: {
-      perView: 2,
+      perView: 1,
       spacing: 15,
     },
     slideChanged(sliderInstance) {
@@ -29,7 +40,7 @@ const MediaCarousel = () => {
       title: "Web Apps Security",
       description:
         "Web application security is the practice of protecting websites and online services from threats that exploit vulnerabilities in their code or design.",
-      image: media1, 
+      image: media1,
       alt: "Web Apps Security",
     },
     {
@@ -45,7 +56,7 @@ const MediaCarousel = () => {
       title: "Cloud Security",
       description:
         "Cloud security is the protection of data, applications, and infrastructures involved in cloud computing from cyber threats.",
-      image: media1, 
+      image: media1,
       alt: "Cloud Security",
     },
     {
@@ -53,18 +64,20 @@ const MediaCarousel = () => {
       title: "Cloud Security",
       description:
         "Cloud security is the protection of data, applications, and infrastructures involved in cloud computing from cyber threats.",
-      image: media2, 
+      image: media2,
       alt: "Cloud Security",
     },
   ];
 
   return (
-    <div className="bg-[#F6F6F6] pb-[120px] font-inter">
-      <div className="container mx-auto px-4">
+    <div className="bg-[#F6F6F6] pb-[60px] md:pb-[120px] font-inter px-6 md:px-0">
+      <div className="container mx-auto px-0">
         {/* Header */}
         <div className="mb-8">
-          <h2 className="text-[36px] font-medium text-default">Media</h2>
-          <p className="text-gray mt-4 mb-6">
+          <h2 className="text-[36px] md:text-[36px] font-medium text-default text-center md:text-start">
+            Media
+          </h2>
+          <p className="text-gray mt-4 mb-6 text-sm md:text-base text-center md:text-start">
             We share our findings and insights on current events, risks, and
             responses.
           </p>
@@ -81,33 +94,37 @@ const MediaCarousel = () => {
                 <Image
                   src={slide.image}
                   alt={slide.alt}
-                  className="w-full h-[355px] object-cover"
+                  className="w-full h-[240px] md:h-[355px] object-cover"
                 />
-                <div className="absolute top-0 left-0 bg-[#FFFFFF1A] backdrop-blur-[24px] text-white px-4 py-2 text-[24px] font-medium">
+                <div className="absolute top-0 left-0 bg-[#FFFFFF1A] backdrop-blur-[24px] text-white px-4 py-2 text-[16px] md:text-[24px] font-medium">
                   {slide.title}
                 </div>
-                <div className="p-4 bg-[#FFFFFF1A] backdrop-blur-[24px] absolute bottom-0 left-0 w-[360px] rounded-bl-[8px]">
-                <p className="text-[#FFFFFF]">{slide.description}</p>
-                <div className="mt-1 flex justify-end">
-                  <button className="px-4 py-2 bg-gradient-to-l from-[#0061FF] to-[#003A99] text-white font-medium rounded-lg hover:bg-blue-700 flex items-center">
-                    Read More <span className="ml-2"><MdArrowRightAlt className="text-[24px]"/></span>
-                  </button>
+                <div className="p-4 bg-[#FFFFFF1A] backdrop-blur-[24px] absolute bottom-0 left-0 w-full md:w-[360px] rounded-bl-[8px]">
+                  <p className="text-[#FFFFFF] text-sm md:text-base">
+                    {slide.description}
+                  </p>
+                  <div className="mt-1 flex justify-end">
+                    <button className="px-4 py-2 bg-gradient-to-l from-[#0061FF] to-[#003A99] text-white font-medium rounded-lg hover:bg-blue-700 flex items-center">
+                      Read More{" "}
+                      <span className="ml-2">
+                        <MdArrowRightAlt className="text-[20px] md:text-[24px]" />
+                      </span>
+                    </button>
+                  </div>
                 </div>
               </div>
-              </div>
-              
             </div>
           ))}
         </div>
 
         {/* Arrows and Dots */}
-        <div className="flex justify-end items-center mt-4 space-x-4">
+        <div className="flex justify-center md:justify-end items-center mt-4 space-x-4">
           {/* Left Arrow */}
           <button
             onClick={() => slider.current?.prev()}
             className="w-10 h-10 flex items-center justify-center bg-gray-300 rounded-full hover:bg-gray-400"
           >
-            <FaAngleLeft className="text-gray-700 text-[24px]" />
+            <FaAngleLeft className="text-gray-700 text-[20px] md:text-[24px]" />
           </button>
 
           {/* Dots */}
@@ -115,7 +132,7 @@ const MediaCarousel = () => {
             <button
               key={index}
               onClick={() => slider.current?.moveToIdx(index)}
-              className={`w-2 h-2 rounded-full ${
+              className={`w-2 h-2 md:w-3 md:h-3 rounded-full ${
                 currentSlide === index ? "bg-blue-600" : "bg-[#ABABAB]"
               }`}
             ></button>
@@ -126,7 +143,7 @@ const MediaCarousel = () => {
             onClick={() => slider.current?.next()}
             className="w-10 h-10 flex items-center justify-center bg-gray-300 rounded-full hover:bg-gray-400"
           >
-            <FaAngleRight  className="text-gray-700 text-[24px]" />
+            <FaAngleRight className="text-gray-700 text-[20px] md:text-[24px]" />
           </button>
         </div>
       </div>

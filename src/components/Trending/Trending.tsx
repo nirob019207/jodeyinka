@@ -27,12 +27,12 @@ const Trending = () => {
   ];
 
   return (
-    <div className="bg-[#F6F6F6] pb-[60px] md:pb-[120px] font-inter">
-      <div className="container mx-auto px-4">
+    <div className="bg-[#F6F6F6] pb-[60px] md:pb-[120px] font-inter px-6">
+      <div className="container mx-auto px-0">
         {/* Header */}
         <div className="mb-8">
-          <h2 className="text-[36px] font-medium text-default">Trending</h2>
-          <p className="text-gray mt-4 mb-6">
+          <h2 className="text-[36px] font-medium text-default text-center md:text-start">Trending</h2>
+          <p className="text-gray mt-4 mb-6 text-center md:text-start">
             Web apps, mobile apps, and IoT security are focusing on emerging
             trends like Zero Trust models, end-to-end encryption, and AI-powered
             threat detection to combat evolving cyber threats.
@@ -62,7 +62,7 @@ const Trending = () => {
 
               {/* Description */}
               <div
-                className={`absolute bottom-0 left-[71px] w-[406px] p-6 rounded-[8px] mx-auto text-white ${item.overlay}`}
+                className={`absolute bottom-0 md:left-[71px] w-[406px] p-6 rounded-[8px] mx-auto text-white ${item.overlay}`}
               >
                 <p
                   className={`${
@@ -79,7 +79,7 @@ const Trending = () => {
                       ? "text-[#FFFFFF]"
                       : "text-[#0061FF]"
                   }`}>
-                    Read More <span className="ml-2"><MdArrowRightAlt className="text-[24px]"/></span>
+                    Read More <span className="ml-2 mr-3 md:mr-0"><MdArrowRightAlt className="text-[24px]"/></span>
                   </button>
                 </div>
               </div>

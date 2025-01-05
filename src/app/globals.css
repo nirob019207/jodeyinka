@@ -2,12 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  overflow-x: hidden;
+}
+
 body {
   font-family: Arial, Helvetica, sans-serif;
 }
 #cyber {
-  background: 
-    url("../asset/cyberDefend.svg");
+  background: url("../asset/cyberDefend.svg");
 
   background-repeat: no-repeat;
   background-size: cover;

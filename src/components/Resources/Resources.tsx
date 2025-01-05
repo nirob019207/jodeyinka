@@ -31,8 +31,8 @@ const Resources = () => {
   ];
 
   return (
-    <div className="bg-[#F6F6F6] pb-[120px] font-inter">
-      <div className="container mx-auto px-4">
+    <div className="bg-[#F6F6F6] pb-[60px] md:pb-[120px] font-inter px-6">
+      <div className="container mx-auto px-0">
         {/* Header */}
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-[36px] font-medium text-default">Resources</h2>

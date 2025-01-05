@@ -9,14 +9,14 @@ import Image from 'next/image'
 
 const PartnerShip = () => {
   return (
-    <div className='bg-[#F6F6F6]'>
+    <div className='bg-[#F6F6F6] px-6 md:px-0'>
 
-    <div className='container mx-auto px-0 pb-[120px]'>
+    <div className='container mx-auto px-0 pb-[60px]  md:pb-[120px]'>
         <div className='mb-6'>
-          <h1 className='text-[20px] md:text-[36px] font-medium text-default mb-4'>Partnership</h1>
-          <p className='text-gray'>WSF members represent the most innovative voices in the tech industry.</p>
+          <h1 className='text-[32px] md:text-[36px] font-medium text-default mb-4 md:text-left text-center'>Partnership</h1>
+          <p className='text-gray text-base text-center md:text-start'>WSF members represent the most innovative voices in the tech industry.</p>
         </div>
-        <div className='grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 items-center'>
+        <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 items-center gap-6 md:gap-0 justify-items-center md:justify-items-start'>
           <div className='w-[167px] bg-[#FFFFFF] p-3'>
             <Image src={pinterest} alt='pinterest logo' className=''/>
           </div>

@@ -42,7 +42,7 @@ const Contact = () => {
     },
   ];
   return (
-    <div className="bg-[#DEE8F7] py-[95px] font-inter">
+    <div className="bg-[#DEE8F7] py-[50px] md:py-[95px] font-inter px-6 md:px-0">
       <div className="container mx-auto px-0">
       <div className="flex justify-between items-center mb-6">
           <h2 className="text-[36px] font-medium text-default">Contact Us</h2>
@@ -50,7 +50,7 @@ const Contact = () => {
             See All
           </a>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-8">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-8">
           {contactData.map((region, index) => (
             <div key={index}>
               <h3 className="text-[20px] font-medium text-default mb-4">

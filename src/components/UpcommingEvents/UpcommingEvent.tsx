@@ -40,8 +40,8 @@ const UpcomingEvent = () => {
   ];
 
   return (
-    <div className="bg-[#F6F6F6] pb-[60px] font-inter">
-      <div className="container mx-auto px-4">
+    <div className="bg-[#F6F6F6] pb-[60px] font-inter px-6 md:px-0">
+      <div className="container mx-auto px-0">
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
           <h2 className="text-[36px] font-medium text-default">
@@ -53,7 +53,7 @@ const UpcomingEvent = () => {
         </div>
 
         {/* Event Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 md:gap-6">
           {events.map((event) => (
             <div
               key={event.id}
