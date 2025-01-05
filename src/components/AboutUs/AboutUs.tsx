@@ -58,7 +58,7 @@ const AboutUs = () => {
             />
             <div className="absolute inset-0 bg-gradient-to-l from-[#09004380] to-[#09004380] z-10"></div>
             <div className="absolute inset-0 flex items-center justify-center px-6 z-20 pt-16">
-              <p className="text-[#FFFFFF] text-[20px] lg:text-[24px] font-medium text-center">
+              <p className="text-[#FFFFFF] text-base lg:text-[24px] font-medium text-center">
                 Join our Lifetime Membership for just $1! Enjoy exclusive perks
                 like personalized support, premium content, and early access to
                 new features.
@@ -109,8 +109,8 @@ const AboutUs = () => {
             </a>
           </div>
 
-          <div className="w-20 h-20 flex items-center justify-center p-5 bg-[#090043] rounded-full absolute left-[560px] bottom-[120px]">
-          <Image src={chatbot} alt="chatbot icon"/>
+          <div className="w-16 h-16 md:w-20 md:h-20 md:flex items-center justify-center p-5 bg-[#090043] rounded-full absolute right-5 -bottom-24  md:left-[560px] md:bottom-[120px]">
+          <Image src={chatbot}  alt="chatbot icon"/>
         </div>
         </div>
         
