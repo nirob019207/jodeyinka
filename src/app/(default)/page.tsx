@@ -1,5 +1,6 @@
 import AboutUs from '@/components/AboutUs/AboutUs'
 import BlogsAndNews from '@/components/BlogAndNews/BlogAndNews'
+import Contact from '@/components/Contact/Contact'
 import MediaCarousel from '@/components/MediaCarousel/MediaCarousel'
 import PartnerShip from '@/components/PartnerShip/PartnerShip'
 import Resources from '@/components/Resources/Resources'
@@ -17,6 +18,7 @@ export default function page() {
       <Resources></Resources>
       <UpcomingEvent></UpcomingEvent>
       <BlogsAndNews></BlogsAndNews>
+      <Contact/>
     </div>
   )
 }

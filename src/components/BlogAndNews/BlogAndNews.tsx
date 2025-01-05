@@ -40,7 +40,7 @@ const BlogsAndNews = () => {
   ];
 
   return (
-    <div className="my-[60px] font-inter px-5">
+    <div className="py-[60px] font-inter px-6 md:px-0">
       <div className="container mx-auto px-0">
         {/* Header */}
         <div className="flex justify-between items-center mb-8">

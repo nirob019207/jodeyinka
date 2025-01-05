@@ -4,7 +4,10 @@ import searchIcon from "@/asset/icon/search.png";
 import Image from "next/image";
 import Link from "next/link";
 import banner from "@/asset/banner.svg";
+import anotherBanner from "@/asset/anotherBanner.svg";
 import { FiMenu, FiX } from "react-icons/fi";
+// import { useRouter } from "next/router";
+import { usePathname } from "next/navigation";
 
 export const Navbar = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -12,17 +15,33 @@ export const Navbar = () => {
   const toggleDrawer = () => {
     setIsDrawerOpen(!isDrawerOpen);
   };
+  const pathname = usePathname();
+
+  // Dynamic background image and padding based on route
+  const routeSettings: { [key: string]: { background: any; paddingBottom: string } } = {
+    "/": { background: banner.src, paddingBottom: "350px" },
+    "/about-us": { background: anotherBanner.src, paddingBottom: "173px" },
+    "/media": { background: anotherBanner.src, paddingBottom: "173px" },
+  };
+
+  const currentSettings = routeSettings[pathname as string] || {
+    background: banner.src,
+    paddingBottom: "350px",
+  };
+
+
 
   return (
     <div className="bg-[#090043] font-inter relative">
       {/* Desktop Banner Section */}
       <div
         style={{
-          backgroundImage: `url(${banner.src})`,
+           backgroundImage: `url(${currentSettings.background})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
+          paddingBottom: currentSettings.paddingBottom
         }}
-        className="container mx-auto flex flex-col lg:flex-row justify-between pt-[50px] pb-[180px] md:pt-[100px] md:pb-[350px] px-0"
+        className={`container mx-auto flex flex-col lg:flex-row justify-between pt-[50px] md:pt-[100px]  px-0`}
       >
         {/* Left Section (Logo and Text) */}
         <div className="md:w-[548px] w-full text-center lg:text-left">
@@ -72,10 +91,10 @@ export const Navbar = () => {
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex bg-[#FFFFFF1A] backdrop-blur-[4px] rounded-xl px-[89px] py-3 mt-6 justify-around items-center text-white shadow-lg">
-            <Link href="#about-us" className="hover:text-blue-400">
+            <Link href="/about-us" className="hover:text-blue-400">
               About Us
             </Link>
-            <Link href="#media" className="hover:text-blue-400">
+            <Link href="/media" className="hover:text-blue-400">
               Media
             </Link>
             <Link href="#contact" className="hover:text-blue-400">
@@ -98,16 +117,16 @@ export const Navbar = () => {
         } transition-transform duration-300 ease-in-out z-50`}
       >
         <div className="flex items-center justify-between px-4 pt-10 pb-5 border-b border-gray-700">
-        <Image className="w-12 md:w-20" src={logo} alt="Logo" />
+          <Image className="w-12 md:w-20" src={logo} alt="Logo" />
           <button className="text-2xl" onClick={toggleDrawer}>
             <FiX className="text-[30px]" />
           </button>
         </div>
         <div className="flex flex-col gap-6 mt-6 px-4">
-          <Link href="#about-us" className="hover:text-blue-400">
+          <Link href="/about-us" className="hover:text-blue-400">
             About Us
           </Link>
-          <Link href="#media" className="hover:text-blue-400">
+          <Link href="/media" className="hover:text-blue-400">
             Media
           </Link>
           <Link href="#contact" className="hover:text-blue-400">
