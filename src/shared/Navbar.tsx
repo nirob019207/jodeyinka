@@ -22,6 +22,7 @@ export const Navbar = () => {
     "/": { background: banner.src, paddingBottom: "350px" },
     "/about-us": { background: anotherBanner.src, paddingBottom: "173px" },
     "/media": { background: anotherBanner.src, paddingBottom: "173px" },
+    "/event": { background: anotherBanner.src, paddingBottom: "173px" },
   };
 
   const currentSettings = routeSettings[pathname as string] || {
@@ -64,12 +65,12 @@ export const Navbar = () => {
         <div className="mt-8 lg:mt-0 relative">
           <div className="flex items-center justify-between lg:justify-end gap-6">
             {/* Buttons */}
-            <button className="px-4 py-2 text-white bg-[#FFFFFF1A] rounded-xl backdrop-blur-[24px] border border-[#667085] w-[136px] hidden md:flex">
+            <Link href={"/register"} className="px-4 py-2 text-center text-white bg-[#FFFFFF1A] rounded-xl backdrop-blur-[24px] border border-[#667085] w-[136px] hidden md:flex">
               Sign up
-            </button>
-            <button className="px-4 py-2 text-white bg-gradient-to-l from-[#0061FF] to-[#003A99] rounded-xl w-[140px] hidden md:flex">
+            </Link>
+            <Link href={"/login"} className="px-4 py-2 text-white bg-gradient-to-l from-[#0061FF] to-[#003A99] rounded-xl w-[140px] hidden md:flex">
               Member login
-            </button>
+            </Link>
           </div>
 
           {/* Search Box */}
@@ -97,13 +98,13 @@ export const Navbar = () => {
             <Link href="/media" className="hover:text-blue-400">
               Media
             </Link>
-            <Link href="#contact" className="hover:text-blue-400">
-              Contact
+            <Link href="/event" className="hover:text-blue-400">
+              Evemt
             </Link>
-            <Link href="#blog" className="hover:text-blue-400">
+            <Link href="/blog" className="hover:text-blue-400">
               Blog
             </Link>
-            <Link href="#contact" className="hover:text-blue-400">
+            <Link href="/contact" className="hover:text-blue-400">
               Contact
             </Link>
           </nav>
