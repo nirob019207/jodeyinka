@@ -27,7 +27,7 @@ const Trending = () => {
   ];
 
   return (
-    <div className="bg-[#F6F6F6] pb-[60px] md:pb-[120px]">
+    <div className="bg-[#F6F6F6] pb-[60px] md:pb-[120px] font-inter">
       <div className="container mx-auto px-4">
         {/* Header */}
         <div className="mb-8">

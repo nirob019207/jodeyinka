@@ -3,7 +3,7 @@ import React from "react";
 const CyberDefense = () => {
   return (
     <div
-      className="relative py-[133px] flex items-center justify-center"
+      className="relative py-[133px] flex items-center justify-center font-inter"
       id="cyber"
     >
       <div className="text-center text-white px-4">

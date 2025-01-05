@@ -17,12 +17,13 @@ export default {
   				'sans-serif'
   			],
   			outfit: [
-  				'Outfit',
+  				'Outfit Fallback',
   				'sans-serif'
   			],
   			inter: [
   				'inter',
-  				'sans-serif'
+  				'sans-serif',
+				 " Fallback"
   			]
   		},
   		colors: {

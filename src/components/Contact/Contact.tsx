@@ -42,7 +42,7 @@ const Contact = () => {
     },
   ];
   return (
-    <div className="bg-[#DEE8F7] py-[95px]">
+    <div className="bg-[#DEE8F7] py-[95px] font-inter">
       <div className="container mx-auto px-0">
       <div className="flex justify-between items-center mb-6">
           <h2 className="text-[36px] font-medium text-default">Contact Us</h2>

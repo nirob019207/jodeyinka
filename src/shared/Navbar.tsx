@@ -10,9 +10,9 @@ export const Navbar = () => {
     <div className="bg-[#090043] font-inter relative">
       <div
         style={{
-          backgroundImage: `url(${banner.src})`, // Set background image
-          backgroundSize: "cover", // Ensure the background image covers the full area
-          backgroundPosition: "center", // Center the background image
+          backgroundImage: `url(${banner.src})`, 
+          backgroundSize: "cover", 
+          backgroundPosition: "center",
         }}
         className="container mx-auto flex justify-between pt-[100px] pb-[350px] px-0"
       >

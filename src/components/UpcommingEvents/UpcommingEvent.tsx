@@ -40,7 +40,7 @@ const UpcomingEvent = () => {
   ];
 
   return (
-    <div className="bg-[#F6F6F6] pb-[60px]">
+    <div className="bg-[#F6F6F6] pb-[60px] font-inter">
       <div className="container mx-auto px-4">
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
