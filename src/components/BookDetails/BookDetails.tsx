@@ -1,10 +1,13 @@
-import React from "react";
+"use client"
+import React, { useState } from "react";
 import Image from "next/image";
 import bookCover from "@/asset/resource/book1.png";
 import { BsCloudDownload } from "react-icons/bs";
 import profilePic from "@/asset/profilee.png";
+import { FiSend } from "react-icons/fi";
 
 const BookDetails = () => {
+  const [isInputActive, setIsInputActive] = useState(false);
   const trendingItems = [
     "Top Cybersecurity Trends Shaping 2025",
     "The Rise of AI in Cybersecurity: Friend or Foe?",
@@ -15,7 +18,7 @@ const BookDetails = () => {
   ];
 
   return (
-    <div className=" font-inter p-6 md:p-12">
+    <div className=" font-inter pt-[60pt] pb-[60pt] px-6 md:px-0">
       <div className="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 px-0">
         {/* Book Details Section */}
         <div className="md:col-span-2">
@@ -51,19 +54,22 @@ const BookDetails = () => {
 
           <div className="flex items-center gap-2 mt-6">
             <div className="bg-[#D9D9D9] rounded-full flex items-center justify-center w-[52px] h-[52px]">
-            <Image
-              src={profilePic}
-              alt="Profile"
-              className="w-[52px] h-[52px] rounded-full"
-            />
+              <Image src={profilePic} alt="Profile" className="" />
             </div>
             <div>
               <p className="text-[#090043]">WSF</p>
               <p className="text-[#090043] text-sm">@wsf_Tech</p>
             </div>
           </div>
-          <div>
-          <input className="text-gray-500 text-sm border-b" placeholder="Add comment" />
+          <div className="flex items-center">
+            <input
+              className="text-[#9A9A9A]  border-b border-[#BFBFBF] focus:outline-none w-full py-2 px-4 mt-4"
+              placeholder="Add comment"
+              onFocus={()=>setIsInputActive(true)}
+            />
+           {isInputActive ?  <button className="bg-[#D9D9D9] rounded-full flex items-center justify-center w-12 h-12">
+              <FiSend className="text-[22px]" />
+            </button> : ""}
           </div>
         </div>
 

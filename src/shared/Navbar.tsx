@@ -49,7 +49,9 @@ export const Navbar = () => {
         {/* Left Section (Logo and Text) */}
         <div className="md:w-[548px] w-full text-center lg:text-left">
           <div className="flex items-center justify-between px-6 md:px-0">
-            <Image className="w-12 md:w-20" src={logo} alt="Logo" />
+           <Link href={"/"}>
+           <Image className="w-12 md:w-20" src={logo} alt="Logo" />
+           </Link>
             {/* Hamburger Menu for Mobile */}
             <button
               className="lg:hidden text-white text-2xl"
