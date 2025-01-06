@@ -40,7 +40,7 @@ const RecentPost = () => {
   ];
 
   return (
-    <div className="bg-[#F6F6F6] py-[60px] font-inter px-6 md:px-0">
+    <div className="bg-[#F6F6F6] pt-[30pt] pb-[60px] md:pb-[120px] md:pt-[60px] font-inter px-6 md:px-0">
       <div className="container mx-auto px-0">
         {/* Header */}
         <div className="flex justify-between items-center mb-8">

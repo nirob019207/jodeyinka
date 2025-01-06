@@ -1,12 +1,25 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
 import Image from "next/image";
 
 import aboutImage from "@/asset/about/about.svg";
 import membership from "@/asset/about/membership.svg";
 import { MdArrowRightAlt } from "react-icons/md";
-import chatbot from "@/asset/chatbot.svg"
+import chatbot from "@/asset/chatbot.svg";
+import Chatbot from "../Chatbot/Chatbot";
 
 const AboutUs = () => {
+  const [isOpenChatbot, setIsOpenChatbot] = useState(false);
+  const handleChatbo = () => {
+    setIsOpenChatbot(true);
+
+  };
+
+  const handleCloseChatBot = () =>{
+    setIsOpenChatbot(false)
+  }
+
+  // if(!isOpenChatbot) return null;
   return (
     // absolute code : absolute mx-auto md:ml-[352px] top-[500px]
     <div className="bg-[#F6F6F6]">
@@ -109,13 +122,16 @@ const AboutUs = () => {
             </a>
           </div>
 
-          <div className="w-16 h-16 md:w-20 md:h-20 md:flex items-center justify-center p-5 bg-[#090043] rounded-full absolute right-5 -bottom-24  md:left-[560px] md:bottom-[120px]">
-          <Image src={chatbot}  alt="chatbot icon"/>
+          <button
+            onClick={handleChatbo}
+            className="w-16 h-16 md:w-20 md:h-20 md:flex  items-center justify-center p-5 bg-[#090043] rounded-full absolute right-5 -bottom-24  md:left-[560px] md:bottom-[120px]"
+          >
+            <Image src={chatbot} alt="chatbot icon" />
+          </button>
         </div>
-        </div>
-        
+
+        {isOpenChatbot && <Chatbot handleChatbot={handleCloseChatBot} />}
       </div>
-      
     </div>
   );
 };
