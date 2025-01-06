@@ -28,7 +28,7 @@ const EventDetails = () => {
               <p className="mt-4 text-[#545454]">
                 The Cybersecurity and Infrastructure Security Agency (CISA) is a
                 U.S. government agency under the Department of Homeland Security
-                (DHS) responsible for improving the nation's cybersecurity
+                (DHS) responsible for improving the nation&apos;s cybersecurity
                 posture and protecting critical infrastructure.
               </p>
               <p className="mt-6 text-[#545454]">

@@ -37,14 +37,14 @@ const AboutUs = () => {
           />
           <div className="px-[23px]">
             <h2 className="text-[20px] font-medium my-6">
-              Welcome to WSF – Your Hub for Connection, Collaboration, and
+              Welcome to WSF  Your Hub for Connection, Collaboration, and
               Community!
             </h2>
             <p className="text-[#475467] text-base">
-              Welcome to WSF – Your Hub for Connection, Collaboration, and
-              Community! Dive into a space designed just for you. Whether you're
+              Welcome to WSF  Your Hub for Connection, Collaboration, and
+              Community! Dive into a space designed just for you. Whether you&apos;re
               looking to engage with like-minded individuals, plan exciting
-              events, or access a treasure trove of valuable resources, we've
+              events, or access a treasure trove of valuable resources, we&apos;ve
               created a platform tailored to fuel your passions and meet your
               needs.
             </p>
