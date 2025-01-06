@@ -19,7 +19,7 @@ export const Navbar = () => {
 
   // Dynamic background image and padding based on route
   const routeSettings: {
-    [key: string]: { background: any; paddingBottom: string };
+    [key: string]: { background: string; paddingBottom: string };
   } = {
     "/": { background: banner.src, paddingBottom: "350px" },
     "/about-us": { background: anotherBanner.src, paddingBottom: "173px" },
