@@ -4,9 +4,9 @@ import eventDetails from "@/asset/event/eventDetails.svg";
 import Image from "next/image";
 const EventDetails = () => {
   return (
-    <div className="bg-[#F6F6F6] pt-[55px] md:pt-[108px] pb-[60px] font-inter">
-      <div className="container mx-auto ">
-        <h1 className="text-2xl md:text-4xl font-bold text-default w-[739px] mb-8">
+    <div className="bg-[#F6F6F6] pt-[55px] md:pt-[108px] pb-[60px] font-inter px-6 md:px-0">
+      <div className="container mx-auto px-0">
+        <h1 className="text-2xl md:text-4xl font-bold text-default w-full md:w-[739px] mb-8 md:text-start text-center">
           Global Economic and Geopolitical Outlook 2025
         </h1>
         <div className="grid gap-8 md:grid-cols-3">
@@ -15,7 +15,7 @@ const EventDetails = () => {
             <Image
               src={eventDetails}
               alt="Global Economic and Geopolitical Outlook 2025"
-              className="w-full h-60 object-cover"
+              className="w-full h-auto max-h-60 object-cover"
             />
             <div className="">
               <h3 className="text-[20px] font-medium text-[#090043] mt-8">
