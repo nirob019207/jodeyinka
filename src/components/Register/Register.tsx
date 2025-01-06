@@ -33,8 +33,6 @@ const formSchema = z.object({
   path: ["confirmPassword"],
 })
 
-type FormData = z.infer<typeof formSchema>
-
 export default function Register() {
   const [showPassword, setShowPassword] = React.useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = React.useState(false)
@@ -43,11 +41,20 @@ export default function Register() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormData>({
+  } = useForm<z.infer<typeof formSchema>>({
+    resolver: async (data) => {
+      try {
+        formSchema.parse(data)
+        return { values: data, errors: {} }
+      } catch (error) {
+        const formErrors = (error as z.ZodError).formErrors.fieldErrors;
+        return { values: {}, errors: formErrors }
+      }
+    }
 
   })
 
-  const onSubmit = (data: FormData) => {
+  const onSubmit = (data: z.infer<typeof formSchema>) => {
     console.log(data)
   }
 
