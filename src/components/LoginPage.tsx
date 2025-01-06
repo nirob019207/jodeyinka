@@ -2,7 +2,6 @@
 
 import * as React from 'react'
 import { Eye, EyeOff } from 'lucide-react'
-import { z } from 'zod'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import capcha from '@/asset/capcha.png'
 
@@ -15,16 +14,13 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 /** Define form validation schema */
-const formSchema = z.object({
-  email: z.string().email(),
-  password: z.string().min(8, 'Password must be at least 8 characters'),
-  recaptcha: z.boolean().optional(),
-  rememberMe: z.boolean().optional(),
-})
-
-/** Define TypeScript types */
-type FormSchema = typeof formSchema
-type FormData = z.infer<FormSchema>
+/** Define form validation schema and TypeScript types */
+type FormData = {
+  email: string;
+  password: string;
+  recaptcha?: boolean;
+  rememberMe?: boolean;
+}
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = React.useState(false)
