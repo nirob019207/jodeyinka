@@ -37,22 +37,22 @@ const EventDetails = () => {
                 strategies, and responding to emerging cyber threats. These
                 events typically include:
               </p>
-              <div className="mt-4 space-y-6">
+              <div className="mt-8 space-y-6">
                 {/* Section 1 */}
                 <div className="mb-6">
                   <h3 className="text-[20px] font-medium text-[#090043] mb-4">
                     1. Workshops & Trainings:
                   </h3>
-                  <ul className="mt-2 space-y-2 list-disc list-inside text-gray-600">
-                    <li>
-                      <strong>CISA</strong> regularly hosts technical workshops
-                      and training sessions. These focus on strengthening the
-                      cybersecurity skills of professionals in both the public
-                      and private sectors.
+                  <ul className="space-y-2 list-disc list-inside text-[#545454]">
+                    <li className="">
+                      CISA regularly hosts technical workshops and training
+                      sessions. These focus on strengthening the cybersecurity
+                      skills of professionals in both the public and private
+                      sectors.
                     </li>
                     <li>
-                      Topics may include <strong>threat analysis</strong>,
-                      incident response, and securing critical infrastructure.
+                      Topics may include threat analysis, incident response, and
+                      securing critical infrastructure.
                     </li>
                   </ul>
                 </div>
@@ -62,18 +62,16 @@ const EventDetails = () => {
                   <h3 className="text-[20px] font-medium text-[#090043] mb-4">
                     2. Conferences & Summits:
                   </h3>
-                  <ul className="mt-2 space-y-2 list-disc list-inside text-gray-600">
+                  <ul className="mt-2 space-y-2 list-disc list-inside text-[#545454]">
                     <li>
-                      <strong>CISA Cybersecurity Summit:</strong> An annual
-                      event that brings together cybersecurity experts,
-                      government officials, and industry leaders to discuss the
-                      latest challenges and solutions.
+                      CISA Cybersecurity Summit: An annual event that brings
+                      together cybersecurity experts, government officials, and
+                      industry leaders to discuss the latest challenges and
+                      solutions.
                     </li>
                     <li>
-                      <strong>
-                        National Cybersecurity Awareness Month (NCSAM):
-                      </strong>{" "}
-                      CISA organizes events to raise awareness of cybersecurity
+                      National Cybersecurity Awareness Month (NCSAM): CISA
+                      organizes events to raise awareness of cybersecurity
                       issues during October, including webinars, online
                       campaigns, and educational outreach.
                     </li>
@@ -85,7 +83,7 @@ const EventDetails = () => {
                   <h3 className="text-[20px] font-medium text-[#090043] mb-4">
                     3. Tabletop Exercises (TTXs):
                   </h3>
-                  <ul className="mt-2 space-y-2 list-disc list-inside text-gray-600">
+                  <ul className="mt-2 space-y-2 list-disc list-inside text-[#545454]">
                     <li>
                       CISA hosts tabletop exercises to simulate real-world cyber
                       incidents and help organizations practice response
@@ -102,20 +100,20 @@ const EventDetails = () => {
           <div className="">
             <div className="space-y-4 bg-white shadow-md rounded-lg p-6">
               <div className="flex items-center gap-[60px]">
-                <h2 className="text-xl font-bold text-gray-800">Date:</h2>
-                <p className="text-gray-600">January 23, 2025</p>
+                <h2 className="text-xl font-medium text-default">Date:</h2>
+                <p className="text-[#475467]">January 23, 2025</p>
               </div>
               <div className="flex items-center gap-[60px]">
-                <h2 className="text-xl font-bold text-gray-800">Time:</h2>
-                <p className="text-gray-600">8:30 am - 9:30 am</p>
+                <h2 className="text-xl font-medium text-default">Time:</h2>
+                <p className="text-[#475467]">8:30 am - 9:30 am</p>
               </div>
               <div className="flex items-center gap-[50px]">
-                <h2 className="text-xl font-bold text-gray-800">Venue:</h2>
-                <p className="text-gray-600">Robinson-Cole LLP</p>
+                <h2 className="text-xl font-medium text-default">Venue:</h2>
+                <p className="text-[#475467]">Robinson-Cole LLP</p>
               </div>
               <div className="flex items-center gap-5">
-                <h2 className="text-xl font-bold text-gray-800">Organizer:</h2>
-                <p className="text-gray-600">
+                <h2 className="text-xl font-medium text-default">Organizer:</h2>
+                <p className="text-[#475467]">
                   The World Affairs Council of Connecticut
                 </p>
               </div>
@@ -123,7 +121,9 @@ const EventDetails = () => {
 
             {/* Map View */}
             <div className="mt-6">
-              <h2 className="text-xl font-bold text-gray-800">Map View</h2>
+              <h2 className="text-xl md:text-[24px] font-medium text-[#090043] mb-4">
+                Map View
+              </h2>
               <div className="w-full h-64 bg-gray-300 rounded-lg overflow-hidden">
                 <iframe
                   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3151.8354345096746!2d144.95373531531687!3d-37.81720997975161!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad642af0f11fd81%3A0xf577b886ddf9e013!2sRobinson-Cole%20LLP!5e0!3m2!1sen!2sus!4v1634163140175!5m2!1sen!2sus"
@@ -138,11 +138,13 @@ const EventDetails = () => {
 
             {/* Hosted By */}
             <div className="mt-6">
-              <h2 className="text-xl font-bold text-gray-800">Hosted By</h2>
-              <p className="text-gray-600">
+              <h2 className="text-xl md:text-[24px] font-medium text-[#090043] mb-4">
+                Hosted By
+              </h2>
+              <p className="text-[#1D2939] mb-2">
                 Cybersecurity and Infrastructure Security Agency (CISA)
               </p>
-              <p className="text-gray-600">
+              <p className="text-[#1D2939]">
                 NIST Computer Security Resource Center
               </p>
             </div>
