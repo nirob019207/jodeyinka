@@ -18,11 +18,15 @@ export const Navbar = () => {
   const pathname = usePathname();
 
   // Dynamic background image and padding based on route
-  const routeSettings: { [key: string]: { background: any; paddingBottom: string } } = {
+  const routeSettings: {
+    [key: string]: { background: any; paddingBottom: string };
+  } = {
     "/": { background: banner.src, paddingBottom: "350px" },
     "/about-us": { background: anotherBanner.src, paddingBottom: "173px" },
     "/media": { background: anotherBanner.src, paddingBottom: "173px" },
-    "/event": { background: anotherBanner.src, paddingBottom: "173px" },
+    "/event": { background: anotherBanner.src, paddingBottom: "83px" },
+    "/resources": { background: anotherBanner.src, paddingBottom: "83px" },
+    "/download-pdf": { background: anotherBanner.src, paddingBottom: "83px" },
   };
 
   const currentSettings = routeSettings[pathname as string] || {
@@ -30,17 +34,15 @@ export const Navbar = () => {
     paddingBottom: "350px",
   };
 
-
-
   return (
     <div className="bg-[#090043] font-inter relative">
       {/* Desktop Banner Section */}
       <div
         style={{
-           backgroundImage: `url(${currentSettings.background})`,
+          backgroundImage: `url(${currentSettings.background})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
-          paddingBottom: currentSettings.paddingBottom
+          paddingBottom: currentSettings.paddingBottom,
         }}
         className={`container mx-auto flex flex-col lg:flex-row justify-between pt-[50px] md:pt-[100px]  px-0`}
       >
@@ -65,10 +67,16 @@ export const Navbar = () => {
         <div className="mt-8 lg:mt-0 relative">
           <div className="flex items-center justify-between lg:justify-end gap-6">
             {/* Buttons */}
-            <Link href={"/register"} className="px-4 py-2 text-center text-white bg-[#FFFFFF1A] rounded-xl backdrop-blur-[24px] border border-[#667085] w-[136px] hidden md:flex">
+            <Link
+              href={"/register"}
+              className="px-4 py-2 text-center text-white bg-[#FFFFFF1A] rounded-xl backdrop-blur-[24px] border border-[#667085] w-[136px] hidden md:flex"
+            >
               Sign up
             </Link>
-            <Link href={"/login"} className="px-4 py-2 text-white bg-gradient-to-l from-[#0061FF] to-[#003A99] rounded-xl w-[140px] hidden md:flex">
+            <Link
+              href={"/login"}
+              className="px-4 py-2 text-white bg-gradient-to-l from-[#0061FF] to-[#003A99] rounded-xl w-[140px] hidden md:flex"
+            >
               Member login
             </Link>
           </div>
@@ -91,7 +99,7 @@ export const Navbar = () => {
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex bg-[#FFFFFF1A] backdrop-blur-[4px] rounded-xl px-[89px] py-3 mt-6 justify-around items-center text-white shadow-lg">
+          <nav className="hidden lg:flex bg-[#FFFFFF1A] backdrop-blur-[4px] rounded-xl px-[89px] py-3 mt-6 gap-6  items-center text-white shadow-lg">
             <Link href="/about-us" className="hover:text-blue-400">
               About Us
             </Link>
@@ -99,7 +107,10 @@ export const Navbar = () => {
               Media
             </Link>
             <Link href="/event" className="hover:text-blue-400">
-              Evemt
+              Event
+            </Link>
+            <Link href="/resources" className="hover:text-blue-400">
+              Resource
             </Link>
             <Link href="/blog" className="hover:text-blue-400">
               Blog
@@ -129,6 +140,12 @@ export const Navbar = () => {
           </Link>
           <Link href="/media" className="hover:text-blue-400">
             Media
+          </Link>
+          <Link href="/event" className="hover:text-blue-400">
+            Event
+          </Link>
+          <Link href="/resources" className="hover:text-blue-400">
+            Resource
           </Link>
           <Link href="#contact" className="hover:text-blue-400">
             Contact
