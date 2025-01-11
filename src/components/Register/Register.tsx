@@ -1,23 +1,29 @@
 'use client'
 
-import * as React from 'react'
-import { Eye, EyeOff } from 'lucide-react'
+import React, { useState } from 'react'
+import { useForm, SubmitHandler } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { useForm } from 'react-hook-form'
 import Link from 'next/link'
+import { useRegisterUserMutation } from '@/redux/Api/userApi'
+import { toast } from 'sonner'
+import { useRouter } from 'next/navigation'
 
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Checkbox } from '@radix-ui/react-checkbox'
+
+// import { useRegisterUserMutation } from '@/redux/Api/userApi'
+
+const countries = [
+  { id: 1, value: 'usa', label: 'USA' },
+  { id: 2, value: 'canada', label: 'Canada' },
+  // Add more countries as needed
+]
+
+const states = [
+  { value: 'ny', label: 'New York' },
+  { value: 'ca', label: 'California' },
+  { value: 'tx', label: 'Texas' },
+  // Add more states as needed
+]
 
 const formSchema = z.object({
   firstName: z.string().min(2, 'First name is required'),
@@ -27,223 +33,267 @@ const formSchema = z.object({
   email: z.string().email('Invalid email address'),
   address: z.string().min(1, 'Address is required'),
   password: z.string().min(8, 'Password must be at least 8 characters'),
+  dob: z.string().min(1, 'Date of birth is required'), // Add validation for dob
+
   confirmPassword: z.string(),
 }).refine((data) => data.password === data.confirmPassword, {
   message: "Passwords don't match",
   path: ["confirmPassword"],
 })
 
+type FormSchemaType = z.infer<typeof formSchema>;
+
 export default function Register() {
-  const [showPassword, setShowPassword] = React.useState(false)
-  const [showConfirmPassword, setShowConfirmPassword] = React.useState(false)
+  const [showPassword, setShowPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+  const [registerUser,{isLoading}]=useRegisterUserMutation()
+  const router=useRouter()
+
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<z.infer<typeof formSchema>>({
-    resolver: async (data) => {
-      try {
-        formSchema.parse(data)
-        return { values: data, errors: {} }
-      } catch (error) {
-        const formErrors = (error as z.ZodError).formErrors.fieldErrors;
-        return { values: {}, errors: formErrors }
-      }
-    }
-
+  } = useForm<FormSchemaType>({
+    resolver: zodResolver(formSchema),
   })
 
-  const onSubmit = (data: z.infer<typeof formSchema>) => {
-    console.log(data)
+  const onSubmit: SubmitHandler<FormSchemaType> = async (data) => {
+    try {
+      const updatedData = {
+        firstName: data.firstName,
+        lastName: data.lastName,
+        country: data.country,
+        email: data.email,
+        state: data.state,
+        password: data.password,
+        address: data.address,
+        dob: new Date(data.dob).toISOString(),
+      }
+
+      await registerUser(updatedData).unwrap()
+      
+      router.push('/login')
+
+      toast.success('Registration successful! Welcome aboard.')
+    } catch (error: any) {
+      if (error.data?.message) {
+        toast.error(error.data.message) // Display backend error
+      } else {
+        toast.error('An error occurred. Please try again.')
+      }
+    }
   }
+  
 
   return (
-    <div className="flex min-h-screen items-center justify-center p-4">
-      <Card className="w-full max-w-2xl">
-        <CardHeader className="space-y-1 text-center">
-          <CardTitle className="text-[34px] font-[600] text-[#1D2939]">Create your account!</CardTitle>
-          <CardDescription>
-            Welcome To Website Name
+    <div className="flex min-h-screen items-center justify-center bg-gray-100 p-4">
+      <div className="w-full max-w-2xl rounded-lg bg-white p-8 shadow-md">
+        <div className="mb-8 text-center">
+          <h2 className="text-3xl font-semibold text-gray-900">Create your account!</h2>
+          <p className="mt-2 text-gray-600">
+            Welcome to Website Name
             <br />
-            Please Enter The Information Requested To Create Your Account
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-              <div className="space-y-2">
-                <Label htmlFor="firstName">First Name</Label>
-                <Input
-                  id="firstName"
-                  placeholder="John"
-                  {...register('firstName')}
-                />
-                {errors.firstName && (
-                  <p className="text-sm text-red-500">{errors.firstName.message}</p>
-                )}
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="lastName">Last Name</Label>
-                <Input
-                  id="lastName"
-                  placeholder="Doe"
-                  {...register('lastName')}
-                />
-                {errors.lastName && (
-                  <p className="text-sm text-red-500">{errors.lastName.message}</p>
-                )}
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-              <div className="space-y-2">
-                <Label htmlFor="country">Country*</Label>
-                <Select {...register('country')}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select Country" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="us">United States</SelectItem>
-                    <SelectItem value="uk">United Kingdom</SelectItem>
-                    <SelectItem value="ca">Canada</SelectItem>
-                  </SelectContent>
-                </Select>
-                {errors.country && (
-                  <p className="text-sm text-red-500">{errors.country.message}</p>
-                )}
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="state">State</Label>
-                <Select {...register('state')}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select state" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="ny">New York</SelectItem>
-                    <SelectItem value="ca">California</SelectItem>
-                    <SelectItem value="tx">Texas</SelectItem>
-                  </SelectContent>
-                </Select>
-                {errors.state && (
-                  <p className="text-sm text-red-500">{errors.state.message}</p>
-                )}
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="email">Email Address</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="georgia.young@example.com"
-                {...register('email')}
+            Please enter the information requested to create your account
+          </p>
+        </div>
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+            <div>
+              <label htmlFor="firstName" className="block text-sm font-medium text-gray-700">First Name</label>
+              <input
+                type="text"
+                id="firstName"
+                {...register('firstName')}
+                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                placeholder="John"
               />
-              {errors.email && (
-                <p className="text-sm text-red-500">{errors.email.message}</p>
+              {errors.firstName && (
+                <p className="mt-1 text-sm text-red-500">{errors.firstName.message}</p>
               )}
             </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="address">Address</Label>
-              <Input
-                id="address"
-                placeholder="UK"
-                {...register('address')}
+            <div>
+              <label htmlFor="lastName" className="block text-sm font-medium text-gray-700">Last Name</label>
+              <input
+                type="text"
+                id="lastName"
+                {...register('lastName')}
+                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                placeholder="Doe"
               />
-              {errors.address && (
-                <p className="text-sm text-red-500">{errors.address.message}</p>
+              {errors.lastName && (
+                <p className="mt-1 text-sm text-red-500">{errors.lastName.message}</p>
               )}
             </div>
+          </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
-              <div className="relative">
-                <Input
-                  id="password"
-                  type={showPassword ? 'text' : 'password'}
-                  {...register('password')}
-                />
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="sm"
-                  className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
-                  onClick={() => setShowPassword(!showPassword)}
-                >
-                  {showPassword ? (
-                    <EyeOff className="h-4 w-4 text-muted-foreground" />
-                  ) : (
-                    <Eye className="h-4 w-4 text-muted-foreground" />
-                  )}
-                  <span className="sr-only">
-                    {showPassword ? 'Hide password' : 'Show password'}
-                  </span>
-                </Button>
-              </div>
-              {errors.password && (
-                <p className="text-sm text-red-500">{errors.password.message}</p>
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+            <div>
+              <label htmlFor="country" className="block text-sm font-medium text-gray-700">Country*</label>
+              <select
+                id="country"
+                {...register('country')}
+                className="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+              >
+                <option value="">Select Country</option>
+                {countries.map((country) => (
+                  <option key={country.id} value={country.value}>
+                    {country.label}
+                  </option>
+                ))}
+              </select>
+              {errors.country && (
+                <p className="mt-1 text-sm text-red-500">{errors.country.message}</p>
               )}
             </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="confirmPassword">Confirm Password</Label>
-              <div className="relative">
-                <Input
-                  id="confirmPassword"
-                  type={showConfirmPassword ? 'text' : 'password'}
-                  {...register('confirmPassword')}
-                />
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="sm"
-                  className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
-                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                >
-                  {showConfirmPassword ? (
-                    <EyeOff className="h-4 w-4 text-muted-foreground" />
-                  ) : (
-                    <Eye className="h-4 w-4 text-muted-foreground" />
-                  )}
-                  <span className="sr-only">
-                    {showConfirmPassword ? 'Hide password' : 'Show password'}
-                  </span>
-                </Button>
-              </div>
-              {errors.confirmPassword && (
-                <p className="text-sm text-red-500">{errors.confirmPassword.message}</p>
+            <div>
+              <label htmlFor="state" className="block text-sm font-medium text-gray-700">State</label>
+              <select
+                id="state"
+                {...register('state')}
+                className="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+              >
+                <option value="">Select State</option>
+                {states.map((state) => (
+                  <option key={state.value} value={state.value}>
+                    {state.label}
+                  </option>
+                ))}
+              </select>
+              {errors.state && (
+                <p className="mt-1 text-sm text-red-500">{errors.state.message}</p>
               )}
             </div>
+          </div>
+          <div>
+            <label htmlFor="dob" className="block text-sm font-medium text-gray-700">Date of Birth</label>
+            <input
+              type="date"
+              id="dob"
+              {...register('dob')}
+              className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+            />
+            {errors.dob && (
+              <p className="mt-1 text-sm text-red-500">{errors.dob.message}</p>
+            )}
+          </div>
 
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-2">
-                <Checkbox id="remember"  />
-                <Label htmlFor="remember" className="text-sm">Remember Me</Label>
-              </div>
-              <Button variant="link" className="px-0 text-[#0061FF]">
-                Forgot Password?
-              </Button>
-            </div>
+          <div>
+            <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email Address</label>
+            <input
+              type="email"
+              id="email"
+              {...register('email')}
+              className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+              placeholder="georgia.young@example.com"
+            />
+            {errors.email && (
+              <p className="mt-1 text-sm text-red-500">{errors.email.message}</p>
+            )}
+          </div>
 
-            <div className="space-y-4">
-              <div className="g-recaptcha" data-sitekey="your-recaptcha-site-key"></div>
-              
-            <Button type="submit" className="w-full z-50 bg-gradient-to-r from-[#0061FF] to-[#003A99]">
-                Register Account
-              </Button>
-              
-              <div className="text-center text-sm">
-                Already have an account?{' '}
-                <Link href="/login" className="text-blue-600 hover:underline">
-                  log in Here!
-                </Link>
-              </div>
+          <div>
+            <label htmlFor="address" className="block text-sm font-medium text-gray-700">Address</label>
+            <input
+              type="text"
+              id="address"
+              {...register('address')}
+              className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+              placeholder="123 Main St, Anytown, USA"
+            />
+            {errors.address && (
+              <p className="mt-1 text-sm text-red-500">{errors.address.message}</p>
+            )}
+          </div>
+
+          <div>
+            <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
+            <div className="relative mt-1">
+              <input
+                type={showPassword ? 'text' : 'password'}
+                id="password"
+                {...register('password')}
+                className="block w-full rounded-md border border-gray-300 px-3 py-2 pr-10 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+              />
+              <button
+                type="button"
+                className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-gray-500"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? (
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="h-5 w-5">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88" />
+                  </svg>
+                ) : (
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="h-5 w-5">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                )}
+              </button>
             </div>
-          </form>
-        </CardContent>
-      </Card>
+            {errors.password && (
+              <p className="mt-1 text-sm text-red-500">{errors.password.message}</p>
+            )}
+          </div>
+
+          <div>
+            <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">Confirm Password</label>
+            <div className="relative mt-1">
+              <input
+                type={showConfirmPassword ? 'text' : 'password'}
+                id="confirmPassword"
+                {...register('confirmPassword')}
+                className="block w-full rounded-md border border-gray-300 px-3 py-2 pr-10 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+              />
+              <button
+                type="button"
+                className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-gray-500"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              >
+                {showConfirmPassword ? (
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="h-5 w-5">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88" />
+                  </svg>
+                ) : (
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="h-5 w-5">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                )}
+              </button>
+            </div>
+            {errors.confirmPassword && (
+              <p className="mt-1 text-sm text-red-500">{errors.confirmPassword.message}</p>
+            )}
+          </div>
+
+          <div className="flex items-center justify-between">
+            <button type="button" className="text-sm text-blue-600 hover:underline">
+              Forgot Password?
+            </button>
+          </div>
+
+          <div className="space-y-4">
+            <div className="g-recaptcha" data-sitekey="your-recaptcha-site-key"></div>
+
+            <button
+              type="submit"
+              className="w-full rounded-md bg-gradient-to-r from-blue-600 to-blue-800 px-4 py-2 text-white shadow-sm hover:from-blue-700 hover:to-blue-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50"
+              disabled={isLoading}
+            >
+              {isLoading ? 'Registering...' : 'Register Account'}
+            </button>
+
+            <div className="mt-4 text-center text-sm text-gray-600">
+              Already have an account?{' '}
+              <Link href="/login" className="text-blue-600 hover:underline">
+                Log in Here!
+              </Link>
+            </div>
+          </div>
+        </form>
+      </div>
     </div>
   )
 }
-

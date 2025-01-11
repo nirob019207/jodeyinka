@@ -1,36 +1,63 @@
 'use client'
+import * as React from "react";
+import { Eye, EyeOff } from "lucide-react";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { SerializedError } from "@reduxjs/toolkit";
 
-import * as React from 'react'
-import { Eye, EyeOff } from 'lucide-react'
-import { useForm, SubmitHandler } from 'react-hook-form'
-import capcha from '@/asset/capcha.png'
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import Link from "next/link";
+import { useLoginUserMutation } from "@/redux/Api/userApi";
+import { setUser } from "@/redux/ReduxFunction";
+import { useDispatch } from "react-redux";
 
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
-import { Checkbox } from '@/components/ui/checkbox'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import Image from 'next/image'
-import Link from 'next/link'
+// Zod validation schema for login
+const loginSchema = z.object({
+  email: z
+    .string()
+    .min(1, { message: "Email is required" })
+    .email({ message: "Enter a valid email" }),
+  password: z
+    .string()
+    .min(6, { message: "Password must be at least 8 characters" })
+});
 
-/** Define form validation schema */
-/** Define form validation schema and TypeScript types */
-type FormData = {
-  email: string;
-  password: string;
-  recaptcha?: boolean;
-  rememberMe?: boolean;
-}
+type FormData = z.infer<typeof loginSchema>;
 
 export default function LoginPage() {
-  const [showPassword, setShowPassword] = React.useState(false)
+  const [login, { data: response, isLoading, isError, error }] = useLoginUserMutation();
+  const [showPassword, setShowPassword] = React.useState(false);
+  const dispatch = useDispatch();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormData>()
-  const onSubmit : SubmitHandler<FormData> = (data) => console.log(data)
+  } = useForm<FormData>({
+    resolver: zodResolver(loginSchema),
+  });
+
+  const onSubmit: SubmitHandler<FormData> = async (formData) => {
+    try {
+      await login(formData).unwrap();
+      if (response?.data) {
+        dispatch(
+          setUser({
+            role: response.data.role,
+            token: response.data.accessToken,
+            email: response.data.email
+          })
+        );
+      }
+    } catch (err) {
+      console.error("Login error:", err);
+    }
+  };
 
   return (
     <div className="flex justify-center items-center h-screen">
@@ -50,7 +77,7 @@ export default function LoginPage() {
                 id="email"
                 placeholder="johndoe@example.com"
                 type="email"
-                {...register('email')}
+                {...register("email")}
               />
               {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
             </div>
@@ -61,9 +88,9 @@ export default function LoginPage() {
               <div className="relative">
                 <Input
                   id="password"
-                  type={showPassword ? 'text' : 'password'}
+                  type={showPassword ? "text" : "password"}
                   placeholder="••••••••"
-                  {...register('password')}
+                  {...register("password")}
                 />
                 {errors.password && <p className="text-red-500 text-sm">{errors.password.message}</p>}
                 <Button
@@ -78,40 +105,15 @@ export default function LoginPage() {
                   ) : (
                     <Eye className="h-4 w-4 text-muted-foreground" />
                   )}
-                  <span className="sr-only">
-                    {showPassword ? 'Hide password' : 'Show password'}
-                  </span>
+                  <span className="sr-only">{showPassword ? "Hide password" : "Show password"}</span>
                 </Button>
-              </div>
-            </div>
-
-            {/* Recaptcha */}
-            <div>
-              <div className="inline-flex items-center gap-2 rounded-md border bg-white px-3 py-2 shadow-sm">
-                <Checkbox
-                  id="recaptcha"
-                  {...register('recaptcha')}
-                  className="h-6 w-6 rounded-sm border-2 border-gray-200 data-[state=checked]:border-transparent"
-                />
-                <label htmlFor="recaptcha" className="text-sm text-gray-600">
-                  I&apos;m not a robot
-                </label>
-                <div className="ml-4 border-l border-gray-200 pl-4">
-                  <div className="h-10 w-10">
-                    <Image
-                      src={capcha}
-                      alt="reCAPTCHA"
-                      className="h-full w-full object-contain"
-                    />
-                  </div>
-                </div>
               </div>
             </div>
 
             {/* Remember Me & Forgot Password */}
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-2">
-                <Checkbox id="remember" {...register('rememberMe')} />
+                <Checkbox id="remember" />
                 <Label htmlFor="remember" className="text-sm">Remember Me</Label>
               </div>
               <Link href="/forgot-password" className="px-0 text-[#0061FF]">
@@ -120,9 +122,14 @@ export default function LoginPage() {
             </div>
 
             {/* Submit Button */}
-            <Button className="w-full z-50 bg-gradient-to-r from-[#0061FF] to-[#003A99]">
-              Log in
+            <Button className="w-full z-50 bg-gradient-to-r from-[#0061FF] to-[#003A99]" disabled={isLoading}>
+              {isLoading ? "Logging in..." : "Login"}
             </Button>
+            {isError && (
+              <p className="text-red-500 text-sm mt-2">
+                {('data' in error ? (error.data as { message: string })?.message : (error as SerializedError)?.message) || "An error occurred. Please try again."}
+              </p>
+            )}
 
             {/* Register Link */}
             <div className="text-center flex flex-col md:flex-row">
@@ -130,16 +137,14 @@ export default function LoginPage() {
                 If you don&apos;t have any account please{' '}
               </span>
               <Link href={'/register'}>
-              <span className="px-1 text-[#0061FF] text-[17px] font-[500] lg:text-nowrap">
-                Register Here!
-              </span>
+                <span className="px-1 text-[#0061FF] text-[17px] font-[500] lg:text-nowrap">
+                  Register Here!
+                </span>
               </Link>
-           
             </div>
           </form>
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }
-

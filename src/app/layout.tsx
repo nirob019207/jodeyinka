@@ -3,6 +3,8 @@ import "./globals.css";
 
 import { Inter, Montserrat } from "next/font/google";
 import { Outfit } from "next/font/google"; // Import Outfit font
+import ReduxProvider from "@/redux/ReduxProvider";
+import { Toaster } from "sonner";
 
 
 export const metadata: Metadata = {
@@ -39,7 +41,10 @@ export default function RootLayout({
         className={`${montserrat.variable} ${outfit.variable} ${inter.variable}`}
       >
         <div>
-        {children}
+        <ReduxProvider>{children}</ReduxProvider>
+        
+
+        <Toaster />
 
         </div>
         

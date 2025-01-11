@@ -8,6 +8,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
+import { RootState } from "@/redux/store";
+import { useRouter } from "next/navigation";
+import { useResetPassMutation } from "@/redux/Api/userApi";
+import { useSelector } from "react-redux";
 
 
 
@@ -31,6 +35,12 @@ type ChangePasswordFormData = z.infer<typeof changePasswordSchema>;
 export default function ChangePassword() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [resetPass, { isLoading }] = useResetPassMutation();
+  const router = useRouter();
+  const getEmail = useSelector((state: RootState) => state.forgotPass.email);
+  const getOtp=useSelector((state: RootState) => state.forgotPass.otp)
+
+
 
   const {
     register,
@@ -41,9 +51,18 @@ export default function ChangePassword() {
     mode: "onSubmit",
   });
 
-  const onSubmit = async () => {
-   
+  const onSubmit = async (data: ChangePasswordFormData) => {
+    try {
+      const response = await resetPass({
+        email: getEmail?.email,
+        otp:getOtp,
+        password: data.newPassword,
+      }).unwrap();
+      router.push("/login");
+    } catch (err) {
+    }
   };
+
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-white p-4 font-inter">
@@ -146,9 +165,10 @@ export default function ChangePassword() {
 
             <button
               type="submit"
-              className="w-full flex justify-center rounded-lg items-center font-outfit text-white text-sm md:text-[18px] font-medium py-3 md:py-[10px] bg-gradient-to-t from-[#0061FF] to-[#003A99] hover:bg-blue-700"
+              disabled={isLoading}
+              className="w-full flex justify-center rounded-lg items-center font-outfit text-white text-sm md:text-[18px] font-medium py-3 md:py-[10px] bg-gradient-to-t from-[#0061FF] to-[#003A99] hover:bg-blue-700 disabled:opacity-50"
             >
-                        Reset Pasword
+                        {isLoading ? "Resetting..." : "Reset Password"}
             </button>
           </form>
         </div>
