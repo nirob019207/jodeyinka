@@ -1,12 +1,17 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { Facebook, Instagram, Linkedin, MapPin, Mail, Phone, Twitter } from 'lucide-react'
-import * as z from "zod"
+import * as React from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { MapPin, Mail, Phone } from "lucide-react";
+import twitter from "@/asset/social/twitter.svg";
+import insta from "@/asset/social/insta.svg";
+import fb from "@/asset/social/fb.svg";
+import linkedin from "@/asset/social/linkedin.svg";
+import * as z from "zod";
+import capcha from '@/asset/capcha.png'
 
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -14,16 +19,18 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
-import { Textarea } from "../ui/textarea"
+} from "@/components/ui/select";
+import { Textarea } from "../ui/textarea";
+import Image from "next/image";
+import { Checkbox } from "@radix-ui/react-checkbox";
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -47,7 +54,7 @@ const formSchema = z.object({
   message: z.string().min(10, {
     message: "Message must be at least 10 characters.",
   }),
-})
+});
 
 export default function ContactPage() {
   const form = useForm<z.infer<typeof formSchema>>({
@@ -59,25 +66,30 @@ export default function ContactPage() {
       subject: "",
       message: "",
     },
-  })
+  });
+
+  
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values)
+    console.log(values);
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="grid gap-8 lg:grid-cols-2">
+    <div className="container mx-auto px-0 py-[100px] ">
+      <div className="grid lg:grid-cols-2 items-center gap-[50px] md:gap-[100px]">
         <div>
-          <h1 className="text-[#1D2939] text-[36px] leadiing-[43.2px] font-bold mb-4">Get in Touch</h1>
+          <h1 className="text-[#1D2939] text-[36px] leadiing-[43.2px] font-bold mb-4">
+            Get in Touch
+          </h1>
           <p className="text-[16px] text-[#475467] leading-[25px] mb-8">
-            We&apos;d love to hear from you! Whether you have a question about our services, pricing, or
-            anything else, our team is ready to answer all your questions.
+            We&apos;d love to hear from you! Whether you have a question about
+            our services, pricing, or anything else, our team is ready to answer
+            all your questions.
           </p>
 
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-              <div className="grid gap-4 sm:grid-cols-2">
+              <div className="grid gap-4 md:grid-cols-2">
                 <FormField
                   control={form.control}
                   name="name"
@@ -97,9 +109,14 @@ export default function ContactPage() {
                   name="emailPhone"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-[16px]">Email/Phone*</FormLabel>
+                      <FormLabel className="text-[16px]">
+                        Email/Phone*
+                      </FormLabel>
                       <FormControl>
-                        <Input placeholder="alma.lawson@example.com" {...field} />
+                        <Input
+                          placeholder="alma.lawson@example.com"
+                          {...field}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -107,14 +124,17 @@ export default function ContactPage() {
                 />
               </div>
 
-              <div className="grid gap-4 sm:grid-cols-2">
+              <div className="grid gap-4 md:grid-cols-2">
                 <FormField
                   control={form.control}
                   name="country"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Country*</FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
                         <FormControl>
                           <SelectTrigger>
                             <SelectValue placeholder="Select Country" />
@@ -137,7 +157,10 @@ export default function ContactPage() {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>State</FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
                         <FormControl>
                           <SelectTrigger>
                             <SelectValue placeholder="Select state" />
@@ -201,15 +224,45 @@ export default function ContactPage() {
                 )}
               />
 
-              <Button type="submit" className="w-full">Submit Now</Button>
+              {/* Recaptcha */}
+              <div>
+                <div className="inline-flex items-center gap-2 rounded-md border bg-white px-3 py-2 shadow-sm mb-10">
+                  <Checkbox
+                    id="recaptcha"
+                  
+                    className="h-6 w-6 rounded-sm border-2 border-gray-200 data-[state=checked]:border-transparent"
+                  />
+                  <label htmlFor="recaptcha" className="text-sm text-gray-600">
+                    I&apos;m not a robot
+                  </label>
+                  <div className="ml-4 border-l border-gray-200 pl-4">
+                    <div className="h-10 w-10">
+                      <Image
+                        src={capcha}
+                        alt="reCAPTCHA"
+                        className="h-full w-full object-contain"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <Button
+                type="submit"
+                className="w-full bg-gradient-to-l from-[#0061FF] to-[#003A99] px-4 py-2"
+              >
+                Submit Now
+              </Button>
             </form>
           </Form>
         </div>
 
         <div className="lg:pl-8">
-          <div className="rounded-lg p-6 bg-muted/50">
+          <div className="">
             <h2 className="text-2xl font-semibold mb-4">Contact Information</h2>
-            <p className="text-muted-foreground mb-8">Say something to start a live chat!</p>
+            <p className="text-muted-foreground mb-8">
+              Say something to start a live chat!
+            </p>
 
             <div className="space-y-6">
               <div className="flex items-center gap-3">
@@ -222,40 +275,28 @@ export default function ContactPage() {
               </div>
               <div className="flex items-start gap-3">
                 <MapPin className="h-5 w-5 text-primary mt-1" />
-                <span>132 Dartmouth Street Boston,<br />Massachusetts 02156 United States</span>
+                <span>
+                  132 Dartmouth Street Boston,
+                  <br />
+                  Massachusetts 02156 United States
+                </span>
               </div>
             </div>
 
             <div className="mt-8">
               <h3 className="text-lg font-medium mb-4">Social Media:</h3>
               <div className="flex gap-4">
-                <a
-                  href="#"
-                  className="p-2 rounded-full bg-primary text-primary-foreground hover:bg-primary/90"
-                  aria-label="Twitter"
-                >
-                  <Twitter className="h-5 w-5" />
+                <a href="#" aria-label="Twitter">
+                  <Image src={twitter} alt="twitter logo" />
                 </a>
-                <a
-                  href="#"
-                  className="p-2 rounded-full bg-primary text-primary-foreground hover:bg-primary/90"
-                  aria-label="Instagram"
-                >
-                  <Instagram className="h-5 w-5" />
+                <a href="#" aria-label="Instagram">
+                  <Image src={insta} alt="twitter logo" />
                 </a>
-                <a
-                  href="#"
-                  className="p-2 rounded-full bg-primary text-primary-foreground hover:bg-primary/90"
-                  aria-label="LinkedIn"
-                >
-                  <Linkedin className="h-5 w-5" />
+                <a href="#" aria-label="LinkedIn">
+                  <Image src={linkedin} alt="twitter logo" />
                 </a>
-                <a
-                  href="#"
-                  className="p-2 rounded-full bg-primary text-primary-foreground hover:bg-primary/90"
-                  aria-label="Facebook"
-                >
-                  <Facebook className="h-5 w-5" />
+                <a href="#" aria-label="Facebook">
+                  <Image src={fb} alt="twitter logo" />
                 </a>
               </div>
             </div>
@@ -263,6 +304,5 @@ export default function ContactPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }
-
