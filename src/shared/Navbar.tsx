@@ -28,6 +28,7 @@ export const Navbar = () => {
     "/resources": { background: anotherBanner.src, paddingBottom: "83px" },
     "/download-pdf": { background: anotherBanner.src, paddingBottom: "83px" },
     "/contact": { background: anotherBanner.src, paddingBottom: "83px" },
+    "/media-content": { background: anotherBanner.src, paddingBottom: "83px" },
   };
 
   const currentSettings = routeSettings[pathname as string] || {
@@ -82,6 +83,9 @@ export const Navbar = () => {
             >
               Member login
             </Link>
+              {/* <h1 className="text-white">jodenkia</h1>
+            <div className="w-12 h-12 bg-[#D9D9D9] rounded-full">
+            </div> */}
           </div>
 
           {/* Search Box */}

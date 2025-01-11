@@ -45,7 +45,7 @@ const Sponsorship: React.FC = () => {
 
   return (
     <div className="bg-[#F6F6F6] pt-[30px] md:pt-[60px] pb-[100px] md:pb-[200px]">
-      <div className="container mx-auto px-0 text-center">
+      <div className="container mx-auto md:px-0 text-center px-6">
         {/* Header */}
         <h1 className="text-3xl md:text-[36px] font-medium text-default mb-4">
           Choose Your Sponsorship Plan
@@ -70,7 +70,7 @@ const Sponsorship: React.FC = () => {
               </h2>
               <ul className="text-[#09004380] space-y-4 mb-12">
                 {plan.features.map((feature, idx) => (
-                  <li key={idx} className="flex items-center">
+                  <li key={idx} className="flex items-center ml-[75px] md:w-[240px] mx-auto w-full">
                     <span className="text-lg">•</span>
                     <span className="ml-2">{feature}</span>
                   </li>
