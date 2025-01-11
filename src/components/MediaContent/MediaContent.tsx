@@ -101,8 +101,8 @@ const MediaContent: React.FC = () => {
             </p>
             <ul className="text-gray-700 list-disc list-inside space-y-4">
               <div className="mb-6">
-                <span className="font-semibold list-none">1. Evolving Threat Landscape</span>
-                <ul className="ml-4 list-disc list-inside text-gray space-y-2">
+                <span className="font-medium text-[20px] text-[#090043] list-none">1. Evolving Threat Landscape</span>
+                <ul className="ml-4 list-disc list-inside text-gray space-y-2 mt-6">
                   <li>
                     Rise of Advanced Persistent Threats (APTs): Threat actors
                     are using sophisticated, targeted attacks.
@@ -113,9 +113,9 @@ const MediaContent: React.FC = () => {
                   </li>
                 </ul>
               </div>
-              <>
-                <span className="font-semibold">2. Key Technical Skills</span>
-                <ul className="ml-4 list-disc list-inside text-gray space-y-2">
+              <div className="mb-6">
+                <span className="font-medium text-[20px] text-[#090043]">2. Key Technical Skills</span>
+                <ul className="ml-4 list-disc list-inside text-gray space-y-2 mt-6">
                   <li>
                     CISA Cybersecurity Summit: An annual event that brings
                     together experts.
@@ -125,23 +125,24 @@ const MediaContent: React.FC = () => {
                     business impacts.
                   </li>
                 </ul>
-              </>
-              <>
-                <span className="font-semibold">3. Essential Soft Skills</span>
-                <ul className="ml-4 list-disc list-inside text-gray space-y-2">
+              </div>
+              <div className="mb-6">
+                <span className="font-medium text-[20px] text-[#090043]">3. Essential Soft Skills</span>
+                <ul className="ml-4 list-disc list-inside text-gray space-y-2 mt-6">
                   <li>
                     Industry Standards: Certifications like CISSP, CISM, and CEH
                     remain valuable.
                   </li>
                 </ul>
-              </>
+              </div>
             </ul>
           </div>
         </div>
 
         {/* Comments Section */}
-        <div className="lg:w-[360px] bg-white rounded-lg shadow-md p-6">
-          <h2 className="text-lg font-bold text-gray-900 mb-4">Comments</h2>
+        <div className="lg:w-[360px]">
+         <div className="bg-white rounded-lg shadow-md p-6">
+         <h2 className="text-lg font-bold text-gray-900 mb-4">Comments</h2>
           <div className="space-y-6 max-h-[500px] overflow-y-auto slim-scroll">
             {comments.map((comment) => (
               <div key={comment.id} className="flex items-start gap-4">
@@ -159,6 +160,7 @@ const MediaContent: React.FC = () => {
               </div>
             ))}
           </div>
+         </div>
 
           {/* Add Comment */}
           <div className="mt-6">
