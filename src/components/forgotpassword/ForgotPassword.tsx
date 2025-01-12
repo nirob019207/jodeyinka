@@ -6,8 +6,12 @@ import { Label } from "@/components/ui/label";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { useState } from "react";
 import * as z from "zod";
+import { useRouter } from "next/navigation";
+import { useForgotUserMutation } from "@/redux/Api/userApi";
+import { useDispatch } from "react-redux";
+import { toast } from "sonner";
+import { setEmail } from "@/redux/allSlice/forgotSlice";
 
 // Define schema using Zod
 const forgotPasswordSchema = z.object({
@@ -20,7 +24,9 @@ const forgotPasswordSchema = z.object({
 type ForgotPasswordData = z.infer<typeof forgotPasswordSchema>;
 
 export default function ForgotPassword() {
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [forgotPas, { isLoading, isError, error }] = useForgotUserMutation(); // Hook usage
+  const router = useRouter()
+  const dispatch = useDispatch();
 
   const {
     register,
@@ -33,22 +39,38 @@ export default function ForgotPassword() {
 
   const onSubmit = async (data: ForgotPasswordData) => {
     try {
-      setIsSubmitting(true);
-      console.log("Submitting:", data);
-
-      // Simulating API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
+      dispatch(setEmail({ email: data }));
+      const response = await forgotPas(data).unwrap();
+      console.log(response);
       reset();
-      alert("If an account exists with this email, you will receive a password reset code.");
-    } catch (error) {
-      console.error("Error:", error);
-      alert("An error occurred. Please try again.");
-    } finally {
-      setIsSubmitting(false);
+      router.push("/otp");
+      toast.success("Enter your received OTP");
+    } catch (err: any) {
+      console.log("Error object:", err); // Log error for debugging
+  
+      // Main error message
+      if (err?.data?.message) {
+        toast.error(err.data.message);
+      }
+  
+      // Detailed error messages
+      if (err?.data?.errorDetails) {
+        const { errorDetails } = err.data;
+        if (Array.isArray(errorDetails)) {
+          errorDetails.forEach((detail: string) => {
+            toast.error(detail);
+          });
+        } else if (typeof errorDetails === "object" && errorDetails.cause) {
+          toast.error(errorDetails.cause);
+        }
+      } else {
+        toast.error("An unexpected error occurred. Please try again.");
+      }
     }
   };
-
+  
+  
+  
   return (
     <div className="flex min-h-screen items-center justify-center bg-white p-4 sm:p-6 md:p-8">
       <div className="w-full max-w-[454px] space-y-6">
@@ -75,7 +97,7 @@ export default function ForgotPassword() {
               placeholder="georgia.young@example.com"
               className="w-full text-[18px] text-[#475467] border-[#98A2B3] pr-10 placeholder:text-[#98A2B3] placeholder:text-sm placeholder:font-normal"
               {...register("email")}
-              disabled={isSubmitting}
+          
             />
             {errors.email && (
               <p className="text-xs text-red-500 mt-1">{errors.email.message}</p>
@@ -94,10 +116,10 @@ export default function ForgotPassword() {
 
           <button
             type="submit"
-            disabled={isSubmitting}
+            disabled={isLoading}
             className="w-full mt-2 flex justify-center rounded-lg items-center font-outfit text-white text-[18px] font-medium py-[10px]  z-50 bg-gradient-to-t from-[#0061FF] to-[#003A99] hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {isSubmitting ? "Sending..." : "Send Code"}
+>
+         Send
            
           </button>
         </form>

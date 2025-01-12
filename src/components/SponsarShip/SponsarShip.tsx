@@ -1,4 +1,7 @@
+'use client'
 import React from "react";
+import { usePaypalMutation } from "@/redux/Api/paypalApi"; // Adjust import path based on your structure
+import { useRouter } from "next/navigation";
 
 interface Plan {
   price: number;
@@ -7,6 +10,7 @@ interface Plan {
 }
 
 const Sponsorship: React.FC = () => {
+  const router=useRouter()
   const plans: Plan[] = [
     {
       price: 250,
@@ -43,6 +47,37 @@ const Sponsorship: React.FC = () => {
     },
   ];
 
+  const [paypal, { isLoading, isError, error }] = usePaypalMutation();
+
+  const handlePayment = async (plan: Plan) => {
+    try {
+      // Send the selected plan data to the PayPal API
+      const response = await paypal({
+        "purpose": "DONATE",
+        "amount": "1"
+      }).unwrap();
+  
+      // Check if the payment creation was successful
+      if (response.success) {
+        // Get the approval link from the response
+        const approvalLink = response.data.links.find((link: any) => link.rel === "approve")?.href;
+  
+        if (approvalLink) {
+          // Redirect the user to the PayPal approval page
+          window.location.href = approvalLink;
+        } else {
+          console.error("Approval link not found.");
+        }
+      } else {
+        console.error("Payment creation failed.");
+      }
+    } catch (err) {
+      console.error("Payment error:", err);
+      // Handle error (e.g., show a toast or alert)
+    }
+  };
+  
+
   return (
     <div className="bg-[#F6F6F6] pt-[30px] md:pt-[60px] pb-[100px] md:pb-[200px]">
       <div className="container mx-auto md:px-0 text-center px-6">
@@ -76,8 +111,12 @@ const Sponsorship: React.FC = () => {
                   </li>
                 ))}
               </ul>
-              <button className="w-full bg-gradient-to-l from-[#0061FF] to-[#003A99] text-white font-medium py-3 rounded-lg transition">
-                Pay Now
+              <button
+                onClick={() => handlePayment(plan)}
+                disabled={isLoading}
+                className="w-full bg-gradient-to-l from-[#0061FF] to-[#003A99] text-white font-medium py-3 rounded-lg transition"
+              >
+                {isLoading ? "Processing..." : "Pay Now"}
               </button>
             </div>
           ))}
