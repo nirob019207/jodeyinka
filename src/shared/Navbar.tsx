@@ -28,7 +28,7 @@ export const Navbar = () => {
     "/resources": { background: anotherBanner.src, paddingBottom: "83px" },
     "/download-pdf": { background: anotherBanner.src, paddingBottom: "83px" },
     "/contact": { background: anotherBanner.src, paddingBottom: "83px" },
-    "/media-content": { background: anotherBanner.src, paddingBottom: "83px" },
+    "/media-details": { background: anotherBanner.src, paddingBottom: "83px" },
   };
 
   const currentSettings = routeSettings[pathname as string] || {
