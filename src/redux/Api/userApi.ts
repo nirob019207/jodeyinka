@@ -24,6 +24,8 @@ const userApi = baseApi.injectEndpoints({
               body: data
           }
       },
+      invalidatesTags: ["User"], // Helps refresh cached user data after login
+
 
 
   }),
@@ -36,6 +38,8 @@ const userApi = baseApi.injectEndpoints({
               body: data
           }
       },
+      invalidatesTags: ["User"], // Helps refresh cached user data after login
+
 
   }),
   otpUser: build.mutation({
@@ -56,6 +60,8 @@ const userApi = baseApi.injectEndpoints({
               body: data
           }
       },
+      invalidatesTags: ["User"], // Helps refresh cached user data after login
+
 
   }),
   }),

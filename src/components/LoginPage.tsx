@@ -5,6 +5,8 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { SerializedError } from "@reduxjs/toolkit";
+import { toast } from "sonner"; // Assuming you're using sonner
+import cookies from 'js-cookie'; // Package to handle cookies
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -15,6 +17,7 @@ import Link from "next/link";
 import { useLoginUserMutation } from "@/redux/Api/userApi";
 import { setUser } from "@/redux/ReduxFunction";
 import { useDispatch } from "react-redux";
+import { useRouter } from "next/navigation";
 
 // Zod validation schema for login
 const loginSchema = z.object({
@@ -24,7 +27,7 @@ const loginSchema = z.object({
     .email({ message: "Enter a valid email" }),
   password: z
     .string()
-    .min(6, { message: "Password must be at least 8 characters" })
+    .min(6, { message: "Password must be at least 6 characters" })
 });
 
 type FormData = z.infer<typeof loginSchema>;
@@ -33,6 +36,7 @@ export default function LoginPage() {
   const [login, { data: response, isLoading, isError, error }] = useLoginUserMutation();
   const [showPassword, setShowPassword] = React.useState(false);
   const dispatch = useDispatch();
+  const router = useRouter();
 
   const {
     register,
@@ -46,19 +50,30 @@ export default function LoginPage() {
     try {
       await login(formData).unwrap();
       if (response?.data) {
+        // Dispatching user data to Redux
         dispatch(
           setUser({
             role: response.data.role,
             token: response.data.accessToken,
-            email: response.data.email
+            email: response.data.email,
           })
         );
+
+        // Set token in cookies
+        cookies.set("token", response.data.accessToken, { expires: 7 }); // Token expires in 7 days
+
+        // Show success toast message
+        toast.success("Login successful!");
+
+        // Redirect to the home page
+        router.push('/');
       }
     } catch (err) {
+      // Handle error and show toast
+      toast.error("Login failed. Please check your credentials.");
       console.error("Login error:", err);
     }
   };
-
   return (
     <div className="flex justify-center items-center h-screen">
       <Card className="w-full max-w-md mx-auto">

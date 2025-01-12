@@ -4,13 +4,15 @@ import React, { useState } from "react";
 import "keen-slider/keen-slider.min.css";
 import { useKeenSlider } from "keen-slider/react";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
-import media1 from "@/asset/media/media-1.svg";
-import media2 from "@/asset/media/media-2.svg";
+
 import Image from "next/image";
 import { MdArrowRightAlt } from "react-icons/md";
+import { useGetResourceQuery } from "@/redux/Api/resourceApi";
 
 const MediaCarousel = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const { data, isLoading, isError } = useGetResourceQuery({ type: "MEDIA" });
+  const slides = data?.data;
 
   const [sliderRef, slider] = useKeenSlider({
     loop: true,
@@ -34,45 +36,12 @@ const MediaCarousel = () => {
     },
   });
 
-  const slides = [
-    {
-      id: 1,
-      title: "Web Apps Security",
-      description:
-        "Web application security is the practice of protecting websites and online services from threats that exploit vulnerabilities in their code or design.",
-      image: media1,
-      alt: "Web Apps Security",
-    },
-    {
-      id: 2,
-      title: "Mobile Apps Security",
-      description:
-        "Mobile application security is the practice of protecting websites and online services from threats that exploit vulnerabilities in their code or design.",
-      image: media2,
-      alt: "Mobile Apps Security",
-    },
-    {
-      id: 3,
-      title: "Cloud Security",
-      description:
-        "Cloud security is the protection of data, applications, and infrastructures involved in cloud computing from cyber threats.",
-      image: media1,
-      alt: "Cloud Security",
-    },
-    {
-      id: 4,
-      title: "Cloud Security",
-      description:
-        "Cloud security is the protection of data, applications, and infrastructures involved in cloud computing from cyber threats.",
-      image: media2,
-      alt: "Cloud Security",
-    },
-  ];
+  if (isLoading) return <p>Loading...</p>;
+  if (isError) return <p>Something went wrong!</p>;
 
   return (
     <div className="bg-[#F6F6F6] pb-[60px] md:pb-[120px] font-inter px-6 md:px-0">
       <div className="container mx-auto px-0">
-        {/* Header */}
         <div className="mb-8">
           <h2 className="text-[36px] md:text-[36px] font-medium text-default text-center md:text-start">
             Media
@@ -83,17 +52,18 @@ const MediaCarousel = () => {
           </p>
         </div>
 
-        {/* Carousel */}
         <div ref={sliderRef} className="keen-slider">
-          {slides.map((slide) => (
+          {slides?.map((slide:any) => (
             <div
               key={slide.id}
               className="keen-slider__slide bg-gray-100 rounded-[8px] overflow-hidden shadow-lg"
             >
               <div className="relative">
                 <Image
-                  src={slide.image}
-                  alt={slide.alt}
+                  src={slide.fileUrl}
+                  alt={slide.title || "Media"}
+                  width={240}
+                  height={240}
                   className="w-full h-[240px] md:h-[355px] object-cover"
                 />
                 <div className="absolute top-0 left-0 bg-[#FFFFFF1A] backdrop-blur-[24px] text-white px-4 py-2 text-[16px] md:text-[24px] font-medium">
@@ -117,9 +87,7 @@ const MediaCarousel = () => {
           ))}
         </div>
 
-        {/* Arrows and Dots */}
         <div className="flex justify-center md:justify-end items-center mt-4 space-x-4">
-          {/* Left Arrow */}
           <button
             onClick={() => slider.current?.prev()}
             className="w-10 h-10 flex items-center justify-center bg-gray-300 rounded-full hover:bg-gray-400"
@@ -127,8 +95,7 @@ const MediaCarousel = () => {
             <FaAngleLeft className="text-gray-700 text-[20px] md:text-[24px]" />
           </button>
 
-          {/* Dots */}
-          {slides.map((_, index) => (
+          {slides?.map((_, index) => (
             <button
               key={index}
               onClick={() => slider.current?.moveToIdx(index)}
@@ -138,7 +105,6 @@ const MediaCarousel = () => {
             ></button>
           ))}
 
-          {/* Right Arrow */}
           <button
             onClick={() => slider.current?.next()}
             className="w-10 h-10 flex items-center justify-center bg-gray-300 rounded-full hover:bg-gray-400"
