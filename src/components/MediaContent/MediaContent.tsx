@@ -164,10 +164,10 @@ const MediaContent: React.FC = () => {
 
           {/* Add Comment */}
           <div className="mt-6">
-            <textarea
+            <input
               placeholder="Add Comment"
-              className="w-full border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            ></textarea>
+              className="w-full border-b border-gray-300 rounded-md p-3 focus:outline-none"
+            ></input>
             <div className="flex justify-end mt-4 gap-2">
               <button className="bg-gray-200 text-gray-600 px-4 py-2 rounded-md hover:bg-gray-300 transition">
                 Cancel
