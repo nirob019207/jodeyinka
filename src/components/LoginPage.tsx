@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import * as React from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { useForm, SubmitHandler } from "react-hook-form";
@@ -6,10 +6,16 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { SerializedError } from "@reduxjs/toolkit";
 import { toast } from "sonner"; // Assuming you're using sonner
-import cookies from 'js-cookie'; // Package to handle cookies
+import cookies from "js-cookie"; // Package to handle cookies
 
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -27,13 +33,14 @@ const loginSchema = z.object({
     .email({ message: "Enter a valid email" }),
   password: z
     .string()
-    .min(6, { message: "Password must be at least 6 characters" })
+    .min(6, { message: "Password must be at least 6 characters" }),
 });
 
 type FormData = z.infer<typeof loginSchema>;
 
 export default function LoginPage() {
-  const [login, { data: response, isLoading, isError, error }] = useLoginUserMutation();
+  const [login, { data: response, isLoading, isError, error }] =
+    useLoginUserMutation();
   const [showPassword, setShowPassword] = React.useState(false);
   const dispatch = useDispatch();
   const router = useRouter();
@@ -48,37 +55,39 @@ export default function LoginPage() {
 
   const onSubmit: SubmitHandler<FormData> = async (formData) => {
     try {
-      await login(formData).unwrap();
-      if (response?.data) {
-        // Dispatching user data to Redux
-        dispatch(
-          setUser({
-            role: response.data.role,
-            token: response.data.accessToken,
-            email: response.data.email,
-          })
-        );
-
-        // Set token in cookies
-        cookies.set("token", response.data.accessToken, { expires: 7 }); // Token expires in 7 days
-
-        // Show success toast message
-        toast.success("Login successful!");
-
+      console.log("Form data:", formData); // Debugging log
+      const result = await login(formData).unwrap(); // Await the result first
+      console.log("Login response:", result); // Check the result
+  
+      if (result?.data) {
+        // Handle the login success as usual
+        const { accessToken, role, email } = result.data;
+        
+        // Dispatch the user data to Redux
+        dispatch(setUser({ role, token: accessToken, email }));
+  
+        // Store the token in cookies
+        cookies.set("token", accessToken, { expires: 7 });
+  
         // Redirect to the home page
-        router.push('/');
+        router.push("/");
+  
+        // Show success toast
+        toast.success("Login successful!");
       }
     } catch (err) {
-      // Handle error and show toast
+      console.error("Login error:", err); // Log the error for debugging
       toast.error("Login failed. Please check your credentials.");
-      console.error("Login error:", err);
     }
   };
+  
   return (
     <div className="flex justify-center items-center h-screen">
       <Card className="w-full max-w-md mx-auto">
         <CardHeader className="space-y-1 text-center">
-          <CardTitle className="md:text-[34px] font-[600] text-2xl text-[#1D2939]">Sign in to WSF</CardTitle>
+          <CardTitle className="md:text-[34px] font-[600] text-2xl text-[#1D2939]">
+            Sign in to WSF
+          </CardTitle>
           <CardDescription className="md:text-[16px] text-[15px] pt-3 font-[400] text-[#475467]">
             Please Enter Your Email And Password Below!
           </CardDescription>
@@ -94,7 +103,9 @@ export default function LoginPage() {
                 type="email"
                 {...register("email")}
               />
-              {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
+              {errors.email && (
+                <p className="text-red-500 text-sm">{errors.email.message}</p>
+              )}
             </div>
 
             {/* Password Field */}
@@ -107,7 +118,11 @@ export default function LoginPage() {
                   placeholder="••••••••"
                   {...register("password")}
                 />
-                {errors.password && <p className="text-red-500 text-sm">{errors.password.message}</p>}
+                {errors.password && (
+                  <p className="text-red-500 text-sm">
+                    {errors.password.message}
+                  </p>
+                )}
                 <Button
                   type="button"
                   variant="ghost"
@@ -120,7 +135,9 @@ export default function LoginPage() {
                   ) : (
                     <Eye className="h-4 w-4 text-muted-foreground" />
                   )}
-                  <span className="sr-only">{showPassword ? "Hide password" : "Show password"}</span>
+                  <span className="sr-only">
+                    {showPassword ? "Hide password" : "Show password"}
+                  </span>
                 </Button>
               </div>
             </div>
@@ -129,7 +146,9 @@ export default function LoginPage() {
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-2">
                 <Checkbox id="remember" />
-                <Label htmlFor="remember" className="text-sm">Remember Me</Label>
+                <Label htmlFor="remember" className="text-sm">
+                  Remember Me
+                </Label>
               </div>
               <Link href="/forgot-password" className="px-0 text-[#0061FF]">
                 Forgot Password?
@@ -137,21 +156,27 @@ export default function LoginPage() {
             </div>
 
             {/* Submit Button */}
-            <Button className="w-full z-50 bg-gradient-to-r from-[#0061FF] to-[#003A99]" disabled={isLoading}>
+            <Button
+              className="w-full z-50 bg-gradient-to-r from-[#0061FF] to-[#003A99]"
+              disabled={isLoading}
+            >
               {isLoading ? "Logging in..." : "Login"}
             </Button>
             {isError && (
               <p className="text-red-500 text-sm mt-2">
-                {('data' in error ? (error.data as { message: string })?.message : (error as SerializedError)?.message) || "An error occurred. Please try again."}
+                {("data" in error
+                  ? (error.data as { message: string })?.message
+                  : (error as SerializedError)?.message) ||
+                  "An error occurred. Please try again."}
               </p>
             )}
 
             {/* Register Link */}
             <div className="text-center flex flex-col md:flex-row">
               <span className="text-[17px] text-[#98A2B3]">
-                If you don&apos;t have any account please{' '}
+                If you don&apos;t have any account please{" "}
               </span>
-              <Link href={'/register'}>
+              <Link href={"/register"}>
                 <span className="px-1 text-[#0061FF] text-[17px] font-[500] lg:text-nowrap">
                   Register Here!
                 </span>

@@ -9,7 +9,7 @@ const ResourcePage = () => {
     <div>
         <SearchFilter/>
         <Videos/>
-        <Books/>
+        {/* <Books/> */}
         <RecentPost/>
     </div>
   )

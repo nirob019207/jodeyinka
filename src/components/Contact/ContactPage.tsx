@@ -31,32 +31,22 @@ import {
 import { Textarea } from "../ui/textarea";
 import Image from "next/image";
 import { Checkbox } from "@radix-ui/react-checkbox";
+import { useContactMutation } from "@/redux/Api/userApi";
+import { toast } from "sonner";
 
 const formSchema = z.object({
-  name: z.string().min(2, {
-    message: "Name must be at least 2 characters.",
-  }),
-  emailPhone: z.string().min(1, {
-    message: "Email or phone is required.",
-  }),
-  country: z.string({
-    required_error: "Please select a country.",
-  }),
-  state: z.string({
-    required_error: "Please select a state.",
-  }),
-  address: z.string().min(1, {
-    message: "Address is required.",
-  }),
-  subject: z.string().min(1, {
-    message: "Subject is required.",
-  }),
-  message: z.string().min(10, {
-    message: "Message must be at least 10 characters.",
-  }),
+  name: z.any().optional(),
+  emailPhone: z.any().optional(),
+  country: z.any().optional(),
+  state: z.any().optional(),
+  address: z.any().optional(),
+  subject: z.any().optional(),
+  message: z.any().optional(),
 });
 
+
 export default function ContactPage() {
+  const [contact,{isLoading}]=useContactMutation()
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -70,8 +60,15 @@ export default function ContactPage() {
 
   
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      // Simulate API call
+      await contact(values).unwrap();
+      toast.success("Message sent successfully!"); // Show success message
+      form.reset(); // Reset the form after successful submission
+    } catch (error) {
+      toast.error("Failed to send message. Please try again."); // Show error message
+    }
   }
 
   return (
@@ -251,7 +248,7 @@ export default function ContactPage() {
                 type="submit"
                 className="w-full bg-gradient-to-l from-[#0061FF] to-[#003A99] px-4 py-2"
               >
-                Submit Now
+               {isLoading?"Message Sending":"Contact"}
               </Button>
             </form>
           </Form>

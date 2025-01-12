@@ -64,7 +64,18 @@ const userApi = baseApi.injectEndpoints({
 
 
   }),
+  contact: build.mutation({
+    query: (data: any) => {
+        return {
+            url: "/contact",
+            method: "POST",
+            body: data
+        }
+    },
+
+
+}),
   }),
 });
 
-export const { useLoginUserMutation,useRegisterUserMutation,useForgotUserMutation,useOtpUserMutation,useResetPassMutation} = userApi
+export const { useLoginUserMutation,useRegisterUserMutation,useForgotUserMutation,useOtpUserMutation,useResetPassMutation,useContactMutation} = userApi
