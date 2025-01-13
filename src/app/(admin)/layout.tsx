@@ -1,8 +1,7 @@
 "use client";
 import Sidebar from "@/components/AdminDashboard/Sidebar/Sidebar";
 import Topbar from "@/components/AdminDashboard/Tobbar/Topbar";
-// import Link from "next/link";
-import { usePathname } from "next/navigation";
+
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   // const pathname = usePathname(); // Get the current path

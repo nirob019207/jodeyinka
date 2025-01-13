@@ -4,7 +4,7 @@ import { FaCirclePlus } from "react-icons/fa6";
 import { Editor } from "@tinymce/tinymce-react";
 
 const CreateEvent = () => {
-  const handleEditorChange = (content: string, editor: any) => {
+  const handleEditorChange = (content: string) => {
     console.log("Content was updated:", content);
   };
 
