@@ -1,8 +1,11 @@
+import CreateEvent from '@/components/AdminDashboard/CreateEvent/CreateEvent'
 import React from 'react'
 
 const page = () => {
   return (
-    <div>page</div>
+    <div>
+      <CreateEvent/>
+    </div>
   )
 }
 
