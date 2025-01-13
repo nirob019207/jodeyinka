@@ -4,14 +4,18 @@ import adminlogo from "@/asset/admin/adminlogo.svg";
 import Image from "next/image";
 import { LucideLayoutDashboard } from "lucide-react";
 import { RxMagicWand } from "react-icons/rx";
-import sponser from "@/asset/admin/sponser.svg"
+// import sponser from "@/asset/admin/sponser.svg";
+import { FaRegUser } from "react-icons/fa6";
+import { GoHistory } from "react-icons/go";
+import { GrTransaction } from "react-icons/gr"
+import { RiLogoutCircleLine } from "react-icons/ri";
 // import { useRouter } from "next/router";
 
 const Sidebar = () => {
   const pathname = usePathname();
 
   return (
-    <aside className="w-72 h-screen bg-white">
+    <aside className="w-72  bg-white h-[855px]">
       <div className="py-7 pl-6 text-xl font-bold flex items-center space-x-2">
         <div className="w-10">
           <Image src={adminlogo} alt="logo" />
@@ -55,10 +59,11 @@ const Sidebar = () => {
             <Link
               href="/admin/transaction"
               className={`block pl-6 py-2 mb-3  ${
-                pathname === "/admin/transaction" ? "bg-blue-700" : ""
+                pathname === "/admin/transaction" ? "bg-blue-700 py-4 text-white rounded-[8px] text-[18px] font-medium" : ""
               }`}
             >
               <span className="flex items-center space-x-2">
+              <GrTransaction className="text-[24px] font-bold" />
                 <span>Transaction</span>
               </span>
             </Link>
@@ -67,11 +72,11 @@ const Sidebar = () => {
             <Link
               href="/admin/sponsor"
               className={`block pl-6 py-2 mb-3  ${
-                pathname === "/admin/sponsor" ? "bg-blue-700" : ""
+                pathname === "/admin/sponsor" ? "bg-blue-700 py-4 text-white rounded-[8px] text-[18px] font-medium" : ""
               }`}
             >
               <span className="flex items-center space-x-2">
-                <Image src={sponser} alt="sponer logo"/>
+                <FaRegUser className="text-[24px] font-bold" />
                 <span>Sponsor</span>
               </span>
             </Link>
@@ -80,10 +85,11 @@ const Sidebar = () => {
             <Link
               href="/admin/event-history"
               className={`block pl-6 py-2 mb-3  ${
-                pathname === "/admin/event-history" ? "bg-blue-700" : ""
+                pathname === "/admin/event-history" ? "bg-blue-700 py-4 text-white rounded-[8px] text-[18px] font-medium" : ""
               }`}
             >
               <span className="flex items-center space-x-2">
+              <GoHistory className="text-[24px] font-bold" />
                 <span>Event History</span>
               </span>
             </Link>
@@ -91,8 +97,9 @@ const Sidebar = () => {
         </ul>
       </nav>
 
-      <div className="mt-auto p-4  cursor-pointer">
+      <div className="p-4  cursor-pointer mt-[350px]">
         <span className="flex items-center space-x-2">
+        <RiLogoutCircleLine className="text-[24px] font-bold"/>
           <span>Log Out</span>
         </span>
       </div>

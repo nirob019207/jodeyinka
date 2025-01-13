@@ -8,7 +8,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   // const pathname = usePathname(); // Get the current path
 
   return (
-   <div className="bg-[#F6F6F6]">
+   <div className="bg-[#F6F6F6] font-inter">
      <div className="flex h-screen ">
       {/* Sidebar */}
      <Sidebar/>
@@ -18,7 +18,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       <Topbar/>
 
         {/* Content */}
-        <main className="flex-1 p-6 bg-gray-100 overflow-y-auto">{children}</main>
+        <main className="flex-1 p-6 bg-gray-100 overflow-y-auto font-inter">{children}</main>
       </div>
     </div>
    </div>

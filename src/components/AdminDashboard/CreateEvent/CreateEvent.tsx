@@ -9,7 +9,7 @@ const CreateEvent = () => {
   };
 
   return (
-    <div className="p-6">
+    <div className="px-16">
       <h1 className="text-3xl font-semibold mb-6 border-b border-[#E0E0E0] pb-3">
         Create Event
       </h1>
