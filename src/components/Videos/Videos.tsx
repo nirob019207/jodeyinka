@@ -8,7 +8,7 @@ import { useGetResourceQuery } from "@/redux/Api/resourceApi";
 import Link from "next/link";
 
 const Videos = () => {
-    const { data, isLoading, isError } = useGetResourceQuery({ type: "RESOURCE" });
+    const { data, isLoading, isError } = useGetResourceQuery({ type: "RESOURCE",limit:10});
     const Videos = data?.data;
  
 

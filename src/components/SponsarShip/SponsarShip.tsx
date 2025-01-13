@@ -1,69 +1,54 @@
-'use client'
+"use client";
+
 import React from "react";
 import { usePaypalMutation } from "@/redux/Api/paypalApi"; // Adjust import path based on your structure
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
+import { useEventDetailsQuery } from "@/redux/Api/eventApi";
 
 interface Plan {
   price: number;
   title: string;
-  features: string[];
+  isAvailable: boolean;
 }
 
 const Sponsorship: React.FC = () => {
-  const router=useRouter()
+  const router = useRouter();
+  const id = useParams();
+  const { data: sponsor, isLoading: isFetchingEvent } = useEventDetailsQuery({ id: id?.id });
+  const sponsors = sponsor?.data;
+
+  const [paypal, { isLoading: isProcessingPayment }] = usePaypalMutation();
+
   const plans: Plan[] = [
+    
     {
-      price: 250,
       title: "Silver",
-      features: [
-        "Unlock all the features",
-        "24/7 Customer Support",
-        "Access to Pro Group",
-        "Cancel anytime you want to",
-        "VIP Title",
-      ],
+      price: sponsors?.silverSponsorFee || 0,
+      isAvailable: sponsors?.silverSponsorAvailable || false,
     },
     {
-      price: 450,
       title: "Gold",
-      features: [
-        "Unlock all the features",
-        "24/7 Customer Support",
-        "Access to Pro Group",
-        "Cancel anytime you want to",
-        "VIP Title",
-      ],
+      price: sponsors?.goldSponsorFee || 0,
+      isAvailable: sponsors?.goldSponsorAvailable || false,
     },
     {
-      price: 550,
       title: "Platinum",
-      features: [
-        "Unlock all the features",
-        "24/7 Customer Support",
-        "Access to Pro Group",
-        "Cancel anytime you want to",
-        "VIP Title",
-      ],
+      price: sponsors?.platinumSponsorFee || 0,
+      isAvailable: sponsors?.platinumSponsorAvailable || false,
     },
   ];
 
-  const [paypal, { isLoading, isError, error }] = usePaypalMutation();
-
   const handlePayment = async (plan: Plan) => {
     try {
-      // Send the selected plan data to the PayPal API
       const response = await paypal({
-        "purpose": "DONATE",
-        "amount": "1"
+        purpose: plan.title.toUpperCase(),
+        amount: plan.price.toString(),
       }).unwrap();
-  
-      // Check if the payment creation was successful
+
       if (response.success) {
-        // Get the approval link from the response
         const approvalLink = response.data.links.find((link: any) => link.rel === "approve")?.href;
-  
+
         if (approvalLink) {
-          // Redirect the user to the PayPal approval page
           window.location.href = approvalLink;
         } else {
           console.error("Approval link not found.");
@@ -73,10 +58,8 @@ const Sponsorship: React.FC = () => {
       }
     } catch (err) {
       console.error("Payment error:", err);
-      // Handle error (e.g., show a toast or alert)
     }
   };
-  
 
   return (
     <div className="bg-[#F6F6F6] pt-[30px] md:pt-[60px] pb-[100px] md:pb-[200px]">
@@ -87,8 +70,7 @@ const Sponsorship: React.FC = () => {
         </h1>
         <p className="text-gray mb-12 w-full md:w-[738px] mx-auto">
           Protect what matters most with tailored membership options designed
-          for individuals and organizations committed to cybersecurity
-          excellence.
+          for individuals and organizations committed to cybersecurity excellence.
         </p>
 
         {/* Plans */}
@@ -97,26 +79,26 @@ const Sponsorship: React.FC = () => {
             <div
               key={index}
               className={`bg-white rounded-[24px] shadow-lg px-6 py-9 border ${
-                index === 1 ? "border-yellow-500" : "border-[#DADADA]"
+                index === 3 ? "border-yellow-500" : "border-[#DADADA]"
               }`}
             >
               <h2 className="text-4xl font-bold text-[#FFAE00] mb-[22px]">
-                ${plan.price} <span className="text-[#090043] text-xl md:text-[24px]">/ {plan.title}</span>
+                ${plan.price}{" "}
+                <span className="text-[#090043] text-xl md:text-[24px]">  
+                  / {plan.title}
+                </span>
               </h2>
-              <ul className="text-[#09004380] space-y-4 mb-12">
-                {plan.features.map((feature, idx) => (
-                  <li key={idx} className="flex items-center ml-[75px] md:w-[240px] mx-auto w-full">
-                    <span className="text-lg">•</span>
-                    <span className="ml-2">{feature}</span>
-                  </li>
-                ))}
-              </ul>
+
               <button
                 onClick={() => handlePayment(plan)}
-                disabled={isLoading}
-                className="w-full bg-gradient-to-l from-[#0061FF] to-[#003A99] text-white font-medium py-3 rounded-lg transition"
+                disabled={isProcessingPayment || !plan.isAvailable}
+                className={`w-full ${
+                  plan.isAvailable
+                    ? "bg-gradient-to-l from-[#0061FF] to-[#003A99]"
+                    : "bg-gray-400 cursor-not-allowed"
+                } text-white font-medium py-3 rounded-lg transition`}
               >
-                {isLoading ? "Processing..." : "Pay Now"}
+                {isProcessingPayment ? "Processing..." : plan.isAvailable ? "Pay Now" : "Unavailable"}
               </button>
             </div>
           ))}

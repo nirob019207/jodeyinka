@@ -9,7 +9,7 @@ import { useGetResourceQuery } from "@/redux/Api/resourceApi";
 
 const BlogsAndNews = () => {
 
-    const { data, isLoading, isError } = useGetResourceQuery({ type: "BLOG" });
+    const { data, isLoading, isError } = useGetResourceQuery({ type: "BLOG",limit:3 });
     const blogs = data?.data;
   // const blogs = [
   //   {
