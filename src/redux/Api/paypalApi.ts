@@ -10,8 +10,14 @@ const paypalApi = baseApi.injectEndpoints({
         body: data,
       }),
     }),
+    complete: build.mutation({
+      query: (data) => ({
+        url: `/paypal/complete-order?userId=${data.userId}&token=${data.token}&purpose=${data.purpose}`,
+        method: "PATCH",
+      }),
+    }),
 
   }),
 });
 
-export const { usePaypalMutation} = paypalApi
+export const { usePaypalMutation,useCompleteMutation} = paypalApi

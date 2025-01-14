@@ -46,11 +46,18 @@ export default function Footer() {
               <h3 className="font-semibold text-[24px] mb-4">Policy</h3>
               <ul className="space-y-2 text-gray-300">
                 <li>
-                  <Link
-                    href="/accessibility"
+                {/* <Link
+                    href=""
                     className="hover:text-white transition"
                   >
-                    Accessibility
+        
+         Donation               
+            </Link> */}
+                  <Link
+                    href="/donate"
+                    className="hover:text-white transition"
+                  >
+                    Doantion
                   </Link>
                 </li>
                 <li>

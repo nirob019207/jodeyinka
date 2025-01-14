@@ -11,9 +11,17 @@ const squereApi = baseApi.injectEndpoints({
             body: data,
           }),
         }),
+        squareDoante: build.mutation({
+          query: ({data}) => ({
+            url: `square/pay`,
+            method: "POST",
+            body: data,
+          }),
+        }),
     
       })
   },
+
 });
 
-export const { useSquareMutation} = squereApi
+export const { useSquareMutation,useSquareDoanteMutation} = squereApi

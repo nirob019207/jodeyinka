@@ -60,7 +60,7 @@ export default function LoginPage() {
       console.log("Login response:", result); // Check the result
   
       if (result?.data) {
-        // Handle the login success as usual
+       
         const { accessToken, role, email } = result.data;
         
         // Dispatch the user data to Redux
