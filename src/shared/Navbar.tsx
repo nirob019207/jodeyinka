@@ -49,6 +49,10 @@ export const Navbar = () => {
       background: anotherBanner.src,
       paddingBottom: "83px",
     },
+    [`/event-details/${id}`]: {
+      background: anotherBanner.src,
+      paddingBottom: "83px",
+    },
     "/career": { background: anotherBanner.src, paddingBottom: "83px" },
   };
 

@@ -17,7 +17,10 @@ const CreateEvent = () => {
     startDate: "",
     endDate: "",
     description: "",
+    eventImage: "", // To store the uploaded image URL
   });
+
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
 
   // Handle changes to form fields
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -36,6 +39,23 @@ const CreateEvent = () => {
     }));
   };
 
+  // Handle image upload
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      // Display preview
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result as string);
+        setFormData((prevData) => ({
+          ...prevData,
+          eventImage: file.name, // Store the image name or URL
+        }));
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   // Handle form submission
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -51,6 +71,7 @@ const CreateEvent = () => {
       silverSponsorFee: parseFloat(formData.sponsorFee1.replace('$', '')),
       goldSponsorFee: parseFloat(formData.sponsorFee2.replace('$', '')),
       platinumSponsorFee: parseFloat(formData.sponsorFee3.replace('$', '')),
+      eventImage: formData.eventImage, // Image data
     };
 
     // Console log the mapped data
@@ -68,7 +89,18 @@ const CreateEvent = () => {
             <p className="text-darkBlack font-medium">Drag and drop</p>
           </div>
           <p className="text-darkBlack my-2">Or</p>
-          <button className="bg-[#0061FF1A] text-darkBlack px-4 py-2 rounded mt-2">Select</button>
+          {/* Image Upload Input */}
+          <input
+            type="file"
+            onChange={handleImageUpload}
+            className="bg-[#0061FF1A] text-darkBlack px-4 py-2 rounded mt-2"
+          />
+          {/* Image Preview */}
+          {imagePreview && (
+            <div className="mt-4">
+              <img src={imagePreview} alt="Image preview" className="w-[200px] h-[200px] object-cover" />
+            </div>
+          )}
         </div>
 
         {/* Form Fields */}
@@ -202,7 +234,7 @@ const CreateEvent = () => {
           <div>
             <label className="block font-medium text-darkGray">Description</label>
             <Editor
-              apiKey="g68nc1d1w7r6ws2cu6q6c6trlsejbpqf5dylpj1b8hjeoc7d" 
+              apiKey="g68nc1d1w7r6ws2cu6q6c6trlsejbpqf5dylpj1b8hjeoc7d"
               initialValue="<p>Product description</p>"
               init={{
                 height: 200,
@@ -222,14 +254,14 @@ const CreateEvent = () => {
           </div>
 
           {/* Submit Button */}
-         <div className="text-center">
-         <button
-            type="submit"
-            className="bg-[#0061FF] text-white px-6 py-2 rounded mt-6 "
-          >
-            Create Event
-          </button>
-         </div>
+          <div className="text-center">
+            <button
+              type="submit"
+              className="bg-[#0061FF] text-white px-6 py-2 rounded mt-6"
+            >
+              Create Event
+            </button>
+          </div>
         </form>
       </div>
     </div>

@@ -1,6 +1,6 @@
 "use client"
 import Image from "next/image";
-import payment from "@/asset/payment.svg";
+import donate from "@/asset/donate.svg";
 import { MdClose } from "react-icons/md";
 import { useState } from "react";
 import SquareDonate from "./SquareDonate";
@@ -8,7 +8,7 @@ import Link from "next/link";
 
 export const DonationPayment = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
   const [price, setPrice] = useState(""); // State for donation amount
 
   const handleOpenModal = () => {
@@ -22,18 +22,17 @@ export const DonationPayment = () => {
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
-    setError(null); // Reset error when closing modal
-    setPrice(""); // Clear the form after submission
-
+    setError(null); 
+    setPrice(""); 
   };
 
   return (
-    <div className="min-h-screen flex justify-center items-center bg-gray-50">
+    <div className="min-h-screen flex justify-center items-center bg-[#F5F5F5]">
       <div className="bg-white flex justify-between p-6 shadow-lg rounded-lg max-w-4xl w-full">
         {/* Header */}
         <div className="flex justify-center items-center w-1/2">
           <Image
-            src={payment.src}
+            src={donate.src}
             alt="Donate"
             width={80}
             height={80}
@@ -44,16 +43,16 @@ export const DonationPayment = () => {
         {/* Donation Form */}
         <div className="w-1/2 flex flex-col justify-center items-center">
           {/* Title */}
-          <h4 className="text-2xl font-bold text-center text-gray-800 mb-4">
+          <h4 className="text-2xl font-bold text-center text-[#090043] mb-4">
             Make a Donation
           </h4>
-          <p className="text-center text-gray-600 mb-6">
+          <p className="text-center text-[#475467] mb-6">
             Your contribution helps us make a difference.
           </p>
 
           {/* Input and Button */}
           <form
-            className="space-y-6"
+            className="space-y-6 w-full"
             onSubmit={(e) => {
               e.preventDefault();
               handleOpenModal();
@@ -63,7 +62,7 @@ export const DonationPayment = () => {
             <div>
               <label
                 htmlFor="donation"
-                className="block text-sm font-medium text-gray-700 mb-1"
+                className="block font-medium text-[#090043] mb-1"
               >
                 Donation Amount
               </label>
@@ -80,17 +79,17 @@ export const DonationPayment = () => {
               )}
             </div>
 
-         <div className="flex gap-3">
+         <div className="flex gap-3 mt-10">
          <button
               type="submit"
-              className="w-full bg-primary text-white text-nowrap text-sm px-2 font-medium py-3 rounded-lg shadow-md hover:bg-primary-dark transition"
+              className="w-full  bg-gradient-to-l from-[#0061FF] to-[#003A99] text-white text-nowrap px-2 font-medium py-3 rounded-lg shadow-md transition"
             >
               Proceed to Payment
             </button>
             <Link href="/"
-              className="w-full bg-primary text-center text-white px-2 text-sm font-medium py-3 rounded-lg shadow-md hover:bg-primary-dark transition"
+              className="w-full bg-[#ACACAC] text-center text-[#090043] px-2  font-medium py-3 rounded-lg shadow-md hover:bg-primary-dark transition"
             >
-               Home
+              Back To Home
             </Link>
          </div>
           </form>

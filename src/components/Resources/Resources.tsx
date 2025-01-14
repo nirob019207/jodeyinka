@@ -5,17 +5,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { useGetResourceQuery } from "@/redux/Api/resourceApi";
 import CardSkeleton from "../CardSkelaton/CardSkeleton";
-// import CardSkeleton from "../CardSkelaton/CardSkeleton";
 
 const Resources = () => {
-  const { data, isLoading, isError } = useGetResourceQuery({ type: "RESOURCE",limit:3 });
-  const resources = data?.data; // Show only the latest 3 resources
-
-  if(isLoading){
-    <div className="container">
-      <CardSkeleton/>
-    </div>
-  }
+  const { data, isLoading, isError } = useGetResourceQuery({
+    type: "RESOURCE",
+    limit: 3,
+  });
+  const resources = data?.data || []; // Ensure resources is always an array
 
   return (
     <div className="bg-[#F6F6F6] pb-[60px] md:pb-[120px] font-inter px-6">
@@ -23,46 +19,53 @@ const Resources = () => {
         {/* Header */}
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-[36px] font-medium text-default">Resources</h2>
-          <Link href="/resources" className="text-blue-600 hover:underline text-[20px]">
+          <Link
+            href="/resources"
+            className="text-blue-600 hover:underline text-[20px]"
+          >
             See All
           </Link>
         </div>
 
         {/* Resource Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {
-          
-            resources.map((resource) => (
-              <div
-                key={resource.id}
-                className="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300"
-              >
-                {/* Image */}
-                <Image
-                  src={resource?.fileUrl}
-                  alt={resource.title}
-                  className="w-full h-[200px] object-cover"
-                  width={300}
-                  height={200}
-                />
+          {isLoading
+            ? // Render skeletons while loading
+              Array.from({ length: 3 }).map((_, index) => (
+                <CardSkeleton key={index} />
+              ))
+            : // Render resources when loaded
+              resources?.map((resource) => (
+                <div
+                  key={resource.id}
+                  className="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300"
+                >
+                  {/* Image */}
+                  <Image
+                    src={resource?.fileUrl}
+                    alt={resource.title}
+                    className="w-full h-[200px] object-cover"
+                    width={300}
+                    height={200}
+                  />
 
-                {/* Content */}
-                <div className="px-4">
-                  <h3 className="text-[24px] font-medium text-default mt-4">
-                    {resource.title}
-                  </h3>
-                  <p className="text-gray mt-2">{resource?.description}</p>
-                  <div className="mt-6 pb-7">
-                  <Link href={`/media-details/${resource?.id}`}
-                  className="border border-[#DDDDDD] w-full py-3 px-3 text-center text-blue-600 font-medium rounded-[8px]"
-                    >
-                      View More
-                    </Link>
+                  {/* Content */}
+                  <div className="px-4">
+                    <h3 className="text-[24px] font-medium text-default mt-4">
+                      {resource.title}
+                    </h3>
+                    <p className="text-gray mt-2">{resource?.description}</p>
+                    <div className="mt-6 pb-7">
+                      <Link
+                        href={`/media-details/${resource?.id}`}
+                        className="border border-[#DDDDDD] w-full py-3 px-3 text-center text-blue-600 font-medium rounded-[8px]"
+                      >
+                        View More
+                      </Link>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))
-          }
+              ))}
         </div>
       </div>
     </div>

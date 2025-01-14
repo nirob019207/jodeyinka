@@ -5,11 +5,8 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import payment from "@/asset/payment.svg";
 
-
-
-
 export default function MembershipPay() {
-    const router = useRouter();
+  const router = useRouter();
   const [paypal, { isLoading, isError, error }] = usePaypalMutation();
 
   const handlePayment = async () => {
@@ -41,37 +38,48 @@ export default function MembershipPay() {
       console.error("Payment error:", err);
     }
   };
+
   return (
-    <div>
-        <div className="min-h-screen flex justify-center items-center bg-gray-50">
-      <div className="bg-white flex flex-col md:flex-row justify-between p-6 shadow-lg rounded-lg max-w-4xl w-full">
+    <div className="min-h-screen flex justify-center items-center bg-[#F5F5F5] rounded-lg">
+      <div className="bg-white flex flex-col items-center md:flex-row justify-between p-6  max-w-7xl w-full">
         {/* Left Section - Image */}
-        <div className="flex justify-center items-center w-full md:w-1/2 mb-6 md:mb-0">
+        <div className="flex justify-center items-center w-full md:w-1/2">
           <Image
             src={payment.src}
-            alt="Donate"
-            width={200}
-            height={200}
+            alt="Unlock Exclusive Benefits"
+            width={300}
+            height={300}
             className="w-auto h-auto object-contain"
           />
         </div>
 
         {/* Right Section - Payment Info */}
-        <div className="w-full md:w-1/2 flex flex-col justify-center items-center">
-          <h4 className="text-2xl font-bold text-center text-gray-800 mb-4">
-            Make a Donation
-          </h4>
-          <p className="text-center text-gray-600 mb-6">
-            Your contribution helps us make a difference.
-          </p>
+        <div className="w-full md:w-1/2 flex flex-col justify-start items-center text-gray-800">
+          <h3 className="text-xl md:text-2xl font-semibold text-center">
+            Unlock Exclusive Benefits
+          </h3>
+          <div className="bg-gray-50 shadow-md rounded-lg p-6 w-full">
+            <div className="text-lg font-bold text-blue-600 mb-2 text-center">Membership</div>
+            <div className="text-3xl font-bold text-center mb-6">
+              $1 <span className="text-sm text-gray-600">/ Membership</span>
+            </div>
+            <ul className="list-disc list-inside space-y-2 text-gray-700">
+              <li>Cutting-Edge Security Insights</li>
+              <li>Resource Library Access</li>
+              <li>AI-Powered Chatbot Support</li>
+              <li>Trending Content Updates</li>
+              <li>Community Engagement Forum</li>
+              <li>Event Notifications & Calendar</li>
+            </ul>
+          </div>
           <button
             onClick={handlePayment}
             disabled={isLoading}
-            className={`bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md shadow-lg transition ${
+            className={`mt-6 bg-gradient-to-l from-blue-500 to-blue-600 text-white py-2 px-6 rounded-md shadow-md hover:from-blue-600 hover:to-blue-700 transition w-full${
               isLoading ? "opacity-50 cursor-not-allowed" : ""
             }`}
           >
-            {isLoading ? "Processing..." : "Pay Now"}
+            {isLoading ? "Processing..." : "Payment"}
           </button>
           {isError && (
             <p className="text-red-500 mt-4">Payment failed. Please try again.</p>
@@ -79,9 +87,5 @@ export default function MembershipPay() {
         </div>
       </div>
     </div>
-        
-    </div>
-  )
+  );
 }
-
-

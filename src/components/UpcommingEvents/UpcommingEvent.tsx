@@ -37,7 +37,9 @@ const UpcomingEvent = () => {
     const startHours = start.getHours();
     const startMinutes = start.getMinutes().toString().padStart(2, "0");
     const startAmpm = startHours >= 12 ? "pm" : "am";
-    const startFormatted = `${startHours % 12 || 12}:${startMinutes} ${startAmpm}`;
+    const startFormatted = `${
+      startHours % 12 || 12
+    }:${startMinutes} ${startAmpm}`;
 
     // Format end time
     const endHours = end.getHours();
@@ -54,7 +56,11 @@ const UpcomingEvent = () => {
   }
 
   if (isError || !events) {
-    return <p>Something went wrong. Please try again later.</p>;
+    return (
+      <p className="bg-[#F5F5F5] text-center py-[120px] text-[20px] font-bold text-darkBlack">
+        Something went wrong. Please try again later.
+      </p>
+    );
   }
 
   return (
@@ -62,8 +68,13 @@ const UpcomingEvent = () => {
       <div className="container mx-auto px-0">
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
-          <h2 className="text-[36px] font-medium text-default">Upcoming Event</h2>
-          <Link href="/event" className="text-blue-600 hover:underline text-[20px]">
+          <h2 className="text-[36px] font-medium text-default">
+            Upcoming Event
+          </h2>
+          <Link
+            href="/event"
+            className="text-blue-600 hover:underline text-[20px]"
+          >
             See All
           </Link>
         </div>
@@ -71,7 +82,10 @@ const UpcomingEvent = () => {
         {/* Event Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 md:gap-6">
           {events?.map((event) => (
-            <div key={event.id} className="rounded-lg overflow-hidden bg-white shadow-md">
+            <div
+              key={event.id}
+              className="rounded-lg overflow-hidden bg-white shadow-md"
+            >
               {/* Event Image */}
               <div className="relative">
                 <Image
@@ -84,7 +98,9 @@ const UpcomingEvent = () => {
                 {/* Date Overlay */}
                 <div className="absolute top-[175px] right-0 bg-[#FFFFFF1A] backdrop-blur-[24px] text-center py-2 px-4 rounded-lg">
                   <span className=" text-[#FFFFFF]">
-                    {new Date(event.date).toLocaleString("en-US", { month: "short" })}
+                    {new Date(event.date).toLocaleString("en-US", {
+                      month: "short",
+                    })}
                   </span>
                   <br />
                   <span className="text-[25px] font-bold text-default">
@@ -108,7 +124,10 @@ const UpcomingEvent = () => {
                 <p className="text-[#545454] mt-4 mb-6">{event?.description}</p>
                 {/* Read More Button */}
                 <div className="flex items-center">
-                  <Link href={`event-details/${event.id}`} className="flex items-center text-blue-600 hover:underline font-medium px-4 py-3 border border-[#005DF3] rounded-[8px]">
+                  <Link
+                    href={`event-details/${event.id}`}
+                    className="flex items-center text-blue-600 hover:underline font-medium px-4 py-3 border border-[#005DF3] rounded-[8px]"
+                  >
                     Read More{" "}
                     <span className="ml-2">
                       <MdArrowRightAlt className="text-[24px]" />

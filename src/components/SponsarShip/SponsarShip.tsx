@@ -78,7 +78,7 @@ const Sponsorship: React.FC = () => {
                   setSelectedPlan(plan);
                   setIsModalOpen(true); // Open the modal when a plan is selected
                 }}
-                className="w-full bg-gradient-to-l from-[#0061FF] to-[#003A99]"
+                className="w-full bg-gradient-to-l from-[#0061FF] to-[#003A99] py-3 px-4 rounded-lg text-white"
               >
                 Select Plan
               </button>

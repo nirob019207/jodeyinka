@@ -58,7 +58,7 @@ const AboutUs = () => {
         </div>
 
         {/* Membership Section */}
-        <div className="bg-white rounded-bl-xl rounded-br-xl  flex-1 relative overflow-hidden">
+        <div className="bg-white rounded-bl-xl rounded-br-xl  flex-1 relative">
           <div className="absolute top-0 left-0 w-full bg-[#FFFFFF] text-[#1D2939] py-2 px-4 z-30">
             <h2 className="text-[36px] font-semibold">Membership</h2>
           </div>
