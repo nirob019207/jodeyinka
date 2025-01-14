@@ -6,11 +6,40 @@ import { FaCalendarAlt } from "react-icons/fa";
 
 import { MdArrowRightAlt } from "react-icons/md";
 import { useGetResourceQuery } from "@/redux/Api/resourceApi";
+import Link from "next/link";
 
 const BlogsAndNews = () => {
 
     const { data, isLoading, isError } = useGetResourceQuery({ type: "BLOG",limit:3 });
     const blogs = data?.data;
+    function formatMonthAndTime(isoDate: string) {
+      const eventDate = new Date(isoDate);
+     
+  
+      // Format month and day
+      const options = { month: "long", day: "numeric" };
+      const formattedDate = eventDate.toLocaleDateString("en-US", options);
+  
+      // Format time
+      const hours = eventDate.getHours();
+      const minutes = eventDate.getMinutes().toString().padStart(2, "0");
+      const ampm = hours >= 12 ? "pm" : "am";
+      const formattedTime = `${hours % 12 || 12}:${minutes} ${ampm}`;
+  
+      return `${formattedDate} @ ${formattedTime}`;
+    }
+    function formatDate(isoDate: string) {
+      const eventDate = new Date(isoDate);
+  
+      // Format month and day
+      const options = { month: "long", day: "numeric" };
+      const formattedDate = eventDate.toLocaleDateString("en-US", options);
+      const formattedYear = eventDate.getFullYear();
+
+  
+    
+      return `${formattedDate}, ${formattedYear}`;
+    }
   
 
   return (
@@ -43,11 +72,11 @@ const BlogsAndNews = () => {
               {/* Blog Details */}
               <div className="p-4">
                 {/* Author and Date */}
-                <div className="flex items-center gap-[40px] mb-3">
-                  <span className="mr-2">{blog.author}</span>
+                <div className="flex items-center justify-between gap-[40px] mb-3">
+                  <span className="mr-2">{blog.author||"John"}</span>
                   <div className="flex items-center text-gray">
                   <FaCalendarAlt className="mr-2 text-blue-600" />
-                  {blog.date}
+                  {formatDate(blog.createdAt)}
                   </div>
                 </div>
                 {/* Blog Title */}
@@ -58,11 +87,11 @@ const BlogsAndNews = () => {
                 <p className="text-gray mt-4">{blog.description}</p>
                 {/* Read More Button */}
                 <div className="mt-4">
-                  <button
+                  <Link href={`media-details/${blog.id}`}
                     className="flex items-center text-blue-600 hover:underline font-medium"
                   >
                     Read More <span className="ml-2"><MdArrowRightAlt className="text-[24px]" /></span>
-                  </button>
+                  </Link>
                 </div>
               </div>
             </div>

@@ -30,8 +30,18 @@ const resourceApi = baseApi.injectEndpoints({
       invalidatesTags: ["Resource"],
 
     }),
+    resourceCreate: build.mutation({
+      query: (formDataToSend) => ({
+        url: `/resource/type/RESOURCE`,
+        method: "POST",
+        body: formDataToSend
+
+      }),
+      invalidatesTags: ["Resource"],
+
+    }),
 
   }),
 });
 
-export const { useGetResourceQuery,useGetResourceSingleQuery,useAddComentMutation} = resourceApi
+export const { useGetResourceQuery,useGetResourceSingleQuery,useAddComentMutation,useResourceCreateMutation} = resourceApi
