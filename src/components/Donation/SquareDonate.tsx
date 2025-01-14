@@ -1,13 +1,13 @@
-import { useSquareMutation } from "@/redux/Api/squareApi";
+import { useSquareDoanteMutation, useSquareMutation } from "@/redux/Api/squareApi";
 import { useParams } from "next/navigation";
 import { CreditCard, PaymentForm } from "react-square-web-payments-sdk";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner"; // Import the toast library
 
-export default function SquarePaymentForm({ price, type ,handleCloseModal}) {
+export default function SquareDonate({ price, type ,handleCloseModal}) {
   const appId = "sandbox-sq0idb-fTR5BZkbFI-9otiV37IVwQ";
   const locationId = "LVYJA27247NQF";
-  const [square] = useSquareMutation();
+  const [square] = useSquareDoanteMutation();
   const { id } = useParams();
   const router = useRouter();
 
@@ -18,7 +18,7 @@ export default function SquarePaymentForm({ price, type ,handleCloseModal}) {
 
       // Send payment request
       const response = await square({
-        data: { sourceId: token.token, amount: price, tier: type, id: id },
+        data: { sourceId: token.token,  purpose: 'DONATION', amount: price, userId: id },
       });
 
       

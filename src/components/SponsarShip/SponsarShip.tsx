@@ -102,6 +102,7 @@ const Sponsorship: React.FC = () => {
               <SquarePaymentForm
                 price={selectedPlan.price}
                 type={selectedPlan.title}
+                handleCloseModal={handleCloseModal}
               />
               {error && <div className="mt-4 text-red-500">{error}</div>}
             </div>
