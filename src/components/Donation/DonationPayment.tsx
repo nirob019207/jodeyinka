@@ -2,8 +2,9 @@
 import Image from "next/image";
 import payment from "@/asset/payment.svg";
 import { MdClose } from "react-icons/md";
-import { SquareDonate } from "./SquareDonate";
 import { useState } from "react";
+import SquareDonate from "./SquareDonate";
+import Link from "next/link";
 
 export const DonationPayment = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -22,6 +23,8 @@ export const DonationPayment = () => {
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setError(null); // Reset error when closing modal
+    setPrice(""); // Clear the form after submission
+
   };
 
   return (
@@ -54,6 +57,7 @@ export const DonationPayment = () => {
             onSubmit={(e) => {
               e.preventDefault();
               handleOpenModal();
+             
             }}
           >
             <div>
@@ -76,12 +80,19 @@ export const DonationPayment = () => {
               )}
             </div>
 
-            <button
+         <div className="flex gap-3">
+         <button
               type="submit"
-              className="w-full bg-primary text-white text-lg font-medium py-3 rounded-lg shadow-md hover:bg-primary-dark transition"
+              className="w-full bg-primary text-white text-nowrap text-sm px-2 font-medium py-3 rounded-lg shadow-md hover:bg-primary-dark transition"
             >
               Proceed to Payment
             </button>
+            <Link href="/"
+              className="w-full bg-primary text-center text-white px-2 text-sm font-medium py-3 rounded-lg shadow-md hover:bg-primary-dark transition"
+            >
+               Home
+            </Link>
+         </div>
           </form>
         </div>
       </div>
@@ -89,7 +100,7 @@ export const DonationPayment = () => {
       {/* Modal */}
       {isModalOpen && (
         <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center">
-          <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-lg relative">
+          <div className="bg-white p-16 rounded-lg shadow-lg w-full max-w-lg relative">
             <button
               onClick={handleCloseModal}
               className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
