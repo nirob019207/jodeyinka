@@ -13,7 +13,7 @@ const userApi = baseApi.injectEndpoints({
         method: "POST",
         body: data,
       }),
-      invalidatesTags: ["User"], // Helps refresh cached user data after login
+      invalidatesTags: ["User"], 
     }),
 
     registerUser: build.mutation({
@@ -24,7 +24,7 @@ const userApi = baseApi.injectEndpoints({
               body: data
           }
       },
-      invalidatesTags: ["User"], // Helps refresh cached user data after login
+      invalidatesTags: ["User"], 
 
 
 
@@ -60,7 +60,7 @@ const userApi = baseApi.injectEndpoints({
               body: data
           }
       },
-      invalidatesTags: ["User"], // Helps refresh cached user data after login
+      invalidatesTags: ["User"], 
 
 
   }),
@@ -72,11 +72,15 @@ const userApi = baseApi.injectEndpoints({
             body: data
         }
     },
-    
 
-
-}),
+    }),
+  getMe: build.query({
+    query: () => ({
+      url: "/users/me",
+      method: "GET",
+    }),
+  }),
   }),
 });
 
-export const { useLoginUserMutation,useRegisterUserMutation,useForgotUserMutation,useOtpUserMutation,useResetPassMutation,useContactMutation} = userApi
+export const { useLoginUserMutation,useRegisterUserMutation,useForgotUserMutation,useOtpUserMutation,useResetPassMutation,useContactMutation, useGetMeQuery} = userApi

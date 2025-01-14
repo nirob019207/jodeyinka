@@ -5,22 +5,26 @@ import Image from "next/image";
 import download from "@/asset/media/download.svg";
 import comment from "@/asset/media/comment.svg";
 import dots from "@/asset/media/dots.svg";
-import { useAddComentMutation, useGetResourceSingleQuery } from "@/redux/Api/resourceApi";
+import {
+  useAddComentMutation,
+  useGetResourceSingleQuery,
+} from "@/redux/Api/resourceApi";
 import { useParams } from "next/navigation";
 import defult from "@/asset/default.png";
 import { toast } from "sonner";
 import { CommentSection } from "../skelton/CommentSection";
 
-
-
 const MediaContent: React.FC = () => {
   const path = useParams();
-  const { data, isLoading, isError } = useGetResourceSingleQuery({ id: path?.id });
-  const [addComment, { isLoading: addLoading, isError: addError }] = useAddComentMutation();
+  const { data, isLoading, isError } = useGetResourceSingleQuery({
+    id: path?.id,
+  });
+  const [addComment, { isLoading: addLoading, isError: addError }] =
+    useAddComentMutation();
   const singleDetails = data?.data;
 
-  const [showAddComment, setShowAddComment] = useState(false); // State to toggle Add Comment section
-  const [commentText, setCommentText] = useState(""); // Store comment input text
+  const [showAddComment, setShowAddComment] = useState(false); 
+  const [commentText, setCommentText] = useState(""); 
 
   function formatMonthAndTime(isoDate: string) {
     const eventDate = new Date(isoDate);
@@ -40,7 +44,7 @@ const MediaContent: React.FC = () => {
 
   const handleCommentSubmit = async () => {
     if (commentText.trim()) {
-      console.log(commentText)
+      console.log(commentText);
       try {
         await addComment({ content: commentText, id: path?.id });
         toast.success("Comment added successfully!");
@@ -54,7 +58,6 @@ const MediaContent: React.FC = () => {
       toast.error("Comment cannot be empty.");
     }
   };
-  
 
   return (
     <div className="bg-[#F6F6F6] pt-[30px] md:pt-[60px] pb-[130px] md:pb-[250px]">
@@ -131,51 +134,48 @@ const MediaContent: React.FC = () => {
           </div>
         </div>
 
-    
         <div className="lg:w-[360px]">
           <div className="bg-white rounded-lg shadow p-6">
             <h2 className="text-lg font-bold text-gray-900 mb-4">Comments</h2>
             <div className="space-y-6 max-h-[500px] overflow-y-auto slim-scroll">
-            {isLoading ? (
-  <CommentSection />
-) : (
-  singleDetails?.Comments.map((comment, index) => (
-    <div key={index} className="flex items-start gap-4">
-      {/* Display avatar or placeholder */}
-      <div className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center">
-        {comment.Author?.avatarUrl ? (
-          <Image
-            src={comment.Author.avatarUrl}
-            alt="Author Avatar"
-            width={40}
-            height={40}
-            className="rounded-full"
-          />
-        ) : (
-          <Image
-            src={defult}
-            alt="Author Avatar"
-            width={40}
-            height={40}
-            className="rounded-full"
-          />
-        )}
-      </div>
-      {/* Comment content */}
-      <div>
-        <p className="text-sm font-semibold text-gray-900">
-          {comment.Author?.userName || "Anonymous"}
-        </p>
-        <p className="text-sm text-gray-600">{comment.content}</p>
-        <p className="text-xs text-gray-400">
-          {formatMonthAndTime(comment.createdAt)}
-        </p>
-      </div>
-    </div>
-  ))
-)}
-
-      
+              {isLoading ? (
+                <CommentSection />
+              ) : (
+                singleDetails?.Comments.map((comment, index) => (
+                  <div key={index} className="flex items-start gap-4">
+                    {/* Display avatar or placeholder */}
+                    <div className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center">
+                      {comment.Author?.avatarUrl ? (
+                        <Image
+                          src={comment.Author.avatarUrl}
+                          alt="Author Avatar"
+                          width={40}
+                          height={40}
+                          className="rounded-full"
+                        />
+                      ) : (
+                        <Image
+                          src={defult}
+                          alt="Author Avatar"
+                          width={40}
+                          height={40}
+                          className="rounded-full"
+                        />
+                      )}
+                    </div>
+                    {/* Comment content */}
+                    <div>
+                      <p className="text-sm font-semibold text-gray-900">
+                        {comment.Author?.userName || "Anonymous"}
+                      </p>
+                      <p className="text-sm text-gray-600">{comment.content}</p>
+                      <p className="text-xs text-gray-400">
+                        {formatMonthAndTime(comment.createdAt)}
+                      </p>
+                    </div>
+                  </div>
+                ))
+              )}
             </div>
           </div>
 
@@ -200,7 +200,7 @@ const MediaContent: React.FC = () => {
                   onClick={handleCommentSubmit}
                   disabled={addLoading}
                 >
-                {addLoading?"Comment..":"Comment"}
+                  {addLoading ? "Comment.." : "Comment"}
                 </button>
               </div>
             </div>

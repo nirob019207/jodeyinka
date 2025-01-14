@@ -11,35 +11,7 @@ const BlogsAndNews = () => {
 
     const { data, isLoading, isError } = useGetResourceQuery({ type: "BLOG",limit:3 });
     const blogs = data?.data;
-  // const blogs = [
-  //   {
-  //     id: 1,
-  //     author: "James Dyson",
-  //     title: "Host A Corporate Event ...",
-  //     date: "December 10, 2024",
-  //     description:
-  //       "Back in 2019, Gucci brought video games to its app with a new section called Gucci Arcade, inspired by creative....",
-  //     image: blog1,
-  //   },
-  //   {
-  //     id: 2,
-  //     author: "James Dyson",
-  //     title: "Planning a Corporate Event",
-  //     date: "December 10, 2024",
-  //     description:
-  //       "Back in 2019, Gucci brought video games to its app with a new section called Gucci Arcade, inspired by creative....",
-  //     image: blog2, // Replace with your image path
-  //   },
-  //   {
-  //     id: 3,
-  //     author: "James Dyson",
-  //     title: "Branded Balloon Decor",
-  //     date: "December 10, 2024",
-  //     description:
-  //       "Back in 2019, Gucci brought video games to its app with a new section called Gucci Arcade, inspired by creative....",
-  //     image: blog3, 
-  //   },
-  // ];
+  
 
   return (
     <div className="py-[60px] font-inter px-6 md:px-0">
