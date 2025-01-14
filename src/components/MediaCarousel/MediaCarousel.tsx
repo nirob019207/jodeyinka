@@ -8,6 +8,7 @@ import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 import Image from "next/image";
 import { MdArrowRightAlt } from "react-icons/md";
 import { useGetResourceQuery } from "@/redux/Api/resourceApi";
+import Link from "next/link";
 
 const MediaCarousel = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -74,12 +75,12 @@ const MediaCarousel = () => {
                     {slide.description}
                   </p>
                   <div className="mt-1 flex justify-end">
-                    <button className="px-4 py-2 bg-gradient-to-l from-[#0061FF] to-[#003A99] text-white font-medium rounded-lg hover:bg-blue-700 flex items-center">
+                    <Link href={`/media-details/${slide.id}`}><button className="px-4 py-2 bg-gradient-to-l from-[#0061FF] to-[#003A99] text-white font-medium rounded-lg hover:bg-blue-700 flex items-center">
                       Read More{" "}
                       <span className="ml-2">
                         <MdArrowRightAlt className="text-[20px] md:text-[24px]" />
                       </span>
-                    </button>
+                    </button></Link>
                   </div>
                 </div>
               </div>

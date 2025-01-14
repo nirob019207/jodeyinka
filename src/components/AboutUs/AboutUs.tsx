@@ -25,7 +25,7 @@ const AboutUs = () => {
     <div className="bg-[#F6F6F6]">
       <div className="container px-0  flex flex-col lg:flex-row  relative bottom-[90px] md:bottom-[176px] ">
         {/* About Us Section */}
-        <div className="bg-[#DEE8F7] rounded-bl-xl rounded-br-xl shadow-lg flex-1 relative">
+        <div className="bg-[#DEE8F7] rounded-bl-xl rounded-br-xl  flex-1 relative">
           <div className="absolute top-0 left-0 w-full bg-gradient-to-l from-[#0061FF] to-[#003A99] text-white py-2 px-4">
             <h2 className="text-[36px] font-semibold">About Us</h2>
           </div>
@@ -58,7 +58,7 @@ const AboutUs = () => {
         </div>
 
         {/* Membership Section */}
-        <div className="bg-white rounded-bl-xl rounded-br-xl shadow-lg flex-1 relative">
+        <div className="bg-white rounded-bl-xl rounded-br-xl  flex-1 relative overflow-hidden">
           <div className="absolute top-0 left-0 w-full bg-[#FFFFFF] text-[#1D2939] py-2 px-4 z-30">
             <h2 className="text-[36px] font-semibold">Membership</h2>
           </div>

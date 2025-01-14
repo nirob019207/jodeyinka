@@ -1,3 +1,4 @@
+"use client";
 import React, { useState } from "react";
 import logo from "@/asset/logo.svg";
 import searchIcon from "@/asset/icon/search.png";
@@ -7,15 +8,19 @@ import banner from "@/asset/banner.svg";
 import anotherBanner from "@/asset/anotherBanner.svg";
 import { FiMenu, FiX } from "react-icons/fi";
 // import { useRouter } from "next/router";
-import { useParams, usePathname } from "next/navigation";
+import { useParams, usePathname, useRouter } from "next/navigation";
 import { useGetMeQuery } from "@/redux/Api/userApi";
-import profileavater from "@/asset/profilavater.webp"
+import profileavater from "@/asset/profilavater.webp";
 import { toast } from "sonner";
+import { useDispatch } from "react-redux";
+import { setUser } from "@/redux/ReduxFunction";
+import cookies from "js-cookie";
 
 export const Navbar = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
+  const dispatch = useDispatch();
+  const router = useRouter();
 
   const { data, isLoading } = useGetMeQuery({});
 
@@ -27,7 +32,7 @@ export const Navbar = () => {
     setIsDrawerOpen(!isDrawerOpen);
   };
   const pathname = usePathname();
-  const {id} = useParams()
+  const { id } = useParams();
 
   // Dynamic background image and padding based on route
   const routeSettings: {
@@ -40,7 +45,11 @@ export const Navbar = () => {
     "/resources": { background: anotherBanner.src, paddingBottom: "83px" },
     "/download-pdf": { background: anotherBanner.src, paddingBottom: "83px" },
     "/contact": { background: anotherBanner.src, paddingBottom: "83px" },
-    [`/media-details/${id}`]: { background: anotherBanner.src, paddingBottom: "83px" },
+    [`/media-details/${id}`]: {
+      background: anotherBanner.src,
+      paddingBottom: "83px",
+    },
+    "/career": { background: anotherBanner.src, paddingBottom: "83px" },
   };
 
   const currentSettings = routeSettings[pathname as string] || {
@@ -56,10 +65,22 @@ export const Navbar = () => {
 
   // handle logout
 
+  // const dispatch = useDispatch()
+
   const handleLogout = () => {
+    // Clear user data in Redux
+    dispatch(setUser({ role: null, token: null, email: null }));
+
+    // Remove the token from cookies
+    cookies.remove("token");
+
+    // Display success toast notification
     toast.success("Logged out successfully!");
-    // Clear authentication tokens or cookies here
+    router.push("/login");
   };
+
+  // Function to determine active link
+  const isActive = (href: string) => pathname === href;
 
   return (
     <div className="bg-[#090043] font-inter relative">
@@ -129,10 +150,10 @@ export const Navbar = () => {
                 )}
               </div>
             ) : (
-              <div>
+              <div className="flex items-center gap-6 text-center">
                 <Link
                   href={"/register"}
-                  className="px-4 py-2 text-center text-white bg-[#FFFFFF1A] rounded-xl backdrop-blur-[24px] border border-[#667085] w-[136px] hidden md:flex"
+                  className="px-4 py-2  text-white bg-[#FFFFFF1A] rounded-xl backdrop-blur-[24px] border border-[#667085] w-[136px] hidden md:flex"
                 >
                   Sign up
                 </Link>
@@ -140,7 +161,7 @@ export const Navbar = () => {
                   href={"/login"}
                   className="px-4 py-2 text-white bg-gradient-to-l from-[#0061FF] to-[#003A99] rounded-xl w-[140px] hidden md:flex"
                 >
-                  Member login
+                  Login
                 </Link>
               </div>
             )}
@@ -165,25 +186,57 @@ export const Navbar = () => {
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex bg-[#FFFFFF1A] backdrop-blur-[4px] rounded-xl px-[45px] py-3 mt-6 gap-6  items-center text-white shadow-lg">
-            <Link href="/" className="hover:text-blue-400">
+            <Link
+              href="/"
+              className={`hover:text-blue-400 ${
+                isActive("/") ? "text-blue-400 font-bold" : ""
+              }`}
+            >
               Home
             </Link>
-            <Link href="/about-us" className="hover:text-blue-400">
+            <Link
+              href="/about-us"
+              className={`hover:text-blue-400 ${
+                isActive("/about-us") ? "text-blue-400 font-bold" : ""
+              }`}
+            >
               About Us
             </Link>
-            <Link href="/media" className="hover:text-blue-400">
+            <Link
+              href="/media"
+              className={`hover:text-blue-400 ${
+                isActive("/media") ? "text-blue-400 font-bold" : ""
+              }`}
+            >
               Media
             </Link>
-            <Link href="/event" className="hover:text-blue-400">
+            <Link
+              href="/event"
+              className={`hover:text-blue-400 ${
+                isActive("/event") ? "text-blue-400 font-bold" : ""
+              }`}
+            >
               Event
             </Link>
-            <Link href="/resources" className="hover:text-blue-400">
+            <Link
+              href="/resources"
+              className={`hover:text-blue-400 ${
+                isActive("/resources") ? "text-blue-400 font-bold" : ""
+              }`}
+            >
               Resource
             </Link>
-            {/* <Link href="/blog" className="hover:text-blue-400">
-              Blog
-            </Link> */}
-            <Link href="/contact" className="hover:text-blue-400">
+            <Link href="/career "  className={`hover:text-blue-400 ${
+                isActive("/career") ? "text-blue-400 font-bold" : ""
+              }`}>
+             Career 
+            </Link>
+            <Link
+              href="/contact"
+              className={`hover:text-blue-400 ${
+                isActive("/contact") ? "text-blue-400 font-bold" : ""
+              }`}
+            >
               Contact
             </Link>
           </nav>
