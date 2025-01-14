@@ -7,8 +7,10 @@ import { RxMagicWand } from "react-icons/rx";
 // import sponser from "@/asset/admin/sponser.svg";
 import { FaRegUser } from "react-icons/fa6";
 import { GoHistory } from "react-icons/go";
-import { GrTransaction } from "react-icons/gr"
+import { GrResources, GrTransaction } from "react-icons/gr"
 import { RiLogoutCircleLine } from "react-icons/ri";
+import { LuUser } from "react-icons/lu";
+import { RiMoneyDollarBoxLine } from "react-icons/ri";
 // import { useRouter } from "next/router";
 
 const Sidebar = () => {
@@ -35,8 +37,23 @@ const Sidebar = () => {
               }`}
             >
               <span className="flex items-center space-x-2">
-                <LucideLayoutDashboard />
+                <LucideLayoutDashboard className="text-[24px] font-bold" />
                 <span>Dashboard</span>
+              </span>
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/admin/profile"
+              className={`block pl-6 py-2 mb-3  ${
+                pathname === "/admin/profile"
+                  ? "bg-blue-700 py-4 text-white rounded-[8px] text-[18px] font-medium"
+                  : ""
+              }`}
+            >
+              <span className="flex items-center space-x-2">
+              <LuUser className="text-[24px] font-bold" />
+                <span>Profile</span>
               </span>
             </Link>
           </li>
@@ -70,6 +87,32 @@ const Sidebar = () => {
           </li>
           <li>
             <Link
+              href="/admin/donate"
+              className={`block pl-6 py-2 mb-3  ${
+                pathname === "/admin/donate" ? "bg-blue-700 py-4 text-white rounded-[8px] text-[18px] font-medium" : ""
+              }`}
+            >
+              <span className="flex items-center space-x-2">
+              <RiMoneyDollarBoxLine className="text-[24px] font-bold" />
+                <span>Donate</span>
+              </span>
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/admin/resource"
+              className={`block pl-6 py-2 mb-3  ${
+                pathname === "/admin/resource" ? "bg-blue-700 py-4 text-white rounded-[8px] text-[18px] font-medium" : ""
+              }`}
+            >
+              <span className="flex items-center space-x-2">
+              <GrResources className="text-[24px] font-bold" />
+                <span>Resource</span>
+              </span>
+            </Link>
+          </li>
+          <li>
+            <Link
               href="/admin/sponsor"
               className={`block pl-6 py-2 mb-3  ${
                 pathname === "/admin/sponsor" ? "bg-blue-700 py-4 text-white rounded-[8px] text-[18px] font-medium" : ""
@@ -97,7 +140,7 @@ const Sidebar = () => {
         </ul>
       </nav>
 
-      <div className="p-4  cursor-pointer mt-[350px]">
+      <div className="p-4  cursor-pointer mt-[220px]">
         <span className="flex items-center space-x-2">
         <RiLogoutCircleLine className="text-[24px] font-bold"/>
           <span>Log Out</span>
