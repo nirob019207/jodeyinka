@@ -4,10 +4,18 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useGetResourceQuery } from "@/redux/Api/resourceApi";
+import CardSkeleton from "../CardSkelaton/CardSkeleton";
+// import CardSkeleton from "../CardSkelaton/CardSkeleton";
 
 const Resources = () => {
   const { data, isLoading, isError } = useGetResourceQuery({ type: "RESOURCE",limit:3 });
   const resources = data?.data; // Show only the latest 3 resources
+
+  if(isLoading){
+    <div className="container">
+      <CardSkeleton/>
+    </div>
+  }
 
   return (
     <div className="bg-[#F6F6F6] pb-[60px] md:pb-[120px] font-inter px-6">
@@ -22,24 +30,8 @@ const Resources = () => {
 
         {/* Resource Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {isLoading ? (
-            // Skeleton Loading
-            Array.from({ length: 3 }).map((_, index) => (
-              <div
-                key={index}
-                className="bg-white rounded-lg overflow-hidden shadow-lg p-4 animate-pulse"
-              >
-                <div className="w-full h-[200px] bg-gray-300 rounded"></div>
-                <div className="mt-4 h-[24px] bg-gray-300 rounded"></div>
-                <div className="mt-2 h-[18px] bg-gray-300 rounded"></div>
-                <div className="mt-6 h-[44px] bg-gray-300 rounded"></div>
-              </div>
-            ))
-          ) : isError ? (
-            <p className="text-red-500 text-center col-span-3">
-              Something went wrong. Please try again later.
-            </p>
-          ) : (
+          {
+          
             resources.map((resource) => (
               <div
                 key={resource.id}
@@ -70,7 +62,7 @@ const Resources = () => {
                 </div>
               </div>
             ))
-          )}
+          }
         </div>
       </div>
     </div>

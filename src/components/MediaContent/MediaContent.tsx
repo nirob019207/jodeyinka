@@ -12,7 +12,8 @@ import {
 import { useParams } from "next/navigation";
 import defult from "@/asset/default.png";
 import { toast } from "sonner";
-import { CommentSection } from "../skelton/CommentSection";
+// import { CommentSection } from "../skelton/CommentSection";
+import CardSkeleton from "../CardSkelaton/CardSkeleton";
 
 const MediaContent: React.FC = () => {
   const path = useParams();
@@ -22,6 +23,7 @@ const MediaContent: React.FC = () => {
   const [addComment, { isLoading: addLoading, isError: addError }] =
     useAddComentMutation();
   const singleDetails = data?.data;
+  console.log("single details",singleDetails)
 
   const [showAddComment, setShowAddComment] = useState(false); 
   const [commentText, setCommentText] = useState(""); 
@@ -84,22 +86,22 @@ const MediaContent: React.FC = () => {
           </div>
 
           {/* Content */}
-          <div className="p-6">
-            <h1 className="text-2xl font-bold text-default mb-4">
+          <div className="">
+            <h1 className="text-2xl font-bold text-default mb-4 mt-6">
               {singleDetails?.title}
             </h1>
             <div className="flex items-center justify-between">
-              <div className="flex items-center">
+              <div className="flex items-center gap-6">
                 <div className="w-[52px] h-[52px] rounded-full border border-[#FFFFFF] bg-[#D9D9D9]">
                   <Image
                     src={singleDetails?.Author?.avatarUrl || defult}
                     height={100}
                     width={100}
                     alt="Author Avatar"
-                    className="w-full h-full"
+                    className="w-full h-full rounded-full"
                   />
                 </div>
-                <div>
+                <div className="mt-2">
                   <h2>
                     {singleDetails?.Author?.firstName +
                       " " +
@@ -139,7 +141,7 @@ const MediaContent: React.FC = () => {
             <h2 className="text-lg font-bold text-gray-900 mb-4">Comments</h2>
             <div className="space-y-6 max-h-[500px] overflow-y-auto slim-scroll">
               {isLoading ? (
-                <CommentSection />
+                <CardSkeleton />
               ) : (
                 singleDetails?.Comments.map((comment, index) => (
                   <div key={index} className="flex items-start gap-4">
@@ -182,11 +184,11 @@ const MediaContent: React.FC = () => {
           {/* Add Comment */}
           {showAddComment && ( // Render Add Comment section conditionally
             <div className="mt-6">
-              <textarea
+              <input
                 placeholder="Add Comment"
                 value={commentText}
                 onChange={(e) => setCommentText(e.target.value)}
-                className="w-full border-b border-gray-300 rounded-md p-3 focus:outline-none"
+                className="w-full border-b border-gray-300 rounded-md p-3 focus:outline-none bg-transparent"
               />
               <div className="flex justify-end mt-4 gap-2">
                 <button
@@ -196,7 +198,7 @@ const MediaContent: React.FC = () => {
                   Cancel
                 </button>
                 <button
-                  className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition"
+                  className="bg-[#C5C5C5] text-[#090043] px-4 py-2 rounded-md"
                   onClick={handleCommentSubmit}
                   disabled={addLoading}
                 >

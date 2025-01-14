@@ -1,3 +1,4 @@
+import {nextui} from '@nextui-org/theme';
 import type { Config } from "tailwindcss";
 import tailwindAnimate from "tailwindcss-animate";
 
@@ -8,6 +9,7 @@ export default {
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/shared/**/*.{js,ts,jsx,tsx,mdx}",
+    "./node_modules/@nextui-org/theme/dist/components/skeleton.js"
   ],
   theme: {
   	extend: {
@@ -110,18 +112,24 @@ export default {
   				to: {
   					height: '0'
   				}
-  			}
+			},
+			  "shimmer": {
+				"0%": { transform: "translateX(-100%)" },
+				"100%": { transform: "translateX(100%)" },
+			  },
   		},
   		animation: {
   			'accordion-down': 'accordion-down 0.2s ease-out',
-  			'accordion-up': 'accordion-up 0.2s ease-out'
+  			'accordion-up': 'accordion-up 0.2s ease-out',
+			  "shimmer": "shimmer 1.5s infinite",
   		},
   		borderRadius: {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',
   			sm: 'calc(var(--radius) - 4px)'
   		}
+		 
   	}
   },
-  plugins: [tailwindAnimate, tailwindAnimate],
+  plugins: [tailwindAnimate,tailwindAnimate,nextui()],
 } satisfies Config;
