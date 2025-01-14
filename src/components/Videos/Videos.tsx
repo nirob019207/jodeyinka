@@ -2,42 +2,22 @@
 
 import React from "react";
 import Image from "next/image";
-import resource1 from "@/asset/resource/resource1.svg";
-import resource2 from "@/asset/resource/resource2.svg";
-import resource3 from "@/asset/resource/resource3.svg";
+
 import { FaPlayCircle } from "react-icons/fa"; // Import the play icon from react-icons
+import { useGetResourceQuery } from "@/redux/Api/resourceApi";
+import Link from "next/link";
 
 const Videos = () => {
-  const Videos = [
-    {
-      id: 1,
-      title: "Ransomware",
-      description:
-        "Ransomware attacks are heavily targeted toward individuals or businesses with poor cybersecurity practices and ineffective security programs.",
-      image: resource1,
-    },
-    {
-      id: 2,
-      title: "Phishing attacks",
-      description:
-        "Phishing attacks continue to pose a significant threat to businesses, with research by Acronis finding the number of email-based attacks on the rise.",
-      image: resource2,
-    },
-    {
-      id: 3,
-      title: "Cloud vulnerabilities",
-      description:
-        "Cloud vulnerabilities. As more and more organizations move their data to the cloud, cloud vulnerabilities have become a significant source of cybersecurity concerns.",
-      image: resource3,
-    },
-  ];
+    const { data, isLoading, isError } = useGetResourceQuery({ type: "RESOURCE",limit:10});
+    const Videos = data?.data;
+ 
 
   return (
     <div className="bg-[#F6F6F6] pt-[30px] md:pt-[60px] pb-[30px] md:pb-[60px] font-inter px-6">
       <div className="container mx-auto px-0">
         {/* Header */}
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-[36px] font-medium text-default">Videos</h2>
+          {/* <h2 className="text-[36px] font-medium text-default">Videos</h2> */}
           {/* <a href="#" className="text-blue-600 hover:underline text-[20px]">
             See All
           </a> */}
@@ -45,7 +25,7 @@ const Videos = () => {
 
         {/* Videos Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {Videos.map((video) => (
+          {Videos?.map((video:any) => (
             <div
               key={video.id}
               className="bg-white rounded-lg overflow-hidden shadow hover:shadow-xl transition-shadow duration-300"
@@ -53,8 +33,10 @@ const Videos = () => {
               {/* Image Section with Play Icon */}
               <div className="relative">
                 <Image
-                  src={video.image}
+                  src={video.fileUrl}
                   alt={video.title}
+                  width={100}
+                  height={100}
                   className="w-full h-[200px] object-cover"
                 />
                 {/* Play Icon */}
@@ -68,9 +50,9 @@ const Videos = () => {
                 </h3>
                 <p className="text-gray mt-2">{video.description}</p>
                 <div className="mt-6 pb-7">
-                  <button className="border border-[#DDDDDD] w-full py-3 text-center text-blue-600 font-medium rounded-[8px]">
+                <Link href={`/media-details/${video.id}`} className="border border-[#DDDDDD] w-full py-3 px-2 text-center text-blue-600 font-medium rounded-[8px]">
                     View More
-                  </button>
+                  </Link>
                 </div>
               </div>
             </div>

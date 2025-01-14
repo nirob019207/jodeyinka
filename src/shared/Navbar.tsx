@@ -107,6 +107,9 @@ export const Navbar = () => {
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex bg-[#FFFFFF1A] backdrop-blur-[4px] rounded-xl px-[89px] py-3 mt-6 gap-6  items-center text-white shadow-lg">
+          <Link href="/" className="hover:text-blue-400">
+            Home
+            </Link>
             <Link href="/about-us" className="hover:text-blue-400">
               About Us
             </Link>
@@ -119,9 +122,9 @@ export const Navbar = () => {
             <Link href="/resources" className="hover:text-blue-400">
               Resource
             </Link>
-            <Link href="/blog" className="hover:text-blue-400">
+            {/* <Link href="/blog" className="hover:text-blue-400">
               Blog
-            </Link>
+            </Link> */}
             <Link href="/contact" className="hover:text-blue-400">
               Contact
             </Link>

@@ -11,7 +11,7 @@ import { useGetResourceQuery } from "@/redux/Api/resourceApi";
 
 const MediaCarousel = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const { data, isLoading, isError } = useGetResourceQuery({ type: "MEDIA" });
+  const { data, isLoading, isError } = useGetResourceQuery({ type: "MEDIA",limit:5 });
   const slides = data?.data;
 
   const [sliderRef, slider] = useKeenSlider({

@@ -3,67 +3,80 @@
 import React from "react";
 import Image from "next/image";
 import { FaRegClock } from "react-icons/fa";
-import event1 from "@/asset/event/event1.svg";
-import event2 from "@/asset/event/event2.svg";
-import event3 from "@/asset/event/event3.svg";
 import { MdArrowRightAlt } from "react-icons/md";
+import { useEventQuery } from "@/redux/Api/eventApi";
+import Link from "next/link";
 
 const UpcomingEvent = () => {
-  const events = [
-    {
-      id: 1,
-      title: "Global Economic and Geopolitical Outlook 2025",
-      description:
-        "Back in 2019, Gucci brought video games to its app with a new section called Gucci Arcade, inspired by creative....",
-      date: { month: "Jan", day: 25 },
-      time: "6:00 pm - 7:30 pm",
-      image: event1, // Replace with your image path
-    },
-    {
-      id: 2,
-      title: "Ambassador of Sweden | Save the Date",
-      description:
-        "Back in 2019, Gucci brought video games to its app with a new section called Gucci Arcade, inspired by creative....",
-      date: { month: "Jan", day: 25 },
-      time: "6:00 pm - 7:30 pm",
-      image: event2, // Replace with your image path
-    },
-    {
-      id: 3,
-      title: "Digitally Invisible with Dr. Nicol Turner-Lee",
-      description:
-        "Back in 2019, Gucci brought video games to its app with a new section called Gucci Arcade, inspired by creative....",
-      date: { month: "Feb", day: 25 },
-      time: "6:00 pm - 7:30 pm",
-      image: event3, // Replace with your image pat
-    },
-  ];
+  const { data, isLoading, isError } = useEventQuery({ limit: 3 });
+  const events = data?.data; // Show only the latest 3 events
+
+  // Helper function to format date and time
+  function formatMonthAndTime(isoDate) {
+    const eventDate = new Date(isoDate);
+
+    // Format month and day
+    const options = { month: "long", day: "numeric" };
+    const formattedDate = eventDate.toLocaleDateString("en-US", options);
+
+    // Format time
+    const hours = eventDate.getHours();
+    const minutes = eventDate.getMinutes().toString().padStart(2, "0");
+    const ampm = hours >= 12 ? "pm" : "am";
+    const formattedTime = `${hours % 12 || 12}:${minutes} ${ampm}`;
+
+    return `${formattedDate} @ ${formattedTime}`;
+  }
+
+  // Helper function to format time range (start and end)
+  function formatTimeRange(startTime, endTime) {
+    const start = new Date(startTime);
+    const end = new Date(endTime);
+
+    // Format start time
+    const startHours = start.getHours();
+    const startMinutes = start.getMinutes().toString().padStart(2, "0");
+    const startAmpm = startHours >= 12 ? "pm" : "am";
+    const startFormatted = `${startHours % 12 || 12}:${startMinutes} ${startAmpm}`;
+
+    // Format end time
+    const endHours = end.getHours();
+    const endMinutes = end.getMinutes().toString().padStart(2, "0");
+    const endAmpm = endHours >= 12 ? "pm" : "am";
+    const endFormatted = `${endHours % 12 || 12}:${endMinutes} ${endAmpm}`;
+
+    return `${startFormatted} - ${endFormatted}`;
+  }
+
+  // Handle loading and error states
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
+
+  if (isError || !events) {
+    return <p>Something went wrong. Please try again later.</p>;
+  }
 
   return (
     <div className="bg-[#F6F6F6] pb-[60px] font-inter px-6 md:px-0">
       <div className="container mx-auto px-0">
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
-          <h2 className="text-[36px] font-medium text-default">
-            Upcoming Event
-          </h2>
-          <a href="#" className="text-blue-600 hover:underline text-[20px]">
+          <h2 className="text-[36px] font-medium text-default">Upcoming Event</h2>
+          <Link href="/event" className="text-blue-600 hover:underline text-[20px]">
             See All
-          </a>
+          </Link>
         </div>
 
         {/* Event Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 md:gap-6">
-          {events.map((event) => (
-            <div
-              key={event.id}
-              className="rounded-lg overflow-hidden"
-            >
+          {events?.map((event) => (
+            <div key={event.id} className="rounded-lg overflow-hidden bg-white shadow-md">
               {/* Event Image */}
               <div className="relative">
                 <Image
-                  src={event.image}
-                  alt={event.title}
+                  src={event?.imageUrl}
+                  alt={event?.title}
                   className="w-full h-[200px] object-cover"
                   width={357}
                   height={200}
@@ -71,34 +84,36 @@ const UpcomingEvent = () => {
                 {/* Date Overlay */}
                 <div className="absolute top-[175px] right-0 bg-[#FFFFFF1A] backdrop-blur-[24px] text-center py-2 px-4 rounded-lg">
                   <span className=" text-[#FFFFFF]">
-                    {event.date.month}
+                    {new Date(event.date).toLocaleString("en-US", { month: "short" })}
                   </span>
                   <br />
-                  <span className="text-[25px] font-bold text-default">{event.date.day}</span>
+                  <span className="text-[25px] font-bold text-default">
+                    {new Date(event.date).getDate()}
+                  </span>
                 </div>
               </div>
 
               {/* Event Details */}
-              <div className="">
+              <div className="p-4">
                 {/* Event Time */}
                 <div className="flex items-center text-[#38383899] mb-3 mt-6">
                   <FaRegClock className="mr-2 text-blue-600" />
-                  {event.time}
+                  {formatTimeRange(event.date, event.endTime)}
                 </div>
                 {/* Event Title */}
                 <h3 className="text-[24px] font-medium text-default leading-[32px]">
-                  {event.title}
+                  {event?.title}
                 </h3>
                 {/* Event Description */}
-                <p className="text-[#545454] mt-4 mb-6">{event.description}</p>
+                <p className="text-[#545454] mt-4 mb-6">{event?.description}</p>
                 {/* Read More Button */}
                 <div className="flex items-center">
-                  <button className="flex items-center text-blue-600 hover:underline font-medium  px-4 py-3 border border-[#005DF3] rounded-[8px]">
+                  <Link href={`event-details/${event.id}`} className="flex items-center text-blue-600 hover:underline font-medium px-4 py-3 border border-[#005DF3] rounded-[8px]">
                     Read More{" "}
                     <span className="ml-2">
                       <MdArrowRightAlt className="text-[24px]" />
                     </span>
-                  </button>
+                  </Link>
                 </div>
               </div>
             </div>

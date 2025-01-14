@@ -6,7 +6,7 @@ import { useGetResourceQuery } from "@/redux/Api/resourceApi";
 import Link from "next/link";
 
 const News = () => {
-  const { data, isLoading, isError } = useGetResourceQuery({ type: "MEDIA" });
+  const { data, isLoading, isError } = useGetResourceQuery({ type: "MEDIA",limit:10 });
   const newsItems = data?.data;
 
   return (
@@ -65,7 +65,7 @@ const News = () => {
                     {news.title}
                   </h3>
                   <p className="text-[#475467] mb-9">{news.description}</p>
-                  <Link href={"/media-details"} className="px-4 py-3 flex items-center gap-2 text-white bg-gradient-to-l from-[#0061FF] to-[#003A99] rounded-xl w-[150px]">
+                  <Link href={`/media-details/${news.id}`} className="px-4 py-3 flex items-center gap-2 text-white bg-gradient-to-l from-[#0061FF] to-[#003A99] rounded-xl w-[150px]">
                     Read More <MdArrowRightAlt className="text-[25px]" />
                   </Link>
                 </div>
