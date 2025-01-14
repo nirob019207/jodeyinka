@@ -1,10 +1,10 @@
-import CreateEvent from '@/components/AdminDashboard/CreateEvent/CreateEvent'
+import DonationForm from '@/components/AdminDashboard/DonationForm/DonationForm'
 import React from 'react'
 
 const page = () => {
   return (
     <div>
-      <CreateEvent/>
+        <DonationForm/>
     </div>
   )
 }

@@ -33,6 +33,8 @@ export default {
   			},
 			default: "#1D2939",
 			gray: "#545454",
+			darkGray: "#454545",
+			darkBlack: "#161616",
   			secondery: '#1D2939',
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',

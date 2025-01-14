@@ -1,10 +1,10 @@
-import CreateEvent from '@/components/AdminDashboard/CreateEvent/CreateEvent'
+import Profile from '@/components/AdminDashboard/Profile/Profile'
 import React from 'react'
 
 const page = () => {
   return (
     <div>
-      <CreateEvent/>
+        <Profile/>
     </div>
   )
 }
