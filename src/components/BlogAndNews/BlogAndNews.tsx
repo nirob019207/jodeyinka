@@ -10,24 +10,24 @@ import Link from "next/link";
 
 const BlogsAndNews = () => {
 
-    const { data, isLoading, isError } = useGetResourceQuery({ type: "BLOG",limit:3 });
+    const { data} = useGetResourceQuery({ type: "BLOG",limit:3 });
     const blogs = data?.data;
-    function formatMonthAndTime(isoDate: string) {
-      const eventDate = new Date(isoDate);
+    // function formatMonthAndTime(isoDate: string) {
+    //   const eventDate = new Date(isoDate);
      
   
-      // Format month and day
-      const options = { month: "long", day: "numeric" };
-      const formattedDate = eventDate.toLocaleDateString("en-US", options);
+    //   // Format month and day
+    //   const options = { month: "long", day: "numeric" };
+    //   const formattedDate = eventDate.toLocaleDateString("en-US", options);
   
-      // Format time
-      const hours = eventDate.getHours();
-      const minutes = eventDate.getMinutes().toString().padStart(2, "0");
-      const ampm = hours >= 12 ? "pm" : "am";
-      const formattedTime = `${hours % 12 || 12}:${minutes} ${ampm}`;
+    //   // Format time
+    //   const hours = eventDate.getHours();
+    //   const minutes = eventDate.getMinutes().toString().padStart(2, "0");
+    //   const ampm = hours >= 12 ? "pm" : "am";
+    //   const formattedTime = `${hours % 12 || 12}:${minutes} ${ampm}`;
   
-      return `${formattedDate} @ ${formattedTime}`;
-    }
+    //   return `${formattedDate} @ ${formattedTime}`;
+    // }
     function formatDate(isoDate: string) {
       const eventDate = new Date(isoDate);
   

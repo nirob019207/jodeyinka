@@ -1,4 +1,6 @@
+'use client'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { useMyTransactionsQuery } from '@/redux/Api/transactionApi';
 import React from 'react';
 
 interface Transaction {
@@ -10,19 +12,22 @@ interface Transaction {
 }
 
 const transactions: Transaction[] = [
-  { date: '12/09/2024', transactionId: 'TXN789456', paymentMethod: 'Credit Card', amountPaid: '$1', type: 'Concentrates' },
-  { date: '12/09/2024', transactionId: 'TXN789456', paymentMethod: 'Bank Transfer', amountPaid: '$1', type: 'Concentrates' },
-  { date: '12/09/2024', transactionId: 'TXN789456', paymentMethod: 'Online Wallet', amountPaid: '$1', type: 'Concentrates' },
-  { date: '12/09/2024', transactionId: 'TXN789456', paymentMethod: 'Credit Card', amountPaid: '$1', type: 'Concentrates' },
-  { date: '12/09/2024', transactionId: 'TXN789456', paymentMethod: 'Bank Transfer', amountPaid: '$1', type: 'Concentrates' },
-  { date: '12/09/2024', transactionId: 'TXN789456', paymentMethod: 'Online Wallet', amountPaid: '$1', type: 'Concentrates' },
-  { date: '12/09/2024', transactionId: 'TXN789456', paymentMethod: 'Online Wallet', amountPaid: '$1', type: 'Concentrates' },
-  { date: '12/09/2024', transactionId: 'TXN789456', paymentMethod: 'Credit Card', amountPaid: '$1', type: 'Concentrates' },
-  { date: '12/09/2024', transactionId: 'TXN789456', paymentMethod: 'Bank Transfer', amountPaid: '$1', type: 'Concentrates' },
-  { date: '12/09/2024', transactionId: 'TXN789456', paymentMethod: 'Online Wallet', amountPaid: '$1', type: 'Concentrates' },
+  // { date: '12/09/2024', transactionId: 'TXN789456', paymentMethod: 'Credit Card', amountPaid: '$1', type: 'Concentrates' },
+  // { date: '12/09/2024', transactionId: 'TXN789456', paymentMethod: 'Bank Transfer', amountPaid: '$1', type: 'Concentrates' },
+  // { date: '12/09/2024', transactionId: 'TXN789456', paymentMethod: 'Online Wallet', amountPaid: '$1', type: 'Concentrates' },
+  // { date: '12/09/2024', transactionId: 'TXN789456', paymentMethod: 'Credit Card', amountPaid: '$1', type: 'Concentrates' },
+  // { date: '12/09/2024', transactionId: 'TXN789456', paymentMethod: 'Bank Transfer', amountPaid: '$1', type: 'Concentrates' },
+  // { date: '12/09/2024', transactionId: 'TXN789456', paymentMethod: 'Online Wallet', amountPaid: '$1', type: 'Concentrates' },
+  // { date: '12/09/2024', transactionId: 'TXN789456', paymentMethod: 'Online Wallet', amountPaid: '$1', type: 'Concentrates' },
+  // { date: '12/09/2024', transactionId: 'TXN789456', paymentMethod: 'Credit Card', amountPaid: '$1', type: 'Concentrates' },
+  // { date: '12/09/2024', transactionId: 'TXN789456', paymentMethod: 'Bank Transfer', amountPaid: '$1', type: 'Concentrates' },
+  // { date: '12/09/2024', transactionId: 'TXN789456', paymentMethod: 'Online Wallet', amountPaid: '$1', type: 'Concentrates' },
 ];
 
 const TransactionHistory = () => {
+
+  const myTransactions=useMyTransactionsQuery(undefined)
+console.log(myTransactions)
   return (
     <div className="px-16 py-6 font-inter">
       <h2 className="text-2xl font-bold mb-4 text-darkBlack">Transaction History</h2>
