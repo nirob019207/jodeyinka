@@ -4,22 +4,37 @@ import adminlogo from "@/asset/admin/adminlogo.svg";
 import Image from "next/image";
 import { LucideLayoutDashboard } from "lucide-react";
 import { RxMagicWand } from "react-icons/rx";
-// import sponser from "@/asset/admin/sponser.svg";
 import { FaRegUser } from "react-icons/fa6";
 import { GoHistory } from "react-icons/go";
-import { GrResources, GrTransaction } from "react-icons/gr"
-import { RiLogoutCircleLine } from "react-icons/ri";
+import { GrResources, GrTransaction } from "react-icons/gr";
+import { RiLogoutCircleLine, RiMoneyDollarBoxLine } from "react-icons/ri";
 import { LuUser } from "react-icons/lu";
-import { RiMoneyDollarBoxLine } from "react-icons/ri";
 import { MdOutlinePermMedia } from "react-icons/md";
 import { SiBlogger } from "react-icons/si";
-// import { useRouter } from "next/router";
+import { useGetMeQuery } from "@/redux/Api/userApi";
 
 const Sidebar = () => {
   const pathname = usePathname();
+   const { data, isLoading } = useGetMeQuery({});
+   const role = data?.data?.role; // Current user role
+
+   const menuItems = [
+    { href: "/admin/dashboard", icon: LucideLayoutDashboard, label: "Dashboard", roles: ["ADMIN", "SPONSOR", "MEMBER"] },
+    { href: "/admin/profile", icon: LuUser, label: "Profile", roles: ["ADMIN", "SPONSOR", "USER", "MEMBER"] },
+    { href: "/admin/event-history", icon: RxMagicWand, label: "Event", roles: ["ADMIN", "MEMBER"] },
+    { href: "/admin/transaction", icon: GrTransaction, label: "ALL Transaction", roles: ["MEMBER"] },
+
+    { href: "/admin/transaction", icon: GrTransaction, label: "Transaction", roles: ["MEMBER"] },
+    // { href: "/admin/donate", icon: RiMoneyDollarBoxLine, label: "Donate", roles: ["ADMIN", "SPONSOR", "USER"] },
+    { href: "/admin/resource-list", icon: GrResources, label: "Resource", roles: ["ADMIN","MEMBER"] },
+    { href: "/admin/media-list", icon: MdOutlinePermMedia, label: "Media", roles: ["ADMIN"] },
+    { href: "/admin/blog-list", icon: SiBlogger, label: "Blog", roles: ["ADMIN","MEMBER"] },
+    { href: "/admin/sponsor", icon: FaRegUser, label: "Sponsor", roles: ["ADMIN","MEMBER"] },
+  ];
+  const filteredMenuItems = menuItems.filter(item => item.roles.includes(role));
 
   return (
-    <aside className="w-72  bg-white max-h-screen">
+    <aside className="w-72 bg-white max-h-screen">
       <div className="py-7 pl-6 text-xl font-bold flex items-center space-x-2">
         <div className="w-10">
           <Image src={adminlogo} alt="logo" />
@@ -29,136 +44,29 @@ const Sidebar = () => {
 
       <nav className="mt-6">
         <ul>
-          <li>
-            <Link
-              href="/admin/dashboard"
-              className={`block pl-6 py-2 mb-3  ${
-                pathname === "/admin/dashboard"
-                  ? "bg-blue-700 py-4 text-white rounded-[8px] text-[18px] font-medium"
-                  : ""
-              }`}
-            >
-              <span className="flex items-center space-x-2">
-                <LucideLayoutDashboard className="text-[24px] font-bold" />
-                <span>Dashboard</span>
-              </span>
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/admin/profile"
-              className={`block pl-6 py-2 mb-3  ${
-                pathname === "/admin/profile"
-                  ? "bg-blue-700 py-4 text-white rounded-[8px] text-[18px] font-medium"
-                  : ""
-              }`}
-            >
-              <span className="flex items-center space-x-2">
-              <LuUser className="text-[24px] font-bold" />
-                <span>Profile</span>
-              </span>
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/admin/event-history"
-              className={`block pl-6 py-2 mb-3  ${
-                pathname === "/admin/event-history"
-                  ? "bg-blue-700 py-4 text-white rounded-[8px] text-[18px] font-medium"
-                  : ""
-              }`}
-            >
-              <span className="flex items-center space-x-2">
-                <RxMagicWand className="text-[24px] font-bold" />
-                <span>Event</span>
-              </span>
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/admin/transaction"
-              className={`block pl-6 py-2 mb-3  ${
-                pathname === "/admin/transaction" ? "bg-blue-700 py-4 text-white rounded-[8px] text-[18px] font-medium" : ""
-              }`}
-            >
-              <span className="flex items-center space-x-2">
-              <GrTransaction className="text-[24px] font-bold" />
-                <span>Transaction</span>
-              </span>
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/admin/donate"
-              className={`block pl-6 py-2 mb-3  ${
-                pathname === "/admin/donate" ? "bg-blue-700 py-4 text-white rounded-[8px] text-[18px] font-medium" : ""
-              }`}
-            >
-              <span className="flex items-center space-x-2">
-              <RiMoneyDollarBoxLine className="text-[24px] font-bold" />
-                <span>Donate</span>
-              </span>
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/admin/resource-list"
-              className={`block pl-6 py-2 mb-3  ${
-                pathname === "/admin/resource-list" ? "bg-blue-700 py-4 text-white rounded-[8px] text-[18px] font-medium" : ""
-              }`}
-            >
-              <span className="flex items-center space-x-2">
-              <GrResources className="text-[24px] font-bold" />
-                <span>Resource</span>
-              </span>
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/admin/media-list"
-              className={`block pl-6 py-2 mb-3  ${
-                pathname === "/admin/media-list" ? "bg-blue-700 py-4 text-white rounded-[8px] text-[18px] font-medium" : ""
-              }`}
-            >
-              <span className="flex items-center space-x-2">
-              <MdOutlinePermMedia className="text-[24px] font-bold" />
-                <span>Media</span>
-              </span>
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/admin/blog-list"
-              className={`block pl-6 py-2 mb-3  ${
-                pathname === "/admin/blog-list" ? "bg-blue-700 py-4 text-white rounded-[8px] text-[18px] font-medium" : ""
-              }`}
-            >
-              <span className="flex items-center space-x-2">
-              <SiBlogger   className="text-[24px] font-bold" />
-                <span>Blog</span>
-              </span>
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/admin/sponsor"
-              className={`block pl-6 py-2 mb-3  ${
-                pathname === "/admin/sponsor" ? "bg-blue-700 py-4 text-white rounded-[8px] text-[18px] font-medium" : ""
-              }`}
-            >
-              <span className="flex items-center space-x-2">
-                <FaRegUser className="text-[24px] font-bold" />
-                <span>Sponsor</span>
-              </span>
-            </Link>
-          </li>
-         
+          {filteredMenuItems.map((item, index) => (
+            <li key={index}>
+              <Link
+                href={item.href}
+                className={`block pl-6 py-2 mb-3 ${
+                  pathname === item.href
+                    ? "bg-blue-700 py-4 text-white rounded-[8px] text-[18px] font-medium"
+                    : ""
+                }`}
+              >
+                <span className="flex items-center space-x-2">
+                  <item.icon className="text-[24px] font-bold" />
+                  <span>{item.label}</span>
+                </span>
+              </Link>
+            </li>
+          ))}
         </ul>
       </nav>
 
-      <div className="p-4  cursor-pointer">
+      <div className="p-4 cursor-pointer">
         <span className="flex items-center space-x-2">
-        <RiLogoutCircleLine className="text-[24px] font-bold"/>
+          <RiLogoutCircleLine className="text-[24px] font-bold" />
           <span>Log Out</span>
         </span>
       </div>
