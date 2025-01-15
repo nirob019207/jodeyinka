@@ -13,75 +13,99 @@ const userApi = baseApi.injectEndpoints({
         method: "POST",
         body: data,
       }),
-      invalidatesTags: ["User"], 
+      invalidatesTags: ["User"],
     }),
 
     registerUser: build.mutation({
       query: (data: any) => {
-          return {
-              url: "/users/register",
-              method: "POST",
-              body: data
-          }
+        return {
+          url: "/users/register",
+          method: "POST",
+          body: data,
+        };
       },
-      invalidatesTags: ["User"], 
+      invalidatesTags: ["User"],
+    }),
 
-
-
-  }),
-
-  forgotUser: build.mutation({
+    forgotUser: build.mutation({
       query: (data: any) => {
-          return {
-              url: "/auth/forgot-password",
-              method: "POST",
-              body: data
-          }
+        return {
+          url: "/auth/forgot-password",
+          method: "POST",
+          body: data,
+        };
       },
       invalidatesTags: ["User"], // Helps refresh cached user data after login
+    }),
 
-
-  }),
-  otpUser: build.mutation({
+    otpUser: build.mutation({
       query: (data: any) => {
-          return {
-              url: "/auth/enter-otp",
-              method: "POST",
-              body: data
-          }
-      },
-
-  }),
-  resetPass: build.mutation({
-      query: (data: any) => {
-          return {
-              url: "/auth/reset-password",
-              method: "POST",
-              body: data
-          }
-      },
-      invalidatesTags: ["User"], 
-
-
-  }),
-  contact: build.mutation({
-    query: (data: any) => {
         return {
-            url: "/contact",
-            method: "POST",
-            body: data
-        }
-    },
+          url: "/auth/enter-otp",
+          method: "POST",
+          body: data,
+        };
+      },
+    }),
 
+    resetPass: build.mutation({
+      query: (data: any) => {
+        return {
+          url: "/auth/reset-password",
+          method: "POST",
+          body: data,
+        };
+      },
+      invalidatesTags: ["User"],
     }),
-  getMe: build.query({
-    query: () => ({
-      url: "/users/me",
-      method: "GET",
+
+    contact: build.mutation({
+      query: (data: any) => {
+        return {
+          url: "/contact",
+          method: "POST",
+          body: data,
+        };
+      },
     }),
-    providesTags:["User"]
-  }),
+
+    getMe: build.query({
+      query: () => ({
+        url: "/users/me",
+        method: "GET",
+      }),
+      providesTags: ["User"],
+    }),
+
+    updateProfile: build.mutation({
+      query: (data: any) => ({
+        url: "/users/update-profile",
+        method: "PUT",
+        body: data,
+      }),
+      invalidatesTags: ["User"],
+    }),
+
+    // New endpoint to change password
+    changePassword: build.mutation({
+      query: (data: any) => ({
+        url: "/users/change-password",
+        method: "PUT",
+        body: data, 
+      }),
+      invalidatesTags: ["User"],
+    }),
   }),
 });
 
-export const { useLoginUserMutation,useRegisterUserMutation,useForgotUserMutation,useOtpUserMutation,useResetPassMutation,useContactMutation, useGetMeQuery} = userApi
+export const {
+  useLoginUserMutation,
+  useRegisterUserMutation,
+  useForgotUserMutation,
+  useOtpUserMutation,
+  useResetPassMutation,
+  useContactMutation,
+  useGetMeQuery,
+  useUpdateProfileMutation,
+  useChangePasswordMutation, // Newly added hook
+} = userApi;

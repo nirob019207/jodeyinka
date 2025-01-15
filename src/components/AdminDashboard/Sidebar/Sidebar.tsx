@@ -21,8 +21,8 @@ const Sidebar = () => {
    const menuItems = [
     { href: "/admin/dashboard", icon: LucideLayoutDashboard, label: "Dashboard", roles: ["ADMIN", "SPONSOR", "MEMBER"] },
     { href: "/admin/profile", icon: LuUser, label: "Profile", roles: ["ADMIN", "SPONSOR", "USER", "MEMBER"] },
-    { href: "/admin/event-history", icon: RxMagicWand, label: "Event", roles: ["ADMIN", "MEMBER"] },
-    { href: "/admin/transaction", icon: GrTransaction, label: "ALL Transaction", roles: ["MEMBER"] },
+    { href: "/admin/event-history", icon: RxMagicWand, label: "Event", roles: [ "MEMBER"] },
+    { href: "/admin/all-transaction", icon: GrTransaction, label: "ALL Transaction", roles: ["ADMIN","MEMBER"] },
 
     { href: "/admin/transaction", icon: GrTransaction, label: "Transaction", roles: ["MEMBER"] },
     // { href: "/admin/donate", icon: RiMoneyDollarBoxLine, label: "Donate", roles: ["ADMIN", "SPONSOR", "USER"] },
@@ -64,7 +64,7 @@ const Sidebar = () => {
         </ul>
       </nav>
 
-      <div className="p-4 cursor-pointer">
+      <div className="p-4 cursor-pointer mt-8">
         <span className="flex items-center space-x-2">
           <RiLogoutCircleLine className="text-[24px] font-bold" />
           <span>Log Out</span>
