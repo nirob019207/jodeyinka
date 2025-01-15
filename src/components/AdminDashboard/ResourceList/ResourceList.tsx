@@ -1,6 +1,6 @@
-"use client"
+"use client";
 import React from "react";
-import { FaTrashAlt } from "react-icons/fa"; 
+import { FaTrashAlt } from "react-icons/fa";
 import {
   Table,
   TableBody,
@@ -17,7 +17,6 @@ import { useGetResourceQuery } from "@/redux/Api/resourceApi";
 type ResourceEvent = {
   fileUrl: string;
   title: string;
-//   joinDate: string;
   description: string;
   type: string;
 };
@@ -28,9 +27,35 @@ const ResourceList = () => {
     limit: "",
   });
   const ResourceList = data?.data;
-//   console.log(mediaList)
 
-  
+  if (isLoading) {
+    return (
+      <div className="px-16 py-6">
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-xl font-semibold text-darkBlack">Resource History</h2>
+          <Link
+            href={"/admin/create-resource"}
+            className="text-blue-500 hover:text-blue-700"
+          >
+            Create Resource
+          </Link>
+        </div>
+
+        {/* Loading Spinner */}
+        <div className="flex justify-center items-center py-10">
+          <div className="animate-spin rounded-full border-t-4 border-blue-500 h-16 w-16"></div>
+        </div>
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="px-16 py-6">
+        <p className="text-red-500 text-center">Error fetching data. Please try again later.</p>
+      </div>
+    );
+  }
 
   return (
     <div className="px-16 py-6">
@@ -44,29 +69,15 @@ const ResourceList = () => {
         </Link>
       </div>
 
-      {/* Replacing TableContainer with a div for responsiveness */}
-      <div className="overflow-x-auto bg-white  rounded-lg">
+      <div className="overflow-x-auto bg-white rounded-lg">
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className="text-default text-base text-center">
-                Image
-              </TableHead>
-              <TableHead className="text-default text-base text-center">
-                Resource Title
-              </TableHead>
-              {/* <TableHead className="text-default text-base text-center">
-                Join Date
-              </TableHead> */}
-              <TableHead className="text-default text-base text-center">
-                Description
-              </TableHead>
-              <TableHead className="text-default text-base text-center">
-                Type
-              </TableHead>
-              <TableHead className="text-default text-base text-center">
-                Actions
-              </TableHead>
+              <TableHead className="text-default text-base text-center">Image</TableHead>
+              <TableHead className="text-default text-base text-center">Resource Title</TableHead>
+              <TableHead className="text-default text-base text-center">Description</TableHead>
+              <TableHead className="text-default text-base text-center">Type</TableHead>
+              <TableHead className="text-default text-base text-center">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -84,9 +95,6 @@ const ResourceList = () => {
                 <TableCell className="px-4 py-4 text-darkGray text-center">
                   {event.title}
                 </TableCell>
-                {/* <TableCell className="px-4 py-4 text-darkGray text-center">
-                  {event.joinDate}
-                </TableCell> */}
                 <TableCell className="px-4 py-4 text-darkGray text-center">
                   {event.description}
                 </TableCell>

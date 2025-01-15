@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React from "react";
 import { FaTrashAlt } from "react-icons/fa"; // Importing trash icon from react-icons
 import {
@@ -9,15 +9,15 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-;
+
 import Image from "next/image";
 import Link from "next/link";
 import { useGetResourceQuery } from "@/redux/Api/resourceApi";
 
+// Type for resource events
 type MediaEvent = {
   fileUrl: string;
   title: string;
-//   joinDate: string;
   description: string;
   type: string;
 };
@@ -28,66 +28,35 @@ const MedaiList = () => {
     limit: 10,
   });
   const mediaList = data?.data;
-  console.log(mediaList)
 
-  //   const events = [
-  //     {
-  //       image: event,
-  //       eventName: 'Gabagool & Jam Vape',
-  //       joinDate: '11/09/2024',
-  //       location: 'Malaysia',
-  //       time: '3:00 PM'
-  //     },
-  //     {
-  //       image: e1,
-  //       eventName: 'Gabagool & Jam Vape',
-  //       joinDate: '11/09/2024',
-  //       location: 'UK',
-  //       time: '3:00 PM'
-  //     },
-  //     {
-  //       image: e2,
-  //       eventName: 'Gabagool & Jam Vape',
-  //       joinDate: '11/09/2024',
-  //       location: 'Australia',
-  //       time: '3:00 PM'
-  //     },
-  //     {
-  //       image: event,
-  //       eventName: 'Gabagool & Jam Vape',
-  //       joinDate: '11/09/2024',
-  //       location: 'Germany',
-  //       time: '3:00 PM'
-  //     },
-  //     {
-  //       image: e1,
-  //       eventName: 'Gabagool & Jam Vape',
-  //       joinDate: '11/09/2024',
-  //       location: 'France',
-  //       time: '3:00 PM'
-  //     },
-  //     {
-  //       image: e2,
-  //       eventName: 'Gabagool & Jam Vape',
-  //       joinDate: '11/09/2024',
-  //       location: 'Denmark',
-  //       time: '3:00 PM'
-  //     },
-  //     {
-  //       image: event,
-  //       eventName: 'Gabagool & Jam Vape',
-  //       joinDate: '11/09/2024',
-  //       location: 'Italy',
-  //       time: '3:00 PM'
-  //     },
-  //     {
-  //       image: e1,
-  //       eventName: 'Gabagool & Jam Vape',
-  //       joinDate: '11/09/2024',
-  //       location: 'Paris',
-  //       time: '3:00 PM'
-  //     }
-  //   ];
+  if (isLoading) {
+    return (
+      <div className="px-16 py-6">
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-xl font-semibold text-darkBlack">Media History</h2>
+          <Link
+            href={"/admin/create-media"}
+            className="text-blue-500 hover:text-blue-700"
+          >
+            Create Media
+          </Link>
+        </div>
+
+        {/* Loading Spinner */}
+        <div className="flex justify-center items-center py-10">
+          <div className="animate-spin rounded-full border-t-4 border-blue-500 h-16 w-16"></div>
+        </div>
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="px-16 py-6">
+        <p className="text-red-500 text-center">Error fetching data. Please try again later.</p>
+      </div>
+    );
+  }
 
   return (
     <div className="px-16 py-6">
@@ -101,8 +70,7 @@ const MedaiList = () => {
         </Link>
       </div>
 
-      {/* Replacing TableContainer with a div for responsiveness */}
-      <div className="overflow-x-auto bg-white  rounded-lg">
+      <div className="overflow-x-auto bg-white rounded-lg">
         <Table>
           <TableHeader>
             <TableRow>
@@ -112,9 +80,6 @@ const MedaiList = () => {
               <TableHead className="text-default text-base text-center">
                 Media Title
               </TableHead>
-              {/* <TableHead className="text-default text-base text-center">
-                Join Date
-              </TableHead> */}
               <TableHead className="text-default text-base text-center">
                 Description
               </TableHead>
@@ -141,9 +106,6 @@ const MedaiList = () => {
                 <TableCell className="px-4 py-4 text-darkGray text-center">
                   {event.title}
                 </TableCell>
-                {/* <TableCell className="px-4 py-4 text-darkGray text-center">
-                  {event.joinDate}
-                </TableCell> */}
                 <TableCell className="px-4 py-4 text-darkGray text-center">
                   {event.description}
                 </TableCell>

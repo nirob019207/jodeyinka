@@ -19,7 +19,7 @@ const Sidebar = () => {
   const pathname = usePathname();
 
   return (
-    <aside className="w-72  bg-white h-[855px]">
+    <aside className="w-72  bg-white max-h-screen">
       <div className="py-7 pl-6 text-xl font-bold flex items-center space-x-2">
         <div className="w-10">
           <Image src={adminlogo} alt="logo" />
@@ -61,16 +61,16 @@ const Sidebar = () => {
           </li>
           <li>
             <Link
-              href="/admin/create-event"
+              href="/admin/event-history"
               className={`block pl-6 py-2 mb-3  ${
-                pathname === "/admin/create-event"
+                pathname === "/admin/event-history"
                   ? "bg-blue-700 py-4 text-white rounded-[8px] text-[18px] font-medium"
                   : ""
               }`}
             >
               <span className="flex items-center space-x-2">
                 <RxMagicWand className="text-[24px] font-bold" />
-                <span>Create Event</span>
+                <span>Event</span>
               </span>
             </Link>
           </li>
@@ -152,19 +152,7 @@ const Sidebar = () => {
               </span>
             </Link>
           </li>
-          <li>
-            <Link
-              href="/admin/event-history"
-              className={`block pl-6 py-2 mb-3  ${
-                pathname === "/admin/event-history" ? "bg-blue-700 py-4 text-white rounded-[8px] text-[18px] font-medium" : ""
-              }`}
-            >
-              <span className="flex items-center space-x-2">
-              <GoHistory className="text-[24px] font-bold" />
-                <span>Event History</span>
-              </span>
-            </Link>
-          </li>
+         
         </ul>
       </nav>
 
