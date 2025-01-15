@@ -13,7 +13,7 @@ export default function MembershipPay() {
     try {
       // Send the payment request to PayPal API
       const response = await paypal({
-        purpose: "DONATE",
+        purpose: "MEMBERSHIP",
         amount: "1",
       }).unwrap();
 

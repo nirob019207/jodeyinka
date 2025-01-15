@@ -26,10 +26,12 @@ const Sidebar = () => {
 
     { href: "/admin/transaction", icon: GrTransaction, label: "Transaction", roles: ["MEMBER"] },
     // { href: "/admin/donate", icon: RiMoneyDollarBoxLine, label: "Donate", roles: ["ADMIN", "SPONSOR", "USER"] },
+    { href: "/admin/sponsor", icon: GrTransaction, label: "Sponosr Request", roles: ["ADMIN"] },
+
     { href: "/admin/resource-list", icon: GrResources, label: "Resource", roles: ["ADMIN","MEMBER"] },
     { href: "/admin/media-list", icon: MdOutlinePermMedia, label: "Media", roles: ["ADMIN"] },
     { href: "/admin/blog-list", icon: SiBlogger, label: "Blog", roles: ["ADMIN","MEMBER"] },
-    { href: "/admin/sponsor", icon: FaRegUser, label: "Sponsor", roles: ["ADMIN","MEMBER"] },
+    { href: "/admin/sponsor", icon: FaRegUser, label: "Sponsor", roles: ["ADMIN"] },
   ];
   const filteredMenuItems = menuItems.filter(item => item.roles.includes(role));
 

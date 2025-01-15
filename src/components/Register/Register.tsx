@@ -76,9 +76,9 @@ export default function Register() {
 
       await registerUser(updatedData).unwrap()
       
-      router.push('/membership')
+      router.push('/')
 
-      toast.success('Registration successful! Welcome aboard.')
+      toast.success('Registration successful! We will sent you a Email ')
     } catch (error: any) {
       if (error.data?.message) {
         toast.error(error.data.message) // Display backend error
