@@ -120,10 +120,10 @@ const MediaContent: React.FC = () => {
                   <Image src={comment} alt="comment" />
                   <p>Comments</p>
                 </div>
-                <div className="flex items-center gap-2 bg-[#FFFFFF] rounded-[4px] p-2">
+                {/* <div className="flex items-center gap-2 bg-[#FFFFFF] rounded-[4px] p-2">
                   <Image src={download} alt="download" />
                   <p>Download</p>
-                </div>
+                </div> */}
                 <div className="bg-[#FFFFFF] rounded-[4px]">
                   <Image src={dots} alt="dots" />
                 </div>

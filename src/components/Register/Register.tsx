@@ -26,6 +26,7 @@ const states = [
 ]
 
 const formSchema = z.object({
+  organizationName:z.any(),
   firstName: z.string().min(2, 'First name is required'),
   lastName: z.string().min(2, 'Last name is required'),
   country: z.string().min(1, 'Country is required'),
@@ -47,6 +48,7 @@ export default function Register() {
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [registerUser,{isLoading}]=useRegisterUserMutation()
+  const [membershipType, setMembershipType] = useState('membership')
   const router=useRouter()
 
 
@@ -61,6 +63,7 @@ export default function Register() {
   const onSubmit: SubmitHandler<FormSchemaType> = async (data) => {
     try {
       const updatedData = {
+        organizationName:data.organizationName,
         firstName: data.firstName,
         lastName: data.lastName,
         country: data.country,
@@ -73,7 +76,7 @@ export default function Register() {
 
       await registerUser(updatedData).unwrap()
       
-      router.push('/login')
+      router.push('/membership')
 
       toast.success('Registration successful! Welcome aboard.')
     } catch (error: any) {
@@ -98,6 +101,48 @@ export default function Register() {
           </p>
         </div>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700 mb-2">Membership Type</label>
+          <div className="flex space-x-4">
+            <label className="inline-flex items-center">
+              <input
+                type="radio"
+                className="form-radio text-blue-600"
+                name="membershipType"
+                value="membership"
+                checked={membershipType === 'membership'}
+                onChange={(e) => setMembershipType(e.target.value)}
+              />
+              <span className="ml-2">Membership</span>
+            </label>
+            <label className="inline-flex items-center">
+              <input
+                type="radio"
+                className="form-radio text-blue-600"
+                name="membershipType"
+                value="sponsorship"
+                checked={membershipType === 'sponsorship'}
+                onChange={(e) => setMembershipType(e.target.value)}
+              />
+              <span className="ml-2">Sponsorship</span>
+            </label>
+          </div>
+        </div>
+        {membershipType === 'sponsorship' && (
+          <div className="mb-4">
+            <label htmlFor="company" className="block text-sm font-medium text-gray-700">Company Name</label>
+            <input
+              type="text"
+              id="company"
+              {...register('organizationName')}
+              className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+              placeholder="Enter company name"
+            />
+            {errors.organizationName && (
+              <p className="mt-1 text-sm text-red-500">{errors.organizationName.message}</p>
+            )}
+          </div>
+        )}
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             <div>
               <label htmlFor="firstName" className="block text-sm font-medium text-gray-700">First Name</label>

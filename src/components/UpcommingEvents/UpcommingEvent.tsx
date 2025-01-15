@@ -52,7 +52,66 @@ const UpcomingEvent = () => {
 
   // Handle loading and error states
   if (isLoading) {
-    return <p>Loading...</p>;
+    return <div className="container">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 md:gap-6 animate-pulse gap-4">
+  <div className="rounded-lg overflow-hidden bg-white shadow-md">
+    <div className="relative">
+        <div className="w-full h-[200px] bg-gray-200"></div>
+        <div className="absolute top-[175px] right-0 bg-[#FFFFFF1A] backdrop-blur-[24px] text-center py-2 px-4 rounded-lg">
+            <div className="h-4 bg-gray-200 rounded w-1/4 mb-2"></div>
+            <div className="h-4 bg-gray-200 rounded w-1/4"></div>
+        </div>
+    </div>
+
+    <div className="p-4">
+      <div className="flex items-center mb-3 mt-6">
+        <div className="h-4 bg-gray-200 rounded w-full"></div>
+      </div>
+      <div className="h-4 bg-gray-200 rounded w-1/2 mb-2"></div>
+      <div className="h-4 bg-gray-200 rounded w-full mb-2"></div>
+      <div className="h-10 bg-gray-200 rounded w-1/4"></div>
+    </div>
+  </div>
+  
+  <div className="rounded-lg overflow-hidden bg-white shadow-md">
+    <div className="relative">
+        <div className="w-full h-[200px] bg-gray-200"></div>
+        <div className="absolute top-[175px] right-0 bg-[#FFFFFF1A] backdrop-blur-[24px] text-center py-2 px-4 rounded-lg">
+            <div className="h-4 bg-gray-200 rounded w-1/4 mb-2"></div>
+            <div className="h-4 bg-gray-200 rounded w-1/4"></div>
+        </div>
+    </div>
+
+    <div className="p-4">
+      <div className="flex items-center mb-3 mt-6">
+        <div className="h-4 bg-gray-200 rounded w-full"></div>
+      </div>
+      <div className="h-4 bg-gray-200 rounded w-1/2 mb-2"></div>
+      <div className="h-4 bg-gray-200 rounded w-full mb-2"></div>
+      <div className="h-10 bg-gray-200 rounded w-1/4"></div>
+    </div>
+  </div>
+
+  <div className="rounded-lg overflow-hidden bg-white shadow-md">
+    <div className="relative">
+        <div className="w-full h-[200px] bg-gray-200"></div>
+        <div className="absolute top-[175px] right-0 bg-[#FFFFFF1A] backdrop-blur-[24px] text-center py-2 px-4 rounded-lg">
+            <div className="h-4 bg-gray-200 rounded w-1/4 mb-2"></div>
+            <div className="h-4 bg-gray-200 rounded w-1/4"></div>
+        </div>
+    </div>
+
+    <div className="p-4">
+      <div className="flex items-center mb-3 mt-6">
+        <div className="h-4 bg-gray-200 rounded w-full"></div>
+      </div>
+      <div className="h-4 bg-gray-200 rounded w-1/2 mb-2"></div>
+      <div className="h-4 bg-gray-200 rounded w-full mb-2"></div>
+      <div className="h-10 bg-gray-200 rounded w-1/4"></div>
+    </div>
+  </div>
+</div>
+    </div>;
   }
 
   if (isError || !events) {

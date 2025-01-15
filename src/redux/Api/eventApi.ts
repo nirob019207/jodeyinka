@@ -9,6 +9,8 @@ const eventApi = baseApi.injectEndpoints({
         method: "GET",
 
       }),
+      providesTags:['Events']
+
     }),
     eventDetails: build.query({
       query: ({id}) => ({
@@ -16,6 +18,7 @@ const eventApi = baseApi.injectEndpoints({
         method: "GET",
     
       }),
+      providesTags:['Events']
     }),
 
     createEvent: build.mutation({

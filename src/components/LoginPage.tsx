@@ -4,9 +4,9 @@ import { Eye, EyeOff } from "lucide-react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { SerializedError } from "@reduxjs/toolkit";
-import { toast } from "sonner"; // Assuming you're using sonner
-import cookies from "js-cookie"; // Package to handle cookies
+import {jwtDecode} from "jwt-decode"; // Import jwt-decode for token decoding
+import cookies from "js-cookie";
+import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -25,7 +25,6 @@ import { setUser } from "@/redux/ReduxFunction";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 
-// Zod validation schema for login
 const loginSchema = z.object({
   email: z
     .string()
@@ -38,9 +37,13 @@ const loginSchema = z.object({
 
 type FormData = z.infer<typeof loginSchema>;
 
+interface DecodedToken {
+  role: string;
+  email: string;
+}
+
 export default function LoginPage() {
-  const [login, { data: response, isLoading, isError, error }] =
-    useLoginUserMutation();
+  const [login, { isLoading, isError, error }] = useLoginUserMutation();
   const [showPassword, setShowPassword] = React.useState(false);
   const dispatch = useDispatch();
   const router = useRouter();
@@ -55,32 +58,37 @@ export default function LoginPage() {
 
   const onSubmit: SubmitHandler<FormData> = async (formData) => {
     try {
-      console.log("Form data:", formData); // Debugging log
-      const result = await login(formData).unwrap(); // Await the result first
-      console.log("Login response:", result); // Check the result
-  
+      const result = await login(formData).unwrap();
+      
       if (result?.data) {
-       
-        const { accessToken, role, email } = result.data;
-        
+        const { accessToken } = result.data;
+
+        // Decode the token to get role and other details
+        const decoded: DecodedToken = jwtDecode(accessToken);
+        const { role, email } = decoded;
+
         // Dispatch the user data to Redux
         dispatch(setUser({ role, token: accessToken, email }));
-  
+
         // Store the token in cookies
         cookies.set("token", accessToken, { expires: 7 });
-  
-        // Redirect to the home page
-        router.push("/");
-  
+
+        // Redirect based on the role
+        if (role === "ADMIN") {
+          router.push("/admin");
+        } else {
+          router.push("/");
+        }
+
         // Show success toast
         toast.success("Login successful!");
       }
     } catch (err) {
-      console.error("Login error:", err); // Log the error for debugging
+      console.error("Login error:", err);
       toast.error("Login failed. Please check your credentials.");
     }
   };
-  
+
   return (
     <div className="flex justify-center items-center h-screen">
       <Card className="w-full max-w-md mx-auto">
