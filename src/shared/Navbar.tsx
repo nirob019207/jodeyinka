@@ -78,7 +78,7 @@ export const Navbar = () => {
     // Remove the token from cookies
     cookies.remove("token");
 
-    // Display success toast notification
+ 
     toast.success("Logged out successfully!");
     router.push("/login");
   };
@@ -150,12 +150,12 @@ export const Navbar = () => {
                     >
                       Logout
                     </button>
-                    <button
+                    <Link href={"/admin"}
                       className="block w-full text-left px-4 py-2 hover:bg-gray-200"
-                      onClick={handleLogout}
+                    
                     >
                       Dashboard
-                    </button>
+                    </Link>
                   </div>
                 )}
               </div>
