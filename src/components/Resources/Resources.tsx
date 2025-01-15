@@ -6,6 +6,13 @@ import Link from "next/link";
 import { useGetResourceQuery } from "@/redux/Api/resourceApi";
 import CardSkeleton from "../CardSkelaton/CardSkeleton";
 
+interface Resource {
+  id: string;
+  fileUrl: string;
+  title: string;
+  description: string;
+}
+
 const Resources = () => {
   const { data, isLoading, isError } = useGetResourceQuery({
     type: "RESOURCE",
@@ -28,22 +35,23 @@ const Resources = () => {
         </div>
 
         {/* Resource Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {
-          
-            resources?.map((resource) => (
-              <div
-                key={resource?.id}
-                className="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300"
-              >
-                {/* Image */}
-                <Image
-                  src={resource?.fileUrl}
-                  alt={resource?.title}
-                  className="w-full h-[200px] object-cover"
-                  width={300}
-                  height={200}
-                />
+          {isLoading ? (
+            <CardSkeleton cards={3} />
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {resources?.map((resource: Resource) => (
+                <div
+                  key={resource?.id}
+                  className="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300"
+                >
+            {/* Image */}
+            <Image
+              src={resource?.fileUrl}
+              alt={resource?.title}
+              className="w-full h-[200px] object-cover"
+              width={300}
+              height={200}
+            />
 
                 {/* Content */}
                 <div className="px-4">
@@ -52,16 +60,18 @@ const Resources = () => {
                   </h3>
                   <p className="text-gray mt-2">{resource?.description}</p>
                   <div className="mt-6 pb-7">
-                  <Link href={`/media-details/${resource?.id}`}
-                  className="border border-[#DDDDDD] w-full py-3 px-3 text-center text-blue-600 font-medium rounded-[8px]"
+                    <Link
+                      href={`/media-details/${resource?.id}`}
+                      className="border border-[#DDDDDD] w-full py-3 px-3 text-center text-blue-600 font-medium rounded-[8px]"
                     >
                       View More
                     </Link>
                   </div>
                 </div>
-                </div>
-              ))}
-        </div>
+              </div>
+            ))}
+            </div>
+          )}
       </div>
     </div>
   );

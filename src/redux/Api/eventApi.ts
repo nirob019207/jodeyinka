@@ -32,4 +32,4 @@ const eventApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useEventQuery,useEventDetailsQuery} = eventApi
+export const { useEventQuery,useEventDetailsQuery,useCreateEventMutation} = eventApi
