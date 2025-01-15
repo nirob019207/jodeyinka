@@ -19,7 +19,7 @@ const eventApi = baseApi.injectEndpoints({
     }),
 
     createEvent: build.mutation({
-      query: ({data , eventImage}) => ({
+      query: (data) => ({
         url: "/events",
         method: "POST",
         body: data,
