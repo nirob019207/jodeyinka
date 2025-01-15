@@ -10,6 +10,7 @@ import Link from "next/link";
 const UpcomingEvent = () => {
   const { data, isLoading, isError } = useEventQuery({ limit: 3 });
   const events = data?.data; // Show only the latest 3 events
+  console.log("events", events);
 
   // Helper function to format date and time
   function formatMonthAndTime(isoDate) {
@@ -52,72 +53,74 @@ const UpcomingEvent = () => {
 
   // Handle loading and error states
   if (isLoading) {
-    return <div className="container">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 md:gap-6 animate-pulse gap-4">
-  <div className="rounded-lg overflow-hidden bg-white shadow-md">
-    <div className="relative">
-        <div className="w-full h-[200px] bg-gray-200"></div>
-        <div className="absolute top-[175px] right-0 bg-[#FFFFFF1A] backdrop-blur-[24px] text-center py-2 px-4 rounded-lg">
-            <div className="h-4 bg-gray-200 rounded w-1/4 mb-2"></div>
-            <div className="h-4 bg-gray-200 rounded w-1/4"></div>
+    return (
+      <div className="container">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 md:gap-6 animate-pulse gap-4">
+          <div className="rounded-lg overflow-hidden bg-white shadow-md">
+            <div className="relative">
+              <div className="w-full h-[200px] bg-gray-200"></div>
+              <div className="absolute top-[175px] right-0 bg-[#FFFFFF1A] backdrop-blur-[24px] text-center py-2 px-4 rounded-lg">
+                <div className="h-4 bg-gray-200 rounded w-1/4 mb-2"></div>
+                <div className="h-4 bg-gray-200 rounded w-1/4"></div>
+              </div>
+            </div>
+
+            <div className="p-4">
+              <div className="flex items-center mb-3 mt-6">
+                <div className="h-4 bg-gray-200 rounded w-full"></div>
+              </div>
+              <div className="h-4 bg-gray-200 rounded w-1/2 mb-2"></div>
+              <div className="h-4 bg-gray-200 rounded w-full mb-2"></div>
+              <div className="h-10 bg-gray-200 rounded w-1/4"></div>
+            </div>
+          </div>
+
+          <div className="rounded-lg overflow-hidden bg-white shadow-md">
+            <div className="relative">
+              <div className="w-full h-[200px] bg-gray-200"></div>
+              <div className="absolute top-[175px] right-0 bg-[#FFFFFF1A] backdrop-blur-[24px] text-center py-2 px-4 rounded-lg">
+                <div className="h-4 bg-gray-200 rounded w-1/4 mb-2"></div>
+                <div className="h-4 bg-gray-200 rounded w-1/4"></div>
+              </div>
+            </div>
+
+            <div className="p-4">
+              <div className="flex items-center mb-3 mt-6">
+                <div className="h-4 bg-gray-200 rounded w-full"></div>
+              </div>
+              <div className="h-4 bg-gray-200 rounded w-1/2 mb-2"></div>
+              <div className="h-4 bg-gray-200 rounded w-full mb-2"></div>
+              <div className="h-10 bg-gray-200 rounded w-1/4"></div>
+            </div>
+          </div>
+
+          <div className="rounded-lg overflow-hidden bg-white shadow-md">
+            <div className="relative">
+              <div className="w-full h-[200px] bg-gray-200"></div>
+              <div className="absolute top-[175px] right-0 bg-[#FFFFFF1A] backdrop-blur-[24px] text-center py-2 px-4 rounded-lg">
+                <div className="h-4 bg-gray-200 rounded w-1/4 mb-2"></div>
+                <div className="h-4 bg-gray-200 rounded w-1/4"></div>
+              </div>
+            </div>
+
+            <div className="p-4">
+              <div className="flex items-center mb-3 mt-6">
+                <div className="h-4 bg-gray-200 rounded w-full"></div>
+              </div>
+              <div className="h-4 bg-gray-200 rounded w-1/2 mb-2"></div>
+              <div className="h-4 bg-gray-200 rounded w-full mb-2"></div>
+              <div className="h-10 bg-gray-200 rounded w-1/4"></div>
+            </div>
+          </div>
         </div>
-    </div>
-
-    <div className="p-4">
-      <div className="flex items-center mb-3 mt-6">
-        <div className="h-4 bg-gray-200 rounded w-full"></div>
       </div>
-      <div className="h-4 bg-gray-200 rounded w-1/2 mb-2"></div>
-      <div className="h-4 bg-gray-200 rounded w-full mb-2"></div>
-      <div className="h-10 bg-gray-200 rounded w-1/4"></div>
-    </div>
-  </div>
-  
-  <div className="rounded-lg overflow-hidden bg-white shadow-md">
-    <div className="relative">
-        <div className="w-full h-[200px] bg-gray-200"></div>
-        <div className="absolute top-[175px] right-0 bg-[#FFFFFF1A] backdrop-blur-[24px] text-center py-2 px-4 rounded-lg">
-            <div className="h-4 bg-gray-200 rounded w-1/4 mb-2"></div>
-            <div className="h-4 bg-gray-200 rounded w-1/4"></div>
-        </div>
-    </div>
-
-    <div className="p-4">
-      <div className="flex items-center mb-3 mt-6">
-        <div className="h-4 bg-gray-200 rounded w-full"></div>
-      </div>
-      <div className="h-4 bg-gray-200 rounded w-1/2 mb-2"></div>
-      <div className="h-4 bg-gray-200 rounded w-full mb-2"></div>
-      <div className="h-10 bg-gray-200 rounded w-1/4"></div>
-    </div>
-  </div>
-
-  <div className="rounded-lg overflow-hidden bg-white shadow-md">
-    <div className="relative">
-        <div className="w-full h-[200px] bg-gray-200"></div>
-        <div className="absolute top-[175px] right-0 bg-[#FFFFFF1A] backdrop-blur-[24px] text-center py-2 px-4 rounded-lg">
-            <div className="h-4 bg-gray-200 rounded w-1/4 mb-2"></div>
-            <div className="h-4 bg-gray-200 rounded w-1/4"></div>
-        </div>
-    </div>
-
-    <div className="p-4">
-      <div className="flex items-center mb-3 mt-6">
-        <div className="h-4 bg-gray-200 rounded w-full"></div>
-      </div>
-      <div className="h-4 bg-gray-200 rounded w-1/2 mb-2"></div>
-      <div className="h-4 bg-gray-200 rounded w-full mb-2"></div>
-      <div className="h-10 bg-gray-200 rounded w-1/4"></div>
-    </div>
-  </div>
-</div>
-    </div>;
+    );
   }
 
-  if (isError || !events) {
+  if (isError || !events || undefined) {
     return (
       <p className="bg-[#F5F5F5] text-center py-[120px] text-[20px] font-bold text-darkBlack">
-        Something went wrong. Please try again later.
+        No events found !
       </p>
     );
   }
@@ -140,62 +143,74 @@ const UpcomingEvent = () => {
 
         {/* Event Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 md:gap-6">
-          {events?.map((event) => (
-            <div
-              key={event.id}
-              className="rounded-lg overflow-hidden bg-white shadow-md"
-            >
-              {/* Event Image */}
-              <div className="relative">
-                <Image
-                  src={event?.imageUrl}
-                  alt={event?.title}
-                  className="w-full h-[200px] object-cover"
-                  width={357}
-                  height={200}
-                />
-                {/* Date Overlay */}
-                <div className="absolute top-[175px] right-0 bg-[#FFFFFF1A] backdrop-blur-[24px] text-center py-2 px-4 rounded-lg">
-                  <span className=" text-[#FFFFFF]">
-                    {new Date(event.date).toLocaleString("en-US", {
-                      month: "short",
-                    })}
-                  </span>
-                  <br />
-                  <span className="text-[25px] font-bold text-default">
-                    {new Date(event.date).getDate()}
-                  </span>
-                </div>
-              </div>
-
-              {/* Event Details */}
-              <div className="p-4">
-                {/* Event Time */}
-                <div className="flex items-center text-[#38383899] mb-3 mt-6">
-                  <FaRegClock className="mr-2 text-blue-600" />
-                  {formatTimeRange(event.date, event.endTime)}
-                </div>
-                {/* Event Title */}
-                <h3 className="text-[24px] font-medium text-default leading-[32px]">
-                  {event?.title}
-                </h3>
-                {/* Event Description */}
-                <p className="text-[#545454] mt-4 mb-6">{event?.description}</p>
-                {/* Read More Button */}
-                <div className="flex items-center">
-                  <Link
-                    href={`event-details/${event.id}`}
-                    className="flex items-center text-blue-600 hover:underline font-medium px-4 py-3 border border-[#005DF3] rounded-[8px]"
-                  >
-                    Read More{" "}
-                    <span className="ml-2">
-                      <MdArrowRightAlt className="text-[24px]" />
+          {events.length > 0 ? (
+            events?.map((event) => (
+              <div
+                key={event.id}
+                className="rounded-lg overflow-hidden bg-white shadow-md"
+              >
+                {/* Event Image */}
+                <div className="relative">
+                  <Image
+                    src={event?.imageUrl}
+                    alt={event?.title}
+                    className="w-full h-[200px] object-cover"
+                    width={357}
+                    height={200}
+                  />
+                  {/* Date Overlay */}
+                  <div className="absolute top-[175px] right-0 bg-[#FFFFFF1A] backdrop-blur-[24px] text-center py-2 px-4 rounded-lg">
+                    <span className=" text-[#FFFFFF]">
+                      {new Date(event.date).toLocaleString("en-US", {
+                        month: "short",
+                      })}
                     </span>
-                  </Link>
+                    <br />
+                    <span className="text-[25px] font-bold text-default">
+                      {new Date(event.date).getDate()}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Event Details */}
+                <div className="p-4">
+                  {/* Event Time */}
+                  <div className="flex items-center text-[#38383899] mb-3 mt-6">
+                    <FaRegClock className="mr-2 text-blue-600" />
+                    {formatTimeRange(event.date, event.endTime)}
+                  </div>
+                  {/* Event Title */}
+                  <h3 className="text-[24px] font-medium text-default leading-[32px]">
+                    {event?.title}
+                  </h3>
+                  {/* Event Description */}
+                  <p
+                    className="text-[#545454] mt-4 mb-6"
+                    dangerouslySetInnerHTML={{
+                      __html: event?.description.replace(/<\/?p>/g, ""),
+                    }}
+                  />
+
+                  {/* Read More Button */}
+                  <div className="flex items-center">
+                    <Link
+                      href={`event-details/${event.id}`}
+                      className="flex items-center text-blue-600 hover:underline font-medium px-4 py-3 border border-[#005DF3] rounded-[8px]"
+                    >
+                      Read More{" "}
+                      <span className="ml-2">
+                        <MdArrowRightAlt className="text-[24px]" />
+                      </span>
+                    </Link>
+                  </div>
                 </div>
               </div>
+            ))
+          ) : (
+            <div className="text-[25px] font-bold text-center col-span-full py-20">
+              <p>No events found</p>
             </div>
-          ))}
+          )}
         </div>
       </div>
     </div>

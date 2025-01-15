@@ -5,6 +5,7 @@ import { Editor } from "@tinymce/tinymce-react";
 import { useCreateEventMutation } from "@/redux/Api/eventApi";
 import { z } from "zod";
 import { toast } from "sonner";
+import Image from "next/image";
 
 const eventSchema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -16,7 +17,19 @@ const eventSchema = z.object({
 });
 
 const CreateEvent = () => {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<{
+    silverSponsorFee: string;
+    goldSponsorFee: string;
+    platinumSponsorFee: string;
+    title: string;
+    startDate: string;
+    endDate: string;
+    description: string;
+    address: string;
+    eventImage: File | null; // For the image file
+    latitude: number | null;
+    longitude: number | null;
+  }>({
     silverSponsorFee: "",
     goldSponsorFee: "",
     platinumSponsorFee: "",
@@ -24,6 +37,7 @@ const CreateEvent = () => {
     startDate: "",
     endDate: "",
     description: "",
+    address: "",
     eventImage: null, // For the image file
     latitude: null,
     longitude: null,
@@ -63,22 +77,27 @@ const CreateEvent = () => {
     }
   };
 
-  const fetchCoordinates = async (city, country) => {
+  interface CoordinatesResponse {
+    latitude: number;
+    longitude: number;
+  }
+
+  const fetchCoordinates = async (city: string, country: string): Promise<void> => {
     try {
       setLoadingLocation(true);
-  
+
       const apiUrl = `https://api.api-ninjas.com/v1/geocoding?city=${city}&country=${country}`;
-  
+
       const response = await fetch(apiUrl, {
         headers: { "X-Api-Key": "b/Ido8GzW6vvUiyCtQHQ6A==DhBMq0HZlI8UBlxJ" },
       });
-  
+
       if (!response.ok) {
         console.error("Failed request:", response.status);
         throw new Error("Error fetching coordinates");
       }
-  
-      const data = await response.json();
+
+      const data: CoordinatesResponse[] = await response.json();
       if (data.length > 0) {
         const { latitude, longitude } = data[0];
         setFormData((prevData) => ({
@@ -127,9 +146,9 @@ const CreateEvent = () => {
         formDataToSend.append("eventImage", formData.eventImage);
       }
   
-      for (let [key, value] of formDataToSend.entries()) {
-        console.log(key, value);
-      }
+      // for (let [key, value] of formDataToSend.entries()) {
+      //   // console.log(key, value);
+      // }
   
       await createEvent(formDataToSend);
       setFormData({
@@ -140,6 +159,7 @@ const CreateEvent = () => {
         startDate: "",
         endDate: "",
         description: "",
+        address: "",
         eventImage: null,
         latitude: null,
         longitude: null,
@@ -180,10 +200,12 @@ const CreateEvent = () => {
           </label>
           {imagePreview && (
             <div className="mt-4">
-              <img
+              <Image
                 src={imagePreview}
                 alt="Image preview"
                 className="w-[50px] h-[50px] object-cover"
+                width={50}
+                height={50}
               />
             </div>
           )}
