@@ -74,11 +74,20 @@ export default function LoginPage() {
         cookies.set("token", accessToken, { expires: 7 });
 
         // Redirect based on the role
-        if (role === "ADMIN") {
-          router.push("/admin");
-        } else {
-          router.push("/");
+        switch (role) {
+          case "USER":
+          case "SPONSOR":
+          case "MEMBERSHIP":
+            router.push("/");
+            break;
+          case "ADMIN":
+            router.push("/admin");
+            break;
+          default:
+            console.error("Unknown role:", role);
+            break;
         }
+        
 
         // Show success toast
         toast.success("Login successful!");

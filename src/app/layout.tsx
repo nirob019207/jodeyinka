@@ -6,7 +6,6 @@ import { Inter, Montserrat } from "next/font/google";
 import { Outfit } from "next/font/google"; // Import Outfit font
 import ReduxProvider from "@/redux/ReduxProvider";
 import { Toaster } from "sonner";
-import SquareScript from "@/components/SquareScript";
 
 
 export const metadata: Metadata = {
@@ -51,7 +50,6 @@ export default function RootLayout({
 
         </div>
         
-      <script src="https://js.squareup.com/v2/paymentform"></script>
       </body>
     </html>
   );
