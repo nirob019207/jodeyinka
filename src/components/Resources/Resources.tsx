@@ -6,6 +6,13 @@ import Link from "next/link";
 import { useGetResourceQuery } from "@/redux/Api/resourceApi";
 import CardSkeleton from "../CardSkelaton/CardSkeleton";
 
+interface Resource {
+  id: string;
+  fileUrl: string;
+  title: string;
+  description: string;
+}
+
 const Resources = () => {
   const { data, isLoading, isError } = useGetResourceQuery({
     type: "RESOURCE",

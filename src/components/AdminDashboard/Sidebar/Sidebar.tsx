@@ -11,13 +11,15 @@ import { GrResources, GrTransaction } from "react-icons/gr"
 import { RiLogoutCircleLine } from "react-icons/ri";
 import { LuUser } from "react-icons/lu";
 import { RiMoneyDollarBoxLine } from "react-icons/ri";
+import { MdOutlinePermMedia } from "react-icons/md";
+import { SiBlogger } from "react-icons/si";
 // import { useRouter } from "next/router";
 
 const Sidebar = () => {
   const pathname = usePathname();
 
   return (
-    <aside className="w-72  bg-white h-[855px]">
+    <aside className="w-72  bg-white max-h-screen">
       <div className="py-7 pl-6 text-xl font-bold flex items-center space-x-2">
         <div className="w-10">
           <Image src={adminlogo} alt="logo" />
@@ -59,16 +61,16 @@ const Sidebar = () => {
           </li>
           <li>
             <Link
-              href="/admin/create-event"
+              href="/admin/event-history"
               className={`block pl-6 py-2 mb-3  ${
-                pathname === "/admin/create-event"
+                pathname === "/admin/event-history"
                   ? "bg-blue-700 py-4 text-white rounded-[8px] text-[18px] font-medium"
                   : ""
               }`}
             >
               <span className="flex items-center space-x-2">
                 <RxMagicWand className="text-[24px] font-bold" />
-                <span>Create Event</span>
+                <span>Event</span>
               </span>
             </Link>
           </li>
@@ -100,14 +102,40 @@ const Sidebar = () => {
           </li>
           <li>
             <Link
-              href="/admin/resource"
+              href="/admin/resource-list"
               className={`block pl-6 py-2 mb-3  ${
-                pathname === "/admin/resource" ? "bg-blue-700 py-4 text-white rounded-[8px] text-[18px] font-medium" : ""
+                pathname === "/admin/resource-list" ? "bg-blue-700 py-4 text-white rounded-[8px] text-[18px] font-medium" : ""
               }`}
             >
               <span className="flex items-center space-x-2">
               <GrResources className="text-[24px] font-bold" />
                 <span>Resource</span>
+              </span>
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/admin/media-list"
+              className={`block pl-6 py-2 mb-3  ${
+                pathname === "/admin/media-list" ? "bg-blue-700 py-4 text-white rounded-[8px] text-[18px] font-medium" : ""
+              }`}
+            >
+              <span className="flex items-center space-x-2">
+              <MdOutlinePermMedia className="text-[24px] font-bold" />
+                <span>Media</span>
+              </span>
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/admin/blog-list"
+              className={`block pl-6 py-2 mb-3  ${
+                pathname === "/admin/blog-list" ? "bg-blue-700 py-4 text-white rounded-[8px] text-[18px] font-medium" : ""
+              }`}
+            >
+              <span className="flex items-center space-x-2">
+              <SiBlogger   className="text-[24px] font-bold" />
+                <span>Blog</span>
               </span>
             </Link>
           </li>
@@ -124,23 +152,11 @@ const Sidebar = () => {
               </span>
             </Link>
           </li>
-          <li>
-            <Link
-              href="/admin/event-history"
-              className={`block pl-6 py-2 mb-3  ${
-                pathname === "/admin/event-history" ? "bg-blue-700 py-4 text-white rounded-[8px] text-[18px] font-medium" : ""
-              }`}
-            >
-              <span className="flex items-center space-x-2">
-              <GoHistory className="text-[24px] font-bold" />
-                <span>Event History</span>
-              </span>
-            </Link>
-          </li>
+         
         </ul>
       </nav>
 
-      <div className="p-4  cursor-pointer mt-[220px]">
+      <div className="p-4  cursor-pointer">
         <span className="flex items-center space-x-2">
         <RiLogoutCircleLine className="text-[24px] font-bold"/>
           <span>Log Out</span>

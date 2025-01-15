@@ -12,35 +12,32 @@ import {
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEventQuery } from "@/redux/Api/eventApi";
+import { useGetResourceQuery } from "@/redux/Api/resourceApi";
 
-// Type for resource events
 type ResourceEvent = {
-  imageUrl: string;
+  fileUrl: string;
   title: string;
   description: string;
   type: string;
-  silverSponsorFee: number;
-  goldSponsorFee: number;
-  platinumSponsorFee: number;
 };
 
-const BlogList = () => {
-  const { data, isLoading, isError } = useEventQuery({limit: ""});
-
-  const EventList = data?.data;
-  console.log(EventList)
+const ResourceList = () => {
+  const { data, isLoading, isError } = useGetResourceQuery({
+    type: "RESOURCE",
+    limit: "",
+  });
+  const ResourceList = data?.data;
 
   if (isLoading) {
     return (
       <div className="px-16 py-6">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-semibold text-darkBlack">Blog History</h2>
+          <h2 className="text-xl font-semibold text-darkBlack">Resource History</h2>
           <Link
             href={"/admin/create-resource"}
             className="text-blue-500 hover:text-blue-700"
           >
-            Create Blog
+            Create Resource
           </Link>
         </div>
 
@@ -55,9 +52,7 @@ const BlogList = () => {
   if (isError) {
     return (
       <div className="px-16 py-6">
-        <p className="text-red-500 text-center">
-          Error fetching data. Please try again later.
-        </p>
+        <p className="text-red-500 text-center">Error fetching data. Please try again later.</p>
       </div>
     );
   }
@@ -65,52 +60,32 @@ const BlogList = () => {
   return (
     <div className="px-16 py-6">
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-semibold text-darkBlack">Event History</h2>
+        <h2 className="text-xl font-semibold text-darkBlack">Resource History</h2>
         <Link
-          href={"/admin/create-event"}
+          href={"/admin/create-resource"}
           className="text-blue-500 hover:text-blue-700"
         >
-          Create Event
+          Create Resource
         </Link>
       </div>
 
-      {/* Replacing TableContainer with a div for responsiveness */}
       <div className="overflow-x-auto bg-white rounded-lg">
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className="text-default text-base text-center">
-                Image
-              </TableHead>
-              <TableHead className="text-default text-base text-center">
-                Event Title
-              </TableHead>
-              <TableHead className="text-default text-base text-center">
-                Description
-              </TableHead>
-              <TableHead className="text-default text-base text-center">
-                Type
-              </TableHead>
-              <TableHead className="text-default text-base text-center">
-                Silver Sponsor Fee
-              </TableHead>
-              <TableHead className="text-default text-base text-center">
-                Gold Sponsor Fee
-              </TableHead>
-              <TableHead className="text-default text-base text-center">
-                Platinum Sponsor Fee
-              </TableHead>
-              <TableHead className="text-default text-base text-center">
-                Actions
-              </TableHead>
+              <TableHead className="text-default text-base text-center">Image</TableHead>
+              <TableHead className="text-default text-base text-center">Resource Title</TableHead>
+              <TableHead className="text-default text-base text-center">Description</TableHead>
+              <TableHead className="text-default text-base text-center">Type</TableHead>
+              <TableHead className="text-default text-base text-center">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {EventList?.map((event: ResourceEvent, index: number) => (
+            {ResourceList?.map((event: ResourceEvent, index: number) => (
               <TableRow key={index}>
                 <TableCell className="px-4 py-4 text-center">
                   <Image
-                    src={event.imageUrl}
+                    src={event.fileUrl}
                     alt={event.title}
                     width={48}
                     height={48}
@@ -124,16 +99,7 @@ const BlogList = () => {
                   {event.description}
                 </TableCell>
                 <TableCell className="px-4 py-4 text-darkGray text-center">
-                  {event?.type || "N/A"}
-                </TableCell>
-                <TableCell className="px-4 py-4 text-darkGray text-center">
-                  {event.silverSponsorFee}
-                </TableCell>
-                <TableCell className="px-4 py-4 text-darkGray text-center">
-                  {event.goldSponsorFee}
-                </TableCell>
-                <TableCell className="px-4 py-4 text-darkGray text-center">
-                  {event.platinumSponsorFee}
+                  {event.type}
                 </TableCell>
                 <TableCell className="px-4 py-4 text-darkGray text-center">
                   <button className="text-red-500 hover:text-red-700">
@@ -149,4 +115,4 @@ const BlogList = () => {
   );
 };
 
-export default BlogList;
+export default ResourceList;

@@ -2,7 +2,8 @@
 import { useState } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import { z } from "zod";
-import { useResourceCreateMutation } from "@/redux/Api/resourceApi";
+import { useMediaCreateMutation } from "@/redux/Api/resourceApi";
+import { toast } from "sonner";
 
 // Zod validation schema
 const resourceSchema = z.object({
@@ -12,8 +13,8 @@ const resourceSchema = z.object({
     .refine((file) => ["image/jpeg", "image/png", "application/pdf"].includes(file.type), "Invalid file type"),
 });
 
-export default function Resource() {
-  const [createresource] = useResourceCreateMutation();
+export default function Media() {
+  const [createMedia] = useMediaCreateMutation();
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -34,11 +35,11 @@ export default function Resource() {
         ...prev,
         resourceFile: selectedFile,
       }));
-      console.log("Selected file:", selectedFile.name); // Print the file name in the console
+      console.log("Selected file:", selectedFile.name);
     }
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
@@ -62,7 +63,16 @@ export default function Resource() {
       }
       
       // Make the API request using the mutation
-      createresource(formDataToSend);
+      const response = await createMedia(formDataToSend).unwrap();
+
+     // Show success toast
+
+    // Show success toast only if the request is successful
+    if (response?.success) {
+        toast.success("Media created successfully!");
+      } else {
+        toast.error("Something went wrong. Please try again.");
+      }
       
 
       // If validation is successful, print the values in console
@@ -80,7 +90,7 @@ export default function Resource() {
   return (
     <div className="px-16">
       {/* Header */}
-      <h1 className="text-3xl font-semibold mb-6 border-b border-[#E0E0E0] pb-3">Create Resource</h1>
+      <h1 className="text-3xl font-semibold mb-6 border-b border-[#E0E0E0] pb-3">Create Media</h1>
 
       {/* Main Container */}
       <div className="flex space-x-6">
@@ -140,7 +150,7 @@ export default function Resource() {
               type="submit"
               className="bg-blue-500 text-white px-8 py-3 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
             >
-              Create Resource
+              Create Mdeia
             </button>
           </div>
         </form>

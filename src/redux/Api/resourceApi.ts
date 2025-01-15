@@ -41,7 +41,29 @@ const resourceApi = baseApi.injectEndpoints({
 
     }),
 
+    mediaCreate: build.mutation({
+      query: (formDataToSend) => ({
+        url: `/resource/type/MEDIA`,
+        method: "POST",
+        body: formDataToSend
+
+      }),
+      invalidatesTags: ["Resource"],
+
+    }),
+
+    blogCreate: build.mutation({
+      query: (formDataToSend) => ({
+        url: `/resource/type/BLOG`,
+        method: "POST",
+        body: formDataToSend
+
+      }),
+      invalidatesTags: ["Resource"],
+
+    }),
+
   }),
 });
 
-export const { useGetResourceQuery,useGetResourceSingleQuery,useAddComentMutation,useResourceCreateMutation} = resourceApi
+export const { useGetResourceQuery,useGetResourceSingleQuery,useAddComentMutation,useResourceCreateMutation, useMediaCreateMutation, useBlogCreateMutation} = resourceApi
