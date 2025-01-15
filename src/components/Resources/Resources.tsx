@@ -29,42 +29,6 @@ const Resources = () => {
 
         {/* Resource Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-<<<<<<< HEAD
-          {isLoading
-            ? // Render skeletons while loading
-              Array.from({ length: 3 }).map((_, index) => (
-                <CardSkeleton key={index} />
-              ))
-            : // Render resources when loaded
-              resources?.map((resource) => (
-                <div
-                  key={resource.id}
-                  className="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300"
-                >
-                  {/* Image */}
-                  <Image
-                    src={resource?.fileUrl}
-                    alt={resource.title}
-                    className="w-full h-[200px] object-cover"
-                    width={300}
-                    height={200}
-                  />
-
-                  {/* Content */}
-                  <div className="px-4">
-                    <h3 className="text-[24px] font-medium text-default mt-4">
-                      {resource.title}
-                    </h3>
-                    <p className="text-gray mt-2">{resource?.description}</p>
-                    <div className="mt-6 pb-7">
-                      <Link
-                        href={`/media-details/${resource?.id}`}
-                        className="border border-[#DDDDDD] w-full py-3 px-3 text-center text-blue-600 font-medium rounded-[8px]"
-                      >
-                        View More
-                      </Link>
-                    </div>
-=======
           {
           
             resources?.map((resource) => (
@@ -93,8 +57,8 @@ const Resources = () => {
                     >
                       View More
                     </Link>
->>>>>>> 42553c95731fea5d2d27bad5e9b10c31e097eaf0
                   </div>
+                </div>
                 </div>
               ))}
         </div>
