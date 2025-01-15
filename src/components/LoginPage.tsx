@@ -77,7 +77,7 @@ export default function LoginPage() {
         switch (role) {
           case "USER":
           case "SPONSOR":
-          case "MEMBERSHIP":
+          case "MEMBER":
             router.push("/");
             break;
           case "ADMIN":

@@ -81,7 +81,14 @@ const userApi = baseApi.injectEndpoints({
     }),
     providesTags:["User"]
   }),
+  requestVerify: build.query({
+    query: (token) => ({
+      url: `/users/verify-email/${token}`,
+      method: "PATCH",
+    }),
+    providesTags:["User"]
+  }),
   }),
 });
 
-export const { useLoginUserMutation,useRegisterUserMutation,useForgotUserMutation,useOtpUserMutation,useResetPassMutation,useContactMutation, useGetMeQuery} = userApi
+export const { useLoginUserMutation,useRegisterUserMutation,useForgotUserMutation,useOtpUserMutation,useResetPassMutation,useContactMutation, useGetMeQuery,useRequestVerifyQuery} = userApi
