@@ -35,7 +35,7 @@ const userApi = baseApi.injectEndpoints({
           body: data,
         };
       },
-      invalidatesTags: ["User"], // Helps refresh cached user data after login
+      invalidatesTags: ["User"], 
     }),
 
     otpUser: build.mutation({
@@ -107,5 +107,5 @@ export const {
   useContactMutation,
   useGetMeQuery,
   useUpdateProfileMutation,
-  useChangePasswordMutation, // Newly added hook
+  useChangePasswordMutation,
 } = userApi;

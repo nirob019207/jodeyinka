@@ -17,12 +17,13 @@ const Sidebar = () => {
   const pathname = usePathname();
    const { data, isLoading } = useGetMeQuery({});
    const role = data?.data?.role; // Current user role
+   console.log("role", role)
 
    const menuItems = [
     { href: "/admin/dashboard", icon: LucideLayoutDashboard, label: "Dashboard", roles: ["ADMIN", "SPONSOR", "MEMBER"] },
     { href: "/admin/profile", icon: LuUser, label: "Profile", roles: ["ADMIN", "SPONSOR", "USER", "MEMBER"] },
     { href: "/admin/event-history", icon: RxMagicWand, label: "Event", roles: [ "MEMBER"] },
-    { href: "/admin/all-transaction", icon: GrTransaction, label: "ALL Transaction", roles: ["ADMIN","MEMBER"] },
+    { href: "/admin/all-transaction", icon: GrTransaction, label: "ALL Transaction", roles: ["ADMIN"] },
 
     { href: "/admin/transaction", icon: GrTransaction, label: "Transaction", roles: ["MEMBER"] },
     // { href: "/admin/donate", icon: RiMoneyDollarBoxLine, label: "Donate", roles: ["ADMIN", "SPONSOR", "USER"] },
