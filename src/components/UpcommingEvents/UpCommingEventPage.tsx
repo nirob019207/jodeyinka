@@ -7,10 +7,10 @@ import { useEventQuery } from "@/redux/Api/eventApi";
 import { MdArrowRightAlt } from "react-icons/md";
 import Link from "next/link";
 import CardSkeleton from "../CardSkelaton/CardSkeleton";
-import defaultEvent from "@/asset/event/e1.svg"
+import defaultEvent from "@/asset/event/e1.svg";
 
 const UpCommingEventPage = () => {
-  const { data, isLoading, isError } = useEventQuery({ limit: 10 });
+  const { data, isLoading, isError } = useEventQuery({ limit: 10, page: 1 });
   const events = data?.data;
 
   function formatMonthAndTime(isoDate) {
@@ -34,7 +34,9 @@ const UpCommingEventPage = () => {
     const startHours = start.getHours();
     const startMinutes = start.getMinutes().toString().padStart(2, "0");
     const startAmpm = startHours >= 12 ? "pm" : "am";
-    const startFormatted = `${startHours % 12 || 12}:${startMinutes} ${startAmpm}`;
+    const startFormatted = `${
+      startHours % 12 || 12
+    }:${startMinutes} ${startAmpm}`;
 
     const endHours = end.getHours();
     const endMinutes = end.getMinutes().toString().padStart(2, "0");
@@ -104,13 +106,13 @@ const UpCommingEventPage = () => {
                       {event.title}
                     </h3>
                     <p className="text-[#475467] mb-9">
-                    <span
-                      dangerouslySetInnerHTML={{
-                        __html: event?.description,
-                      }}
-                      className="text-sm"
-                    />
-                  </p>
+                      <span
+                        dangerouslySetInnerHTML={{
+                          __html: event?.description,
+                        }}
+                        className="text-sm"
+                      />
+                    </p>
                     <div className="flex items-center">
                       <Link
                         href={`event-details/${event.id}`}

@@ -12,7 +12,7 @@ const Topbar = () => {
       <div className="flex justify-between items-center">
         <h1 className="text-[#161616] flex items-center gap-2 text-[20px] font-medium">
           {/* Welcome Back, Admin!{" "} */}
-          Welcome, {userInformation.firstName} {userInformation.lastName}
+          Welcome, {userInformation?.firstName} {userInformation?.lastName}
           <Image className="w-6" src={hi} alt="welcome image" />
         </h1>
         <div>
