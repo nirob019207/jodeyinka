@@ -95,6 +95,13 @@ const userApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["User"],
     }),
+    requestVerify: build.query({
+      query: (token) => ({
+        url: `/users/verify-email/${token}`,
+        method: "PATCH",
+      }),
+      providesTags:["User"]
+    }),
   }),
 });
 
@@ -108,4 +115,5 @@ export const {
   useGetMeQuery,
   useUpdateProfileMutation,
   useChangePasswordMutation,
+  useRequestVerifyQuery
 } = userApi;
