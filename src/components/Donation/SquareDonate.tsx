@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { CreditCard, PaymentForm } from "react-square-web-payments-sdk";
 import { toast } from "sonner"; // Import the toast library
 
-export default function SquareDonate({ price, type ,handleCloseModal}) {
+export default function SquareDonate({ price, type ,handleCloseModal}:any) {
   const appId = "sandbox-sq0idb-fTR5BZkbFI-9otiV37IVwQ";
   const locationId = "LVYJA27247NQF";
   const [squareDonate] = useSquareDoanteMutation();
@@ -48,7 +48,7 @@ export default function SquareDonate({ price, type ,handleCloseModal}) {
   // };
 
 
-  const handlePayment = async (token) => {
+  const handlePayment = async (token: any) => {
     try {
       // Display loading toast
       toast.loading("Processing payment...");
@@ -71,7 +71,7 @@ export default function SquareDonate({ price, type ,handleCloseModal}) {
         toast.dismiss();
         toast.error("Payment failed. Please try again.");
       }
-    } catch (err) {
+    } catch (err: any) {
       toast.dismiss(); // Dismiss loading toast
       console.error("Error during payment:", err);
   

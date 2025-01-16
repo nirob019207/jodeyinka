@@ -112,6 +112,7 @@ export const DonationPayment = () => {
             {/* Pass the dynamic price to SquarePaymentForm */}
             <SquareDonate
               price={Number(price)} // Use the dynamic price from state
+              type="DONATION" // Add the required type property
               handleCloseModal={handleCloseModal}
             />
           </div>

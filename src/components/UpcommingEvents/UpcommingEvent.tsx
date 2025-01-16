@@ -17,7 +17,7 @@ const UpcomingEvent = () => {
     const eventDate = new Date(isoDate);
 
     // Format month and day
-    const options = { month: "long", day: "numeric" };
+    const options: Intl.DateTimeFormatOptions = { month: "long", day: "numeric" };
     const formattedDate = eventDate.toLocaleDateString("en-US", options);
 
     // Format time
@@ -106,7 +106,7 @@ const UpcomingEvent = () => {
         {/* Event Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 md:gap-6">
           {events.length > 0 ? (
-            events?.map((event) => (
+            events?.map((event:any) => (
               <div
                 key={event.id}
                 className="rounded-lg overflow-hidden bg-white shadow-md"

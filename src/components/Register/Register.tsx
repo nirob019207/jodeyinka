@@ -138,8 +138,8 @@ export default function Register() {
               className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
               placeholder="Enter company name"
             />
-            {errors.organizationName && (
-              <p className="mt-1 text-sm text-red-500">{errors.organizationName.message}</p>
+            {errors?.organizationName && (
+              <p className="mt-1 text-sm text-red-500">{(errors as any).organizationName.message}</p>
             )}
           </div>
         )}

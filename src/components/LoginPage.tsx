@@ -24,6 +24,7 @@ import { useLoginUserMutation } from "@/redux/Api/userApi";
 import { setUser } from "@/redux/ReduxFunction";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
+import { SerializedError } from "@reduxjs/toolkit";
 
 const loginSchema = z.object({
   email: z
@@ -162,10 +163,10 @@ export default function LoginPage() {
             {/* Remember Me & Forgot Password */}
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-2">
-                <Checkbox id="remember" />
-                <Label htmlFor="remember" className="text-sm">
+                {/* <Checkbox id="remember" /> */}
+                {/* <Label htmlFor="remember" className="text-sm">
                   Remember Me
-                </Label>
+                </Label> */}
               </div>
               <Link href="/forgot-password" className="px-0 text-[#0061FF]">
                 Forgot Password?

@@ -111,7 +111,7 @@ const SponsorHistorys = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {sponsors?.map((sponsor) => (
+            {sponsors?.map((sponsor:any) => (
               <TableRow key={sponsor.sl}>
                 <TableCell className="text-center">
                   <Image

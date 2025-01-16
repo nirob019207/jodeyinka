@@ -112,15 +112,15 @@ const MediaCarousel = () => {
             <FaAngleLeft className="text-gray-700 text-[20px] md:text-[24px]" />
           </button>
 
-          {slides?.map((_, index) => (
+            {slides?.map((_: any, index: number) => (
             <button
               key={index}
               onClick={() => slider.current?.moveToIdx(index)}
               className={`w-2 h-2 md:w-3 md:h-3 rounded-full ${
-                currentSlide === index ? "bg-blue-600" : "bg-[#ABABAB]"
+              currentSlide === index ? "bg-blue-600" : "bg-[#ABABAB]"
               }`}
             ></button>
-          ))}
+            ))}
 
           <button
             onClick={() => slider.current?.next()}

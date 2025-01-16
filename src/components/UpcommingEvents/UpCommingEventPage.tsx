@@ -13,30 +13,42 @@ const UpCommingEventPage = () => {
   const { data, isLoading, isError } = useEventQuery({ limit: 10, page: 1 });
   const events = data?.data;
 
-  function formatMonthAndTime(isoDate) {
-    const eventDate = new Date(isoDate);
+  // function formatMonthAndTime(isoDate) {
+  //   const eventDate = new Date(isoDate);
 
-    const options = { month: "long", day: "numeric" };
-    const formattedDate = eventDate.toLocaleDateString("en-US", options);
+  //   const options = { month: "long", day: "numeric" };
+  //   const formattedDate = eventDate.toLocaleDateString("en-US", options);
 
-    const hours = eventDate.getHours();
-    const minutes = eventDate.getMinutes().toString().padStart(2, "0");
-    const ampm = hours >= 12 ? "pm" : "am";
-    const formattedTime = `${hours % 12 || 12}:${minutes} ${ampm}`;
+  //   const hours = eventDate.getHours();
+  //   const minutes = eventDate.getMinutes().toString().padStart(2, "0");
+  //   const ampm = hours >= 12 ? "pm" : "am";
+  //   const formattedTime = `${hours % 12 || 12}:${minutes} ${ampm}`;
 
-    return `${formattedDate} @ ${formattedTime}`;
+  //   return `${formattedDate} @ ${formattedTime}`;
+  // }
+
+  interface Event {
+    id: string;
+    title: string;
+    description: string;
+    date: string;
+    endTime: string;
+    imageUrl?: string;
+    venue: string;
   }
 
-  function formatTimeRange(startTime, endTime) {
+  interface EventQueryResponse {
+    data: Event[];
+  }
+
+  function formatTimeRange(startTime: string, endTime: string): string {
     const start = new Date(startTime);
     const end = new Date(endTime);
 
     const startHours = start.getHours();
     const startMinutes = start.getMinutes().toString().padStart(2, "0");
     const startAmpm = startHours >= 12 ? "pm" : "am";
-    const startFormatted = `${
-      startHours % 12 || 12
-    }:${startMinutes} ${startAmpm}`;
+    const startFormatted = `${startHours % 12 || 12}:${startMinutes} ${startAmpm}`;
 
     const endHours = end.getHours();
     const endMinutes = end.getMinutes().toString().padStart(2, "0");
@@ -62,7 +74,7 @@ const UpCommingEventPage = () => {
             ? Array.from({ length: 6 }).map((_, index) => (
                 <CardSkeleton key={index} />
               ))
-            : events?.map((event) => (
+            : events?.map((event:any) => (
                 <div
                   key={event.id}
                   className="rounded-lg overflow-hidden bg-white shadow"

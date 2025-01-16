@@ -105,7 +105,7 @@ const CreateEvent = () => {
           name: country.name.common,
           regions: country.subregion ? [country.subregion] : [],
         }));
-        setCountries(countryData.sort((a, b) => a.name.localeCompare(b.name)));
+        setCountries(countryData.sort((a:any, b:any) => a.name.localeCompare(b.name)));
       } catch (error) {
         console.error("Error fetching countries:", error);
       }

@@ -14,7 +14,7 @@ import CardSkeleton from "../CardSkelaton/CardSkeleton";
 const MediaContent: React.FC = () => {
   const path = useParams();
   const { data, isLoading, isError } = useGetResourceSingleQuery({
-    id: path?.id,
+    id: Array.isArray(path?.id) ? path.id[0] : path?.id || "",
   });
   const [addComment, { isLoading: addLoading, isError: addError }] =
     useAddComentMutation();
@@ -27,7 +27,7 @@ const MediaContent: React.FC = () => {
     const eventDate = new Date(isoDate);
 
     // Format month and day
-    const options = { month: "long", day: "numeric" };
+    const options: Intl.DateTimeFormatOptions = { month: "long", day: "numeric" };
     const formattedDate = eventDate.toLocaleDateString("en-US", options);
 
     // Format time
@@ -42,7 +42,7 @@ const MediaContent: React.FC = () => {
   const handleCommentSubmit = async () => {
     if (commentText.trim()) {
       try {
-        await addComment({ content: commentText, id: path?.id });
+        await addComment({ content: commentText, id: Array.isArray(path?.id) ? path.id[0] : path?.id || "" });
         toast.success("Comment added successfully!");
         setCommentText(""); // Clear the input field after successful submission
       } catch (error) {
@@ -135,7 +135,7 @@ const MediaContent: React.FC = () => {
               {isLoading ? (
                 <CardSkeleton />
               ) : (
-                singleDetails?.Comments?.map((comment, index) => (
+                singleDetails?.Comments?.map((comment:any, index:any) => (
                   <div key={index} className="flex items-start gap-4">
                     {/* Display avatar or placeholder */}
                     <div className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center">

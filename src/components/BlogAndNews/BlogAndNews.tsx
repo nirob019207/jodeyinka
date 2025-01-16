@@ -30,7 +30,7 @@ const BlogsAndNews = () => {
     const eventDate = new Date(isoDate);
 
     // Format month and day
-    const options = { month: "long", day: "numeric" };
+    const options: Intl.DateTimeFormatOptions = { month: "long", day: "numeric" };
     const formattedDate = eventDate.toLocaleDateString("en-US", options);
     const formattedYear = eventDate.getFullYear();
 
@@ -55,7 +55,7 @@ const BlogsAndNews = () => {
 
         {/* Blog Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {blogs?.map((blog) => (
+          {blogs?.map((blog:any) => (
             <div
               key={blog.id}
               className="bg-white rounded-lg overflow-hidden shadow"

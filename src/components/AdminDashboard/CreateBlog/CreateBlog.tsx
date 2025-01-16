@@ -59,7 +59,7 @@ export default function CreateBlog() {
 
     try {
       // Set loading state to true before starting the request
-      setIsLoading(true);
+      // setIsLoading(true);
 
       // Validate form data
       resourceSchema.parse(formData);
@@ -111,7 +111,7 @@ export default function CreateBlog() {
         console.error("API Error:", err);
         toast.error("Failed to create blog. Please try again.");
       }
-      setIsLoading(false); // Reset loading state in case of an error
+      // setIsLoading(false); // Reset loading state in case of an error
     }
   };
 
@@ -184,7 +184,6 @@ export default function CreateBlog() {
           <div className="text-center col-span-full mt-11">
             <button
               type="submit"
-              disabled={isLoading}
               className="bg-blue-500 text-white px-8 py-3 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
               disabled={isLoading} 
             >

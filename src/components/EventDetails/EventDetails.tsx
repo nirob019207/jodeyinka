@@ -12,11 +12,16 @@ const EventDetails = () => {
   const singleEvent = data?.data;
 
   // Helper function to format date and time
-  function formatMonthAndTime(isoDate) {
+  interface FormatMonthAndTimeOptions {
+    month: "long";
+    day: "numeric";
+  }
+
+  function formatMonthAndTime(isoDate: string): string {
     const eventDate = new Date(isoDate);
 
     // Format month and day
-    const options = { month: "long", day: "numeric" };
+    const options: FormatMonthAndTimeOptions = { month: "long", day: "numeric" };
     const formattedDate = eventDate.toLocaleDateString("en-US", options);
 
     // Format time
@@ -29,7 +34,21 @@ const EventDetails = () => {
   }
 
   // Helper function to format time range (start and end)
-  function formatTimeRange(startTime, endTime) {
+  interface EventDetailsProps {
+    id: string;
+    title: string;
+    imageUrl: string;
+    date: string;
+    endTime: string;
+    description: string;
+    venue: string;
+    host: {
+      firstName: string;
+      lastName: string;
+    };
+  }
+
+  function formatTimeRange(startTime: string, endTime: string): string {
     const start = new Date(startTime);
     const end = new Date(endTime);
 

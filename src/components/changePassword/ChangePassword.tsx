@@ -54,7 +54,7 @@ export default function ChangePassword() {
   const onSubmit = async (data: ChangePasswordFormData) => {
     try {
       const response = await resetPass({
-        email: getEmail?.email,
+        email: getEmail,
         otp:getOtp,
         password: data.newPassword,
       }).unwrap();

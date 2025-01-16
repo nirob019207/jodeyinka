@@ -44,7 +44,7 @@ const News = () => {
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {newsItems?.map((news) => (
+            {newsItems?.map((news:any) => (
               <div
                 key={news.id}
                 className="bg-white shadow-md rounded-lg overflow-hidden flex flex-col"
