@@ -9,7 +9,7 @@ import Link from "next/link";
 import dfaultEvent from "@/asset/event/e1.svg";
 
 const UpcomingEvent = () => {
-  const { data, isLoading, isError } = useEventQuery({ limit: 3 });
+  const { data, isLoading, isError } = useEventQuery({ limit: 3 , page: 1});
   const events = data?.data; // Show only the latest 3 events
 
   // Helper function to format date and time
