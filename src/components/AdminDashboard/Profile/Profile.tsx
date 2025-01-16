@@ -13,7 +13,7 @@ const Profile = () => {
   const [changePassword] = useChangePasswordMutation();
   const [isEditing, setIsEditing] = useState(false);
   const [isChangePasswordModalOpen, setIsChangePasswordModalOpen] = useState(false);
-  
+
   // Set the initial state for userInfo to ensure it's always controlled
   const [userInfo, setUserInfo] = useState({
     firstName: "",
@@ -61,15 +61,18 @@ const Profile = () => {
 
   const handleUpdateClick = async () => {
     try {
+      // Prepare updated data
       const updatedData = {
         firstName: userInfo.firstName,
         lastName: userInfo.lastName,
         email: userInfo.email,
         address: userInfo.address,
-        avatar: avatar || userInfo.avatarUrl, 
+        avatarUrl: avatar ? URL.createObjectURL(avatar) : userInfo.avatarUrl || null, 
       };
 
+      // Call API to update profile
       const response = await updateProfile(updatedData).unwrap();
+      // console.log("response",response)
 
       if (response.success) {
         toast.success("Profile updated successfully!");
