@@ -1,6 +1,6 @@
 'use client';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { useMyTransactionsQuery } from '@/redux/Api/transactionApi';
+import { useAllTransactionsQuery } from '@/redux/Api/transactionApi';
 import React from 'react';
 
 type Transaction = {
@@ -11,10 +11,17 @@ type Transaction = {
   type: string;
 };
 
-const TransactionHistory = () => {
+const AllTransactionHistory = () => {
+  const { data: allTransaction, isLoading } = useAllTransactionsQuery(undefined);
+  const transactions = allTransaction?.data || [];
 
-  const { data: myTransactions } = useMyTransactionsQuery(undefined);
-  const transactions = myTransactions?.data || [];
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-start min-h-screen">
+        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500 border-solid"></div>
+      </div>
+    ); // Simple spinner while data is loading
+  }
 
   return (
     <div className="px-16 py-6 font-inter">
@@ -33,11 +40,11 @@ const TransactionHistory = () => {
           <TableBody>
             {transactions.map((transaction: Transaction, index: number) => (
               <TableRow key={index} className="border-t">
-              <TableCell className="px-4 py-4 text-center text-darkGray">{transaction.id}</TableCell>
-              <TableCell className="px-4 py-4 text-center text-darkGray">{transaction.method}</TableCell>
-              <TableCell className="px-4 py-4 text-center text-darkGray">{new Date(transaction.createdAt).toLocaleString()}</TableCell>
-              <TableCell className="px-4 py-4 text-center text-darkGray">${transaction.amount}</TableCell>
-              <TableCell className="px-4 py-4 text-center text-darkGray">{transaction.type}</TableCell>
+                <TableCell className="px-4 py-4 text-center text-darkGray">{transaction.id}</TableCell>
+                <TableCell className="px-4 py-4 text-center text-darkGray">{transaction.method}</TableCell>
+                <TableCell className="px-4 py-4 text-center text-darkGray">{new Date(transaction.createdAt).toLocaleString()}</TableCell>
+                <TableCell className="px-4 py-4 text-center text-darkGray">${transaction.amount}</TableCell>
+                <TableCell className="px-4 py-4 text-center text-darkGray">{transaction.type}</TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -47,4 +54,4 @@ const TransactionHistory = () => {
   );
 };
 
-export default TransactionHistory;
+export default AllTransactionHistory;

@@ -12,9 +12,19 @@ const eventApi = baseApi.injectEndpoints({
       providesTags:['Transaction']
 
     }),
+
+    allTransactions: build.query({
+      query: () => ({
+        url: "/transaction",
+        method: "GET",
+
+      }),
+      providesTags:['Transaction']
+
+    }),
  
 
   }),
 });
 
-export const { useMyTransactionsQuery} = eventApi
+export const { useMyTransactionsQuery, useAllTransactionsQuery} = eventApi
