@@ -43,6 +43,7 @@ export const Navbar = () => {
     "/media": { background: anotherBanner.src, paddingBottom: "83px" },
     "/event": { background: anotherBanner.src, paddingBottom: "83px" },
     "/resources": { background: anotherBanner.src, paddingBottom: "83px" },
+    "/blog": { background: anotherBanner.src, paddingBottom: "83px" },
     "/download-pdf": { background: anotherBanner.src, paddingBottom: "83px" },
     "/contact": { background: anotherBanner.src, paddingBottom: "83px" },
     [`/media-details/${id}`]: {
@@ -178,7 +179,7 @@ export const Navbar = () => {
           </div>
 
           {/* Search Box */}
-          <div className="relative  w-[80%] mx-auto md:w-[548px] mt-6">
+          {/* <div className="relative  w-[80%] mx-auto md:w-[548px] mt-6">
             <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
               <Image
                 src={searchIcon}
@@ -192,7 +193,7 @@ export const Navbar = () => {
               placeholder="Search here"
               className="w-full pl-10 px-4 py-2 text-white bg-transparent border border-[#667085] rounded-xl"
             />
-          </div>
+          </div> */}
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex bg-[#FFFFFF1A] backdrop-blur-[4px] rounded-xl px-[45px] py-3 mt-6 gap-6  items-center text-white shadow-lg">

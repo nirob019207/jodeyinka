@@ -16,20 +16,20 @@ const SearchFilter = () => {
         {/* Right Section - Search and Filter */}
         <div className="flex flex-col md:flex-row items-center gap-4">
           {/* Search Input */}
-          <div className="relative w-full md:w-auto">
+          {/* <div className="relative w-full md:w-auto">
             <FiSearch className="absolute left-4 top-1/2 transform -translate-y-1/2 text-[#66708580]" />
             <input
               type="text"
               placeholder="Search here"
               className="w-full md:w-[300px] lg:w-[400px] pl-12 pr-4 py-2 border rounded-xl border-[#66708580] text-sm text-[#667085] focus:outline-none focus:ring-2 focus:ring-[#90CDF4] focus:border-transparent"
             />
-          </div>
+          </div> */}
 
           {/* Filter Button */}
-          <button className="w-[167px] flex items-center justify-between px-4 py-2 border rounded-xl border-[#66708580] text-sm text-[#1D2939] hover:bg-[#E4E4E4]">
+          {/* <button className="w-[167px] flex items-center justify-between px-4 py-2 border rounded-xl border-[#66708580] text-sm text-[#1D2939] hover:bg-[#E4E4E4]">
             <span>Filter</span>
            <Image src={filter} alt="filter logo"/>
-          </button>
+          </button> */}
         </div>
       </div>
     </div>
