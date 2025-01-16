@@ -16,9 +16,9 @@ const Topbar = () => {
           <Image className="w-6" src={hi} alt="welcome image" />
         </h1>
         <div>
-          <div className="w-16 h-16 rounded-full cursor-pointer">
-           
-          </div>
+          {/* <div className="w-16 h-16 rounded-full cursor-pointer">
+            <Image src={profile} alt="profile image" />
+          </div> */}
         </div>
       </div>
     </header>

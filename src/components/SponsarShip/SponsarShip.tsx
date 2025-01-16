@@ -17,7 +17,7 @@ const Sponsorship: React.FC = () => {
   const { data: sponsor, isLoading: isFetchingEvent } = useEventDetailsQuery({
     id: id as string,
   });
-  const sponsors = sponsor?.data;
+  const sponsors = sponsor?.data?.event;
 
   const plans: Plan[] = [
     {
@@ -36,6 +36,7 @@ const Sponsorship: React.FC = () => {
       isAvailable: sponsors?.platinumSponsorAvailable || false,
     },
   ];
+  console.log(sponsors)
 
   const [selectedPlan, setSelectedPlan] = React.useState<Plan | null>(null);
   const [error, setError] = React.useState<string | null>(null);

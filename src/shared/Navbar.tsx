@@ -24,7 +24,7 @@ export const Navbar = () => {
 
   const { data, isLoading } = useGetMeQuery({});
 
-  console.log(data?.data);
+  console.log(data?.data?.role);
 
   const userInformation = data?.data;
 
@@ -145,18 +145,17 @@ export const Navbar = () => {
                 </div>
                 {isDropdownOpen && (
                   <div className="absolute right-0 mt-2 bg-white text-black rounded-md shadow-lg w-[150px] z-[100]">
+                   
+                   <Link href={userInformation.role === "ADMIN" ? "/admin/dashboard" : "/admin/profile"} className="block w-full text-left px-4 py-2 hover:bg-gray-200">
+ Dashboard
+</Link>
+
                     <button
                       className="block w-full text-left px-4 py-2 hover:bg-gray-200"
                       onClick={handleLogout}
                     >
                       Logout
                     </button>
-                    <Link href={"/admin/dashboard"}
-                      className="block w-full text-left px-4 py-2 hover:bg-gray-200"
-                    
-                    >
-                      Dashboard
-                    </Link>
                   </div>
                 )}
               </div>

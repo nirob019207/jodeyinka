@@ -26,7 +26,7 @@ const Sidebar = () => {
    const dispatch=useDispatch()
 
    const menuItems = [
-    { href: "/admin/dashboard", icon: LucideLayoutDashboard, label: "Dashboard", roles: ["ADMIN", "SPONSOR", "MEMBER"] },
+    { href: "/admin/dashboard", icon: LucideLayoutDashboard, label: "Dashboard", roles: ["ADMIN"] },
     { href: "/admin/profile", icon: LuUser, label: "Profile", roles: ["ADMIN", "SPONSOR", "USER", "MEMBER"] },
     { href: "/admin/event-history", icon: RxMagicWand, label: "Event", roles: [ "ADMIN"] },
     { href: "/admin/all-transaction", icon: GrTransaction, label: "ALL Transaction", roles: ["ADMIN"] },
