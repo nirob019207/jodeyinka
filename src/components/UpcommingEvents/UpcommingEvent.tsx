@@ -184,12 +184,13 @@ const UpcomingEvent = () => {
                     {event?.title}
                   </h3>
                   {/* Event Description */}
-                  <p
-                    className="text-[#545454] mt-4 mb-6"
-                    dangerouslySetInnerHTML={{
-                      __html: event?.description.replace(/<\/?p>/g, ""),
-                    }}
+                  <p className="text-[#475467] mb-9">
+                  <span
+                    dangerouslySetInnerHTML={{ __html: event?.description }}
+                    className="text-sm"
                   />
+                </p>
+
 
                   {/* Read More Button */}
                   <div className="flex items-center">

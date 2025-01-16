@@ -3,13 +3,26 @@ import { useState } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import { z } from "zod";
 import { useResourceCreateMutation } from "@/redux/Api/resourceApi";
+import { toast } from "sonner";
 
 // Zod validation schema
 const resourceSchema = z.object({
-  title: z.string().min(1, "Title is required").max(100, "Title cannot exceed 100 characters"),
+  title: z
+    .string()
+    .min(1, "Title is required")
+    .max(100, "Title cannot exceed 100 characters"),
   description: z.string().min(1, "Description is required"),
-  resourceFile: z.instanceof(File).refine((file) => file.size <= 2 * 1024 * 1024, "File size must be less than 2MB")
-    .refine((file) => ["image/jpeg", "image/png", "application/pdf"].includes(file.type), "Invalid file type"),
+  resourceFile: z
+    .instanceof(File)
+    .refine(
+      (file) => file.size <= 2 * 1024 * 1024,
+      "File size must be less than 2MB"
+    )
+    .refine(
+      (file) =>
+        ["image/jpeg", "image/png", "application/pdf"].includes(file.type),
+      "Invalid file type"
+    ),
 });
 
 export default function Resource() {
@@ -34,11 +47,11 @@ export default function Resource() {
         ...prev,
         resourceFile: selectedFile,
       }));
-      console.log("Selected file:", selectedFile.name); // Print the file name in the console
+      console.log("Selected file:", selectedFile.name);
     }
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
@@ -53,17 +66,27 @@ export default function Resource() {
         title: formData.title,
         description: formData.description,
       };
-      
+
       // Append the body data as a JSON string
       formDataToSend.append("body", JSON.stringify(bodyData));
-      
+
       if (formData.resourceFile) {
         formDataToSend.append("resourceFile", formData.resourceFile);
       }
-      
+
       // Make the API request using the mutation
-      createresource(formDataToSend);
-      
+      const response = await createresource(formDataToSend).unwrap();
+
+      if (response.success) {
+        setFormData({
+          title: "",
+          description: "",
+          resourceFile: null as File | null,
+        });
+        toast.success("Resource created successfully|");
+        // Handle the response if needed
+        console.log("Resource created successfully:", response);
+      }
 
       // If validation is successful, print the values in console
       console.log("Form data:", formData);
@@ -80,13 +103,20 @@ export default function Resource() {
   return (
     <div className="px-16">
       {/* Header */}
-      <h1 className="text-3xl font-semibold mb-6 border-b border-[#E0E0E0] pb-3">Create Resource</h1>
+      <h1 className="text-3xl font-semibold mb-6 border-b border-[#E0E0E0] pb-3">
+        Create Resource
+      </h1>
 
       {/* Main Container */}
       <div className="flex space-x-6">
         {/* Product Image Section */}
         <div className="col-span-2">
-          <label htmlFor="resourceFile" className="block text-sm font-medium text-gray-700">Image</label>
+          <label
+            htmlFor="resourceFile"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Image
+          </label>
           <input
             type="file"
             id="resourceFile"
@@ -100,19 +130,28 @@ export default function Resource() {
           <div className="grid grid-cols-2 gap-4 mb-4">
             {/* Title Field */}
             <div className="col-span-2">
-              <label htmlFor="title" className="block text-sm font-medium text-gray-700">Title</label>
+              <label
+                htmlFor="title"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Title
+              </label>
               <input
                 type="text"
                 id="title"
                 value={formData.title}
-                onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, title: e.target.value })
+                }
                 className="w-full mt-1 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
 
             {/* Description Editor */}
             <div className="col-span-2">
-              <label className="block font-medium text-darkGray">Description</label>
+              <label className="block font-medium text-darkGray">
+                Description
+              </label>
               <Editor
                 apiKey="g68nc1d1w7r6ws2cu6q6c6trlsejbpqf5dylpj1b8hjeoc7d"
                 initialValue="<p>Product description</p>"

@@ -1,19 +1,24 @@
+"use client"
 import React from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { FaRegTrashAlt } from 'react-icons/fa';
+import { useSponsorReqQuery } from '@/redux/Api/sponsorApi';
 
 const SponsorHistorys = () => {
+  const {data} = useSponsorReqQuery({})
+  console.log(data)
+
   const sponsors = [
-    { sl: 1, companyName: 'Gabagool & Jam Vape', email: 'email@gmail.com', startDate: '12/09/2024', endDate: '12/09/2024', status: 'Approved' },
-    { sl: 2, companyName: 'Gabagool & Jam Vape', email: 'email@gmail.com', startDate: '12/09/2024', endDate: '12/09/2024', status: 'Approved' },
-    { sl: 3, companyName: 'Gabagool & Jam Vape', email: 'email@gmail.com', startDate: '12/09/2024', endDate: '12/09/2024', status: 'Approved' },
-    { sl: 4, companyName: 'Gabagool & Jam Vape', email: 'email@gmail.com', startDate: '12/09/2024', endDate: '12/09/2024', status: 'Approved' },
-    { sl: 5, companyName: 'Gabagool & Jam Vape', email: 'email@gmail.com', startDate: '12/09/2024', endDate: '12/09/2024', status: 'Approved' },
-    { sl: 6, companyName: 'Gabagool & Jam Vape', email: 'email@gmail.com', startDate: '12/09/2024', endDate: '12/09/2024', status: 'Approved' },
-    { sl: 7, companyName: 'Gabagool & Jam Vape', email: 'email@gmail.com', startDate: '12/09/2024', endDate: '12/09/2024', status: 'Approved' },
-    { sl: 8, companyName: 'Gabagool & Jam Vape', email: 'email@gmail.com', startDate: '12/09/2024', endDate: '12/09/2024', status: 'Approved' },
-    { sl: 9, companyName: 'Gabagool & Jam Vape', email: 'email@gmail.com', startDate: '12/09/2024', endDate: '12/09/2024', status: 'Approved' },
-    { sl: 10, companyName: 'Gabagool & Jam Vape', email: 'email@gmail.com', startDate: '12/09/2024', endDate: '12/09/2024', status: 'Approved' },
+    // { sl: 1, companyName: 'Gabagool & Jam Vape', email: 'email@gmail.com', startDate: '12/09/2024', endDate: '12/09/2024', status: 'Approved' },
+    // { sl: 2, companyName: 'Gabagool & Jam Vape', email: 'email@gmail.com', startDate: '12/09/2024', endDate: '12/09/2024', status: 'Approved' },
+    // { sl: 3, companyName: 'Gabagool & Jam Vape', email: 'email@gmail.com', startDate: '12/09/2024', endDate: '12/09/2024', status: 'Approved' },
+    // { sl: 4, companyName: 'Gabagool & Jam Vape', email: 'email@gmail.com', startDate: '12/09/2024', endDate: '12/09/2024', status: 'Approved' },
+    // { sl: 5, companyName: 'Gabagool & Jam Vape', email: 'email@gmail.com', startDate: '12/09/2024', endDate: '12/09/2024', status: 'Approved' },
+    // { sl: 6, companyName: 'Gabagool & Jam Vape', email: 'email@gmail.com', startDate: '12/09/2024', endDate: '12/09/2024', status: 'Approved' },
+    // { sl: 7, companyName: 'Gabagool & Jam Vape', email: 'email@gmail.com', startDate: '12/09/2024', endDate: '12/09/2024', status: 'Approved' },
+    // { sl: 8, companyName: 'Gabagool & Jam Vape', email: 'email@gmail.com', startDate: '12/09/2024', endDate: '12/09/2024', status: 'Approved' },
+    // { sl: 9, companyName: 'Gabagool & Jam Vape', email: 'email@gmail.com', startDate: '12/09/2024', endDate: '12/09/2024', status: 'Approved' },
+    // { sl: 10, companyName: 'Gabagool & Jam Vape', email: 'email@gmail.com', startDate: '12/09/2024', endDate: '12/09/2024', status: 'Approved' },
   ];
 
   return (

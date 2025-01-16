@@ -1,5 +1,4 @@
 'use client';
-import { useRequestVerifyQuery } from '@/redux/Api/userApi';
 import { useSearchParams, useRouter, useParams } from 'next/navigation';
 import React, { useEffect } from 'react';
 import { toast } from 'sonner';
@@ -7,6 +6,7 @@ import check from "@/asset/check.svg";
 import confetti from "@/asset/confetti.svg";
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRequestVerifyQuery } from '@/redux/Api/userApi';
 
 export default function Verify() {
   const {token} = useParams();

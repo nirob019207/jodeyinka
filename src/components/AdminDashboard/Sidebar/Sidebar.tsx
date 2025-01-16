@@ -17,12 +17,13 @@ const Sidebar = () => {
   const pathname = usePathname();
    const { data, isLoading } = useGetMeQuery({});
    const role = data?.data?.role; // Current user role
+   console.log("role", role)
 
    const menuItems = [
     { href: "/admin/dashboard", icon: LucideLayoutDashboard, label: "Dashboard", roles: ["ADMIN", "SPONSOR", "MEMBER"] },
     { href: "/admin/profile", icon: LuUser, label: "Profile", roles: ["ADMIN", "SPONSOR", "USER", "MEMBER"] },
     { href: "/admin/event-history", icon: RxMagicWand, label: "Event", roles: [ "MEMBER"] },
-    { href: "/admin/all-transaction", icon: GrTransaction, label: "ALL Transaction", roles: ["ADMIN","MEMBER"] },
+    { href: "/admin/all-transaction", icon: GrTransaction, label: "ALL Transaction", roles: ["ADMIN"] },
 
     { href: "/admin/transaction", icon: GrTransaction, label: "Transaction", roles: ["MEMBER"] },
     // { href: "/admin/donate", icon: RiMoneyDollarBoxLine, label: "Donate", roles: ["ADMIN", "SPONSOR", "USER"] },
@@ -31,7 +32,7 @@ const Sidebar = () => {
     { href: "/admin/resource-list", icon: GrResources, label: "Resource", roles: ["ADMIN","MEMBER"] },
     { href: "/admin/media-list", icon: MdOutlinePermMedia, label: "Media", roles: ["ADMIN"] },
     { href: "/admin/blog-list", icon: SiBlogger, label: "Blog", roles: ["ADMIN","MEMBER"] },
-    { href: "/admin/sponsor", icon: FaRegUser, label: "Sponsor", roles: ["ADMIN"] },
+    // { href: "/admin/sponsor", icon: FaRegUser, label: "Sponsor", roles: ["ADMIN"] },
   ];
   const filteredMenuItems = menuItems.filter(item => item.roles.includes(role));
 

@@ -4,8 +4,8 @@ import baseApi from "./baseApi";
 const resourceApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
     getResource: build.query({
-      query: ({ type,limit}: { type: string } & Record<string, unknown>) => ({
-        url: `resource/type/${type}?limit=${limit}`,
+      query: ({ type,limit, page}: { type: string } & Record<string, unknown>) => ({
+        url: `resource/type/${type}?limit=${limit}&page=${page}`,
         method: "GET",
 
       }),

@@ -1,11 +1,11 @@
 "use client";
+
 import React, { useEffect, useState } from "react";
 import { FaCirclePlus } from "react-icons/fa6";
 import { Editor } from "@tinymce/tinymce-react";
 import { useCreateEventMutation } from "@/redux/Api/eventApi";
 import { z } from "zod";
 import { toast } from "sonner";
-import Image from "next/image";
 
 const eventSchema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -14,22 +14,11 @@ const eventSchema = z.object({
   endDate: z.string().min(1, "End date is required"),
   latitude: z.number().nullable().optional(),
   longitude: z.number().nullable().optional(),
+
 });
 
 const CreateEvent = () => {
-  const [formData, setFormData] = useState<{
-    silverSponsorFee: string;
-    goldSponsorFee: string;
-    platinumSponsorFee: string;
-    title: string;
-    startDate: string;
-    endDate: string;
-    description: string;
-    address: string;
-    eventImage: File | null; // For the image file
-    latitude: number | null;
-    longitude: number | null;
-  }>({
+  const [formData, setFormData] = useState({
     silverSponsorFee: "",
     goldSponsorFee: "",
     platinumSponsorFee: "",
@@ -38,12 +27,15 @@ const CreateEvent = () => {
     endDate: "",
     description: "",
     address: "",
-    eventImage: null, // For the image file
-    latitude: null,
-    longitude: null,
+    eventImage: null as File | null,
+    latitude: null as number | null,
+    longitude: null as number | null,
   });
+  const [countries, setCountries] = useState<{ name: string; regions: string[] }[]>([]);
+  const [states, setStates] = useState<string[]>([]);
+  const [selectedCountry, setSelectedCountry] = useState("");
 
-  const [createEvent,{isLoading}] = useCreateEventMutation();
+  const [createEvent, { isLoading }] = useCreateEventMutation();
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [loadingLocation, setLoadingLocation] = useState(false);
 
@@ -66,9 +58,7 @@ const CreateEvent = () => {
     const file = e.target.files?.[0];
     if (file) {
       const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview(reader.result as string);
-      };
+      reader.onloadend = () => setImagePreview(reader.result as string);
       setFormData((prevData) => ({
         ...prevData,
         eventImage: file,
@@ -77,27 +67,16 @@ const CreateEvent = () => {
     }
   };
 
-  interface CoordinatesResponse {
-    latitude: number;
-    longitude: number;
-  }
-
   const fetchCoordinates = async (city: string, country: string): Promise<void> => {
     try {
       setLoadingLocation(true);
-
       const apiUrl = `https://api.api-ninjas.com/v1/geocoding?city=${city}&country=${country}`;
-
       const response = await fetch(apiUrl, {
         headers: { "X-Api-Key": "b/Ido8GzW6vvUiyCtQHQ6A==DhBMq0HZlI8UBlxJ" },
       });
+      if (!response.ok) throw new Error("Error fetching coordinates");
 
-      if (!response.ok) {
-        console.error("Failed request:", response.status);
-        throw new Error("Error fetching coordinates");
-      }
-
-      const data: CoordinatesResponse[] = await response.json();
+      const data = await response.json();
       if (data.length > 0) {
         const { latitude, longitude } = data[0];
         setFormData((prevData) => ({
@@ -114,43 +93,58 @@ const CreateEvent = () => {
   };
 
   useEffect(() => {
-    const city = "London"; // Replace with your dynamic city
-    const country = "England"; // Replace with your dynamic country
-    fetchCoordinates(city, country);
-  }, []); 
-  
+    const fetchCountries = async () => {
+      try {
+        const response = await fetch("https://restcountries.com/v3.1/all");
+        if (!response.ok) throw new Error("Error fetching countries");
+
+        const data = await response.json();
+        const countryData = data.map((country: any) => ({
+          name: country.name.common,
+          regions: country.subregion ? [country.subregion] : [],
+        }));
+        setCountries(countryData.sort((a, b) => a.name.localeCompare(b.name)));
+      } catch (error) {
+        console.error("Error fetching countries:", error);
+      }
+    };
+
+    fetchCountries();
+  }, []);
+
+  const handleCountryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const countryName = event.target.value;
+    setSelectedCountry(countryName);
+
+    const selected = countries.find((country) => country.name === countryName);
+    setStates(selected?.regions || []);
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-  
+
     try {
-      // Validate form data with Zod schema
       eventSchema.parse(formData);
-  
+
       const formDataToSend = new FormData();
       const bodyData = {
         title: formData.title,
         description: formData.description,
-        date: new Date(formData.startDate).toISOString(), 
+        date: new Date(formData.startDate).toISOString(),
         venue: formData.address,
         endTime: new Date(formData.endDate).toISOString(),
-        silverSponsorFee: parseFloat(formData.silverSponsorFee), 
-        goldSponsorFee: parseFloat(formData.goldSponsorFee), 
-        platinumSponsorFee: parseFloat(formData.platinumSponsorFee), 
-        latitude: formData.latitude ?? 0,  
-        longitude: formData.longitude ?? 0,  
+        silverSponsorFee: parseFloat(formData.silverSponsorFee),
+        goldSponsorFee: parseFloat(formData.goldSponsorFee),
+        platinumSponsorFee: parseFloat(formData.platinumSponsorFee),
+        latitude: formData.latitude ?? 0,
+        longitude: formData.longitude ?? 0,
       };
-  
+
       formDataToSend.append("body", JSON.stringify(bodyData));
-  
-      if (formData.eventImage) {
-        formDataToSend.append("eventImage", formData.eventImage);
-      }
-  
-      // for (let [key, value] of formDataToSend.entries()) {
-      //   // console.log(key, value);
-      // }
-  
+      if (formData.eventImage) formDataToSend.append("eventImage", formData.eventImage);
+
       await createEvent(formDataToSend);
+
       setFormData({
         silverSponsorFee: "",
         goldSponsorFee: "",
@@ -164,14 +158,13 @@ const CreateEvent = () => {
         latitude: null,
         longitude: null,
       });
-      setImagePreview(null);  // Reset the image preview as well
-   
+      setImagePreview(null);
       toast.success("Event created successfully!");
     } catch (err) {
       if (err instanceof z.ZodError) {
-        err.errors.forEach((error) => {
-          toast.error(`${error.path[0]}: ${error.message}`);  // Show error in toast
-        });
+        err.errors.forEach((error) =>
+          toast.error(`${error.path[0]}: ${error.message}`)
+        );
       }
     }
   };
@@ -179,40 +172,42 @@ const CreateEvent = () => {
   return (
     <div className="px-16">
       <h1 className="text-3xl font-semibold mb-6 border-b border-[#E0E0E0] pb-3">Create Event</h1>
-      <div className="flex space-x-6">
-        <div className="border-dashed border-2 p-6 text-center w-[260px] h-[243px] rounded-[8px] flex flex-col items-center justify-center">
-          <div className="flex flex-col items-center justify-center gap-2">
-            <FaCirclePlus className="text-4xl text-[#949494]" />
-            <p className="text-darkBlack font-medium">Drag and drop</p>
-          </div>
-          <p className="text-darkBlack my-2">Or</p>
-          <input
-            type="file"
-            id="fileInput"
-            onChange={handleImageUpload}
-            className="hidden"
-          />
-          <label
-            htmlFor="fileInput"
-            className="bg-[#0061FF1A] text-darkBlack px-4 py-2 rounded mt-2 cursor-pointer"
+      <form onSubmit={handleSubmit} className="space-y-6 w-full">
+        <div>
+          <label htmlFor="country">Country</label>
+          <select
+            id="country"
+            name="country"
+            value={selectedCountry}
+            onChange={handleCountryChange}
+            className="block w-full mt-2 px-4 py-2 border rounded"
           >
-            Choose File
-          </label>
-          {imagePreview && (
-            <div className="mt-4">
-              <Image
-                src={imagePreview}
-                alt="Image preview"
-                className="w-[50px] h-[50px] object-cover"
-                width={50}
-                height={50}
-              />
-            </div>
-          )}
+            <option value="">Select a Country</option>
+            {countries.map((country) => (
+              <option key={country.name} value={country.name}>
+                {country.name}
+              </option>
+            ))}
+          </select>
         </div>
-
-        <form onSubmit={handleSubmit} className="space-y-6 w-full">
-          <div>
+        <div>
+          <label htmlFor="state">State/Region</label>
+          <select
+            id="state"
+            name="state"
+            className="block w-full mt-2 px-4 py-2 border rounded"
+            disabled={!states.length}
+          >
+            <option value="">Select a State/Region</option>
+            {states.map((state, index) => (
+              <option key={index} value={state}>
+                {state}
+              </option>
+            ))}
+          </select>
+        </div>
+        {/* Rest of your form components */}
+        <div>
             <label className="block font-medium text-darkGray">Title</label>
             <input
               type="text"
@@ -327,8 +322,7 @@ const CreateEvent = () => {
               Create Event
             </button>
           </div>
-        </form>
-      </div>
+      </form>
     </div>
   );
 };
