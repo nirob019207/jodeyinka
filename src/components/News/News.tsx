@@ -6,7 +6,7 @@ import { useGetResourceQuery } from "@/redux/Api/resourceApi";
 import Link from "next/link";
 
 const News = () => {
-  const { data, isLoading, isError } = useGetResourceQuery({ type: "MEDIA",limit:10 });
+  const { data, isLoading, isError } = useGetResourceQuery({ type: "MEDIA",limit:10, page:"" });
   const newsItems = data?.data;
 
   return (
