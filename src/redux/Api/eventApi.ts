@@ -27,9 +27,18 @@ const eventApi = baseApi.injectEndpoints({
         method: "POST",
         body: data,
       }),
-    })
+    }), // Add a comma here
+
+    registerForEvent: build.mutation({
+      query: (id) => ({
+        url: `/event-users/${id}`, 
+        method: "POST",
+      }),
+      
+      invalidatesTags: ['Events'],
+    }),
 
   }),
 });
 
-export const { useEventQuery,useEventDetailsQuery,useCreateEventMutation} = eventApi
+export const { useEventQuery,useEventDetailsQuery,useCreateEventMutation, useRegisterForEventMutation} = eventApi
