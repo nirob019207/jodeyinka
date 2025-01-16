@@ -32,7 +32,7 @@ const Sidebar = () => {
     { href: "/admin/resource-list", icon: GrResources, label: "Resource", roles: ["ADMIN","MEMBER"] },
     { href: "/admin/media-list", icon: MdOutlinePermMedia, label: "Media", roles: ["ADMIN"] },
     { href: "/admin/blog-list", icon: SiBlogger, label: "Blog", roles: ["ADMIN","MEMBER"] },
-    { href: "/admin/sponsor", icon: FaRegUser, label: "Sponsor", roles: ["ADMIN"] },
+    // { href: "/admin/sponsor", icon: FaRegUser, label: "Sponsor", roles: ["ADMIN"] },
   ];
   const filteredMenuItems = menuItems.filter(item => item.roles.includes(role));
 

@@ -5,23 +5,25 @@ import { FaEdit } from "react-icons/fa";
 import profile from "@/asset/admin/profileadmin.svg";
 import Image from "next/image";
 import { useGetMeQuery, useUpdateProfileMutation, useChangePasswordMutation } from "@/redux/Api/userApi";
-import { toast } from "sonner"; // Using sonner for toast notifications
+import { toast } from "sonner";
 
 const Profile = () => {
   const { data, isLoading } = useGetMeQuery({});
   const [updateProfile] = useUpdateProfileMutation();
-  const [changePassword] = useChangePasswordMutation(); 
+  const [changePassword] = useChangePasswordMutation();
   const [isEditing, setIsEditing] = useState(false);
   const [isChangePasswordModalOpen, setIsChangePasswordModalOpen] = useState(false);
+  
+  // Set the initial state for userInfo to ensure it's always controlled
   const [userInfo, setUserInfo] = useState({
     firstName: "",
     lastName: "",
     email: "",
     address: "",
-    avatarUrl: "", // For avatar image URL
+    avatarUrl: "",
   });
+
   const [avatar, setAvatar] = useState<File | null>(null);
-  console.log(data?.data);
 
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -29,16 +31,15 @@ const Profile = () => {
   useEffect(() => {
     if (data?.data) {
       setUserInfo({
-        firstName: data.data.firstName,
-        lastName: data.data.lastName,
-        email: data.data.email,
-        address: data.data.address,
-        avatarUrl: data.data.avatarUrl, // Set the current avatar URL
+        firstName: data.data.firstName || "",
+        lastName: data.data.lastName || "",
+        email: data.data.email || "",
+        address: data.data.address || "",
+        avatarUrl: data.data.avatarUrl || "",
       });
     }
   }, [data]);
 
-  // Handle form field changes
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setUserInfo((prevData) => ({
@@ -47,7 +48,6 @@ const Profile = () => {
     }));
   };
 
-  // Handle avatar image change
   const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const selectedAvatar = e.target.files[0];
@@ -55,24 +55,21 @@ const Profile = () => {
     }
   };
 
-  // Handle edit button click
   const handleEditClick = () => {
     setIsEditing(true);
   };
 
-  // Handle update button click
   const handleUpdateClick = async () => {
     try {
-      const formData = new FormData();
-      formData.append("firstName", userInfo.firstName);
-      formData.append("lastName", userInfo.lastName);
-      formData.append("email", userInfo.email);
-      formData.append("address", userInfo.address);
-      if (avatar) {
-        formData.append("avatar", avatar); // Append avatar if selected
-      }
+      const updatedData = {
+        firstName: userInfo.firstName,
+        lastName: userInfo.lastName,
+        email: userInfo.email,
+        address: userInfo.address,
+        avatar: avatar || userInfo.avatarUrl, 
+      };
 
-      const response = await updateProfile(formData).unwrap();
+      const response = await updateProfile(updatedData).unwrap();
 
       if (response.success) {
         toast.success("Profile updated successfully!");
@@ -86,24 +83,21 @@ const Profile = () => {
     }
   };
 
-  // Handle change password form submission
   const handleChangePasswordSubmit = async () => {
     try {
-      // Make sure the new password is different from the current password
       if (data?.data?.password !== currentPassword) {
         toast.error("Your current password is incorrect.");
         return;
       }
 
-      // Call the mutation to change the password
       const response = await changePassword({
-        password:currentPassword,
+        password: currentPassword,
         newPassword,
       }).unwrap();
 
       if (response.success) {
         toast.success("Password changed successfully!");
-        setIsChangePasswordModalOpen(false); // Close the modal
+        setIsChangePasswordModalOpen(false);
         setCurrentPassword("");
         setNewPassword("");
       } else {
@@ -131,7 +125,6 @@ const Profile = () => {
         </button>
       </div>
 
-      {/* Account Header */}
       <div className="flex items-center mb-6">
         {isEditing ? (
           <input
@@ -156,7 +149,6 @@ const Profile = () => {
         </div>
       </div>
 
-      {/* Personal Information */}
       <div className="mb-6">
         <div className="flex items-center justify-between">
           <h3 className="text-[24px] font-semibold mb-6">Personal Information</h3>
@@ -207,7 +199,6 @@ const Profile = () => {
         </div>
       </div>
 
-      {/* Address Section */}
       <div className="mb-6">
         <div className="flex items-center justify-between">
           <h3 className="text-[24px] font-semibold mb-6">Address</h3>
@@ -230,7 +221,6 @@ const Profile = () => {
         </div>
       </div>
 
-      {/* Password Section */}
       <div className="mb-6">
         <div className="flex items-center justify-between">
           <h3 className="text-[24px] font-semibold mb-6">Password</h3>
@@ -243,7 +233,6 @@ const Profile = () => {
         </button>
       </div>
 
-      {/* Update Button */}
       {isEditing && (
         <div className="text-center">
           <button
@@ -255,7 +244,6 @@ const Profile = () => {
         </div>
       )}
 
-      {/* Change Password Modal */}
       {isChangePasswordModalOpen && (
         <div className="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center">
           <div className="bg-white p-6 rounded-lg w-1/3">

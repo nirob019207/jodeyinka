@@ -58,7 +58,10 @@ const Resources = () => {
                   <h3 className="text-[24px] font-medium text-default mt-4">
                     {resource?.title}
                   </h3>
-                  <p className="text-gray mt-2">{resource?.description}</p>
+                  <p
+                    className="text-gray mt-2"
+                    dangerouslySetInnerHTML={{ __html: resource?.description }}
+                  />
                   <div className="mt-6 pb-7">
                     <Link
                       href={`/media-details/${resource?.id}`}
