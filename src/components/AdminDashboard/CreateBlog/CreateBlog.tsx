@@ -1,9 +1,11 @@
 "use client";
+
 import { useState } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import { z } from "zod";
 import { useBlogCreateMutation } from "@/redux/Api/resourceApi";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 // Zod validation schema
 const resourceSchema = z.object({
@@ -27,6 +29,8 @@ const resourceSchema = z.object({
 
 export default function CreateBlog() {
   const [createBlog] = useBlogCreateMutation();
+  const router = useRouter(); 
+  const [isLoading, setIsLoading] = useState(false); 
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -55,6 +59,9 @@ export default function CreateBlog() {
     e.preventDefault();
 
     try {
+      // Set loading state to true before starting the request
+      setIsLoading(true);
+
       // Validate form data
       resourceSchema.parse(formData);
 
@@ -78,8 +85,6 @@ export default function CreateBlog() {
       const response = await createBlog(formDataToSend).unwrap();
 
       // Show success toast
-
-      // Show success toast only if the request is successful
       if (response?.success) {
         setFormData({
           title: "",
@@ -87,12 +92,14 @@ export default function CreateBlog() {
           resourceFile: null as File | null,
         });
         toast.success("Blog created successfully!");
+        // Redirect to the blog list page after successful creation
+        router.push("/admin/blog-list");
       } else {
         toast.error("Something went wrong. Please try again.");
       }
 
-      // If validation is successful, print the values in console
-      console.log("Form data:", formData);
+      // Reset loading state after the request is complete
+      setIsLoading(false);
     } catch (err) {
       if (err instanceof z.ZodError) {
         // Handle validation errors
@@ -100,6 +107,7 @@ export default function CreateBlog() {
           console.log(`Error in field ${error.path[0]}: ${error.message}`);
         });
       }
+      setIsLoading(false); // Reset loading state in case of an error
     }
   };
 
@@ -114,10 +122,7 @@ export default function CreateBlog() {
       <div className="flex space-x-6">
         {/* Product Image Section */}
         <div className="col-span-2">
-          <label
-            htmlFor="resourceFile"
-            className="block text-sm font-medium text-gray-700"
-          >
+          <label htmlFor="resourceFile" className="block text-sm font-medium text-gray-700">
             Image
           </label>
           <input
@@ -133,10 +138,7 @@ export default function CreateBlog() {
           <div className="grid grid-cols-2 gap-4 mb-4">
             {/* Title Field */}
             <div className="col-span-2">
-              <label
-                htmlFor="title"
-                className="block text-sm font-medium text-gray-700"
-              >
+              <label htmlFor="title" className="block text-sm font-medium text-gray-700">
                 Title
               </label>
               <input
@@ -152,9 +154,7 @@ export default function CreateBlog() {
 
             {/* Description Editor */}
             <div className="col-span-2">
-              <label className="block font-medium text-darkGray">
-                Description
-              </label>
+              <label className="block font-medium text-darkGray">Description</label>
               <Editor
                 apiKey="g68nc1d1w7r6ws2cu6q6c6trlsejbpqf5dylpj1b8hjeoc7d"
                 initialValue="<p>Product description</p>"
@@ -181,8 +181,9 @@ export default function CreateBlog() {
             <button
               type="submit"
               className="bg-blue-500 text-white px-8 py-3 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
+              disabled={isLoading} 
             >
-              Create Mdeia
+              {isLoading ? "Creating Blog..." : "Create Blog"} 
             </button>
           </div>
         </form>

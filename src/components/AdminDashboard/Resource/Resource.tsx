@@ -1,9 +1,11 @@
 "use client";
+
 import { useState } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import { z } from "zod";
 import { useResourceCreateMutation } from "@/redux/Api/resourceApi";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 // Zod validation schema
 const resourceSchema = z.object({
@@ -27,11 +29,13 @@ const resourceSchema = z.object({
 
 export default function Resource() {
   const [createresource] = useResourceCreateMutation();
+  const router = useRouter();
   const [formData, setFormData] = useState({
     title: "",
     description: "",
     resourceFile: null as File | null,
   });
+  const [isLoading, setIsLoading] = useState(false); // Track loading state
 
   const handleEditorChange = (content: string) => {
     setFormData((prevData) => ({
@@ -58,6 +62,9 @@ export default function Resource() {
       // Validate form data
       resourceSchema.parse(formData);
 
+      // Set loading state to true while submitting
+      setIsLoading(true);
+
       // Prepare the FormData to send the request
       const formDataToSend = new FormData();
 
@@ -83,13 +90,13 @@ export default function Resource() {
           description: "",
           resourceFile: null as File | null,
         });
-        toast.success("Resource created successfully|");
-        // Handle the response if needed
+        toast.success("Resource created successfully!");
+        router.push("/admin/resource-list");
         console.log("Resource created successfully:", response);
       }
 
-      // If validation is successful, print the values in console
-      console.log("Form data:", formData);
+      // Reset loading state after completion
+      setIsLoading(false);
     } catch (err) {
       if (err instanceof z.ZodError) {
         // Handle validation errors
@@ -97,6 +104,7 @@ export default function Resource() {
           console.log(`Error in field ${error.path[0]}: ${error.message}`);
         });
       }
+      setIsLoading(false); // Reset loading state on error
     }
   };
 
@@ -178,8 +186,9 @@ export default function Resource() {
             <button
               type="submit"
               className="bg-blue-500 text-white px-8 py-3 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
+              disabled={isLoading} // Disable the button when loading
             >
-              Create Resource
+              {isLoading ? "Creating Resource..." : "Create Resource"}
             </button>
           </div>
         </form>

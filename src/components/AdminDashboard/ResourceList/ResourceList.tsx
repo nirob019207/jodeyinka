@@ -33,7 +33,7 @@ const ResourceList = () => {
   });
 
   const resourceList = data?.data;
-  const hasMoreData = resourceList?.length === limit; // Determine if more data exists by comparing length
+  const hasMoreData = resourceList?.length === limit; 
 
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
