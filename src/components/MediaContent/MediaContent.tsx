@@ -2,17 +2,13 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
-import download from "@/asset/media/download.svg";
 import comment from "@/asset/media/comment.svg";
 import dots from "@/asset/media/dots.svg";
-import {
-  useAddComentMutation,
-  useGetResourceSingleQuery,
-} from "@/redux/Api/resourceApi";
+import profile from "@/asset/profilavater.webp";
+import { useAddComentMutation, useGetResourceSingleQuery } from "@/redux/Api/resourceApi";
 import { useParams } from "next/navigation";
 import defult from "@/asset/default.png";
 import { toast } from "sonner";
-// import { CommentSection } from "../skelton/CommentSection";
 import CardSkeleton from "../CardSkelaton/CardSkeleton";
 
 const MediaContent: React.FC = () => {
@@ -23,10 +19,9 @@ const MediaContent: React.FC = () => {
   const [addComment, { isLoading: addLoading, isError: addError }] =
     useAddComentMutation();
   const singleDetails = data?.data;
-  console.log("single details",singleDetails)
 
-  const [showAddComment, setShowAddComment] = useState(false); 
-  const [commentText, setCommentText] = useState(""); 
+  const [showAddComment, setShowAddComment] = useState(false);
+  const [commentText, setCommentText] = useState("");
 
   function formatMonthAndTime(isoDate: string) {
     const eventDate = new Date(isoDate);
@@ -46,13 +41,10 @@ const MediaContent: React.FC = () => {
 
   const handleCommentSubmit = async () => {
     if (commentText.trim()) {
-      console.log(commentText);
       try {
         await addComment({ content: commentText, id: path?.id });
         toast.success("Comment added successfully!");
         setCommentText(""); // Clear the input field after successful submission
-        // Remove this line to keep the "Add Comment" section visible:
-        // setShowAddComment(false);
       } catch (error) {
         toast.error("Failed to add comment. Please try again.");
       }
@@ -61,6 +53,14 @@ const MediaContent: React.FC = () => {
     }
   };
 
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="animate-spin rounded-full border-t-4 border-blue-500 h-16 w-16"></div>
+      </div>
+    );
+  }
+
   return (
     <div className="bg-[#F6F6F6] pt-[30px] md:pt-[60px] pb-[130px] md:pb-[250px]">
       <div className="container mx-auto px-0 md:px-6 flex flex-col lg:flex-row gap-8">
@@ -68,21 +68,14 @@ const MediaContent: React.FC = () => {
         <div className="lg:w-[740px]">
           {/* Media */}
           <div className="relative w-full h-64 lg:h-96">
-            <Image
-              src={singleDetails?.fileUrl}
-              alt="Media Content"
-              className="rounded-t-lg object-cover"
-              layout="fill"
-            />
-            <button className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 rounded-t-lg">
-              <svg
-                className="w-12 h-12 text-white"
-                fill="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path d="M10 16.5L16 12L10 7.5V16.5Z" />
-              </svg>
-            </button>
+            {singleDetails?.fileUrl && (
+              <Image
+                src={singleDetails?.fileUrl}
+                alt="Media Content"
+                className="rounded-t-lg object-cover"
+                layout="fill"
+              />
+            )}
           </div>
 
           {/* Content */}
@@ -94,7 +87,7 @@ const MediaContent: React.FC = () => {
               <div className="flex items-center gap-6">
                 <div className="w-[52px] h-[52px] rounded-full border border-[#FFFFFF] bg-[#D9D9D9]">
                   <Image
-                    src={singleDetails?.Author?.avatarUrl || defult}
+                    src={singleDetails?.Author?.avatarUrl?.src || profile}
                     height={100}
                     width={100}
                     alt="Author Avatar"
@@ -115,15 +108,11 @@ const MediaContent: React.FC = () => {
               <div className="flex items-center gap-6">
                 <div
                   className="flex items-center gap-2 bg-[#FFFFFF] rounded-[4px] p-2 cursor-pointer"
-                  onClick={() => setShowAddComment(!showAddComment)} // Toggle Add Comment section
+                  onClick={() => setShowAddComment(!showAddComment)} 
                 >
                   <Image src={comment} alt="comment" />
                   <p>Comments</p>
                 </div>
-                {/* <div className="flex items-center gap-2 bg-[#FFFFFF] rounded-[4px] p-2">
-                  <Image src={download} alt="download" />
-                  <p>Download</p>
-                </div> */}
                 <div className="bg-[#FFFFFF] rounded-[4px]">
                   <Image src={dots} alt="dots" />
                 </div>
@@ -132,7 +121,10 @@ const MediaContent: React.FC = () => {
             <p className="text-[#090043] mb-6">
               {formatMonthAndTime(singleDetails?.createdAt)}
             </p>
-            <div>{singleDetails?.description}</div>
+            <div
+              className="text-[#090043]"
+              dangerouslySetInnerHTML={{ __html: singleDetails?.description || "" }}
+            />
           </div>
         </div>
 
@@ -143,13 +135,13 @@ const MediaContent: React.FC = () => {
               {isLoading ? (
                 <CardSkeleton />
               ) : (
-                singleDetails?.Comments.map((comment, index) => (
+                singleDetails?.Comments?.map((comment, index) => (
                   <div key={index} className="flex items-start gap-4">
                     {/* Display avatar or placeholder */}
                     <div className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center">
-                      {comment.Author?.avatarUrl ? (
+                      {comment.Author?.avatarUrl?.src ? (
                         <Image
-                          src={comment.Author.avatarUrl}
+                          src={comment.Author.avatarUrl.src || profile}
                           alt="Author Avatar"
                           width={40}
                           height={40}

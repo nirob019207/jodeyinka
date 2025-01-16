@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { FaTrashAlt } from "react-icons/fa";
 import {
   Table,
@@ -13,6 +13,7 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { useEventQuery } from "@/redux/Api/eventApi";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
 
 // Type for resource events
 type ResourceEvent = {
@@ -26,10 +27,18 @@ type ResourceEvent = {
 };
 
 const BlogList = () => {
-  const { data, isLoading, isError } = useEventQuery({limit: 10});
+  const limit = 6;
+  const [currentPage, setCurrentPage] = useState(1)
+  const { data, isLoading, isError } = useEventQuery({ limit: limit, page:  currentPage});
 
   const EventList = data?.data;
-  console.log(EventList)
+  console.log(EventList);
+
+  const hasMoreData = EventList?.length === limit;
+
+  const handlePageChange = (newPage: number) => {
+    setCurrentPage(newPage);
+  };
 
   if (isLoading) {
     return (
@@ -121,8 +130,13 @@ const BlogList = () => {
                   {event.title}
                 </TableCell>
                 <TableCell className="px-4 py-4 text-darkGray text-center">
-                  {event.description}
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: event.description || "",
+                    }}
+                  />
                 </TableCell>
+
                 <TableCell className="px-4 py-4 text-darkGray text-center">
                   {event?.type || "N/A"}
                 </TableCell>
@@ -145,6 +159,38 @@ const BlogList = () => {
           </TableBody>
         </Table>
       </div>
+       {/* Pagination Controls */}
+            <div className="flex justify-center items-center space-x-4 mt-6">
+              <button
+                onClick={() => handlePageChange(currentPage - 1)}
+                disabled={currentPage === 1}
+                className={`bg-gray-800 text-white py-2 px-4 rounded-l-md ${
+                  currentPage === 1
+                    ? "bg-slate-400 cursor-not-allowed"
+                    : "bg-blue-500 hover:bg-blue-600"
+                }`}
+              >
+                <div className="flex items-center">
+                  <FaChevronLeft className="w-5 mr-2" />
+                  <span>Prev</span>
+                </div>
+              </button>
+      
+              <button
+                onClick={() => handlePageChange(currentPage + 1)}
+                disabled={!hasMoreData}
+                className={`bg-gray-800 text-white py-2 px-4 rounded-r-md ${
+                  !hasMoreData
+                    ? "bg-slate-400 cursor-not-allowed"
+                    : "bg-blue-500 hover:bg-blue-600"
+                }`}
+              >
+                <div className="flex items-center">
+                  <span className="mr-2">Next</span>
+                  <FaChevronRight className="w-5 ml-2" />
+                </div>
+              </button>
+            </div>
     </div>
   );
 };

@@ -14,8 +14,8 @@ const eventApi = baseApi.injectEndpoints({
     }),
 
     allTransactions: build.query({
-      query: () => ({
-        url: "/transaction",
+      query: ({limit, page}) => ({
+        url: `/transaction?limit=${limit}&page=${page}`,
         method: "GET",
 
       }),

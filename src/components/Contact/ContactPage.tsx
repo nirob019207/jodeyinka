@@ -9,7 +9,7 @@ import insta from "@/asset/social/insta.svg";
 import fb from "@/asset/social/fb.svg";
 import linkedin from "@/asset/social/linkedin.svg";
 import * as z from "zod";
-import capcha from '@/asset/capcha.png'
+import capcha from "@/asset/capcha.png";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -44,9 +44,8 @@ const formSchema = z.object({
   message: z.any().optional(),
 });
 
-
 export default function ContactPage() {
-  const [contact,{isLoading}]=useContactMutation()
+  const [contact, { isLoading }] = useContactMutation();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -57,8 +56,6 @@ export default function ContactPage() {
       message: "",
     },
   });
-
-  
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
@@ -222,11 +219,10 @@ export default function ContactPage() {
               />
 
               {/* Recaptcha */}
-              <div>
+              {/* <div>
                 <div className="inline-flex items-center gap-2 rounded-md border bg-white px-3 py-2 shadow-sm mb-10">
                   <Checkbox
                     id="recaptcha"
-                  
                     className="h-6 w-6 rounded-sm border-2 border-gray-200 data-[state=checked]:border-transparent"
                   />
                   <label htmlFor="recaptcha" className="text-sm text-gray-600">
@@ -242,13 +238,13 @@ export default function ContactPage() {
                     </div>
                   </div>
                 </div>
-              </div>
+              </div> */}
 
               <Button
                 type="submit"
                 className="w-full bg-gradient-to-l from-[#0061FF] to-[#003A99] px-4 py-2"
               >
-               {isLoading?"Message Sending":"Contact"}
+                {isLoading ? "Message Sending" : "Contact"}
               </Button>
             </form>
           </Form>

@@ -7,6 +7,7 @@ import { useEventQuery } from "@/redux/Api/eventApi";
 import { MdArrowRightAlt } from "react-icons/md";
 import Link from "next/link";
 import CardSkeleton from "../CardSkelaton/CardSkeleton";
+import defaultEvent from "@/asset/event/e1.svg"
 
 const UpCommingEventPage = () => {
   const { data, isLoading, isError } = useEventQuery({ limit: 10 });
@@ -67,7 +68,7 @@ const UpCommingEventPage = () => {
                   {/* Event Image */}
                   <div className="relative">
                     <Image
-                      src={event?.imageUrl}
+                      src={event?.imageUrl || defaultEvent}
                       alt={event.title}
                       className="w-full h-[200px] object-cover"
                       width={357}
@@ -102,7 +103,14 @@ const UpCommingEventPage = () => {
                     <h3 className="text-[24px] font-medium text-default leading-[32px]">
                       {event.title}
                     </h3>
-                    <p className="text-[#545454] mt-4 mb-6">{event.description}</p>
+                    <p className="text-[#475467] mb-9">
+                    <span
+                      dangerouslySetInnerHTML={{
+                        __html: event?.description,
+                      }}
+                      className="text-sm"
+                    />
+                  </p>
                     <div className="flex items-center">
                       <Link
                         href={`event-details/${event.id}`}

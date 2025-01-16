@@ -4,8 +4,8 @@ import baseApi from "./baseApi";
 const eventApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
     event: build.query({
-      query: ({limit}) => ({
-        url: `/events/upcoming?limit=${limit}`,
+      query: ({limit, page}) => ({
+        url: `/events/upcoming?limit=${limit}&page=${page}`,
         method: "GET",
 
       }),
