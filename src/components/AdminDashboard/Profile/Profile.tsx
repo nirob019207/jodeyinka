@@ -116,7 +116,7 @@ const Profile = () => {
   }
 
   return (
-    <div className="px-16">
+    <div className="px-16 py-8 shadow rounded-lg">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold mb-6">Account Profile</h1>
         <button

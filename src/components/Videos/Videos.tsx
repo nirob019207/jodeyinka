@@ -2,13 +2,14 @@
 
 import React from "react";
 import Image from "next/image";
+import defaultResource from "@/asset/resource/resource1.svg"
 
-import { FaPlayCircle } from "react-icons/fa"; // Import the play icon from react-icons
+// import { FaPlayCircle } from "react-icons/fa";
 import { useGetResourceQuery } from "@/redux/Api/resourceApi";
 import Link from "next/link";
 
 const Videos = () => {
-    const { data, isLoading, isError } = useGetResourceQuery({ type: "RESOURCE",limit:10});
+    const { data, isLoading, isError } = useGetResourceQuery({ type: "RESOURCE",limit:10, page:1});
     const Videos = data?.data;
  
 
@@ -33,14 +34,14 @@ const Videos = () => {
               {/* Image Section with Play Icon */}
               <div className="relative">
                 <Image
-                  src={video.fileUrl}
+                  src={video.fileUrl || defaultResource}
                   alt={video.title}
                   width={100}
                   height={100}
                   className="w-full h-[200px] object-cover"
                 />
-                {/* Play Icon */}
-                <FaPlayCircle className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-5xl hover:opacity-100 transition-opacity duration-300 cursor-pointer" />
+                {/* Play Icon
+                <FaPlayCircle className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-5xl hover:opacity-100 transition-opacity duration-300 cursor-pointer" /> */}
               </div>
 
               {/* Content */}
@@ -48,7 +49,10 @@ const Videos = () => {
                 <h3 className="text-[24px] font-medium text-default mt-4">
                   {video.title}
                 </h3>
-                <p className="text-gray mt-2">{video.description}</p>
+                <p
+                  className="text-gray mt-2"
+                  dangerouslySetInnerHTML={{ __html: video.description }}
+                />
                 <div className="mt-6 pb-7">
                 <Link href={`/media-details/${video.id}`} className="border border-[#DDDDDD] w-full py-3 px-2 text-center text-blue-600 font-medium rounded-[8px]">
                     View More

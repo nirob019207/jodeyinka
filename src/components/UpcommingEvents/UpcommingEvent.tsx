@@ -6,14 +6,14 @@ import { FaRegClock } from "react-icons/fa";
 import { MdArrowRightAlt } from "react-icons/md";
 import { useEventQuery } from "@/redux/Api/eventApi";
 import Link from "next/link";
+import dfaultEvent from "@/asset/event/e1.svg";
 
 const UpcomingEvent = () => {
   const { data, isLoading, isError } = useEventQuery({ limit: 3 });
   const events = data?.data; // Show only the latest 3 events
-  console.log("events", events);
 
   // Helper function to format date and time
-  function formatMonthAndTime(isoDate) {
+  function formatMonthAndTime(isoDate: string) {
     const eventDate = new Date(isoDate);
 
     // Format month and day
@@ -30,7 +30,7 @@ const UpcomingEvent = () => {
   }
 
   // Helper function to format time range (start and end)
-  function formatTimeRange(startTime, endTime) {
+  function formatTimeRange(startTime: string, endTime: string) {
     const start = new Date(startTime);
     const end = new Date(endTime);
 
@@ -74,53 +74,15 @@ const UpcomingEvent = () => {
               <div className="h-10 bg-gray-200 rounded w-1/4"></div>
             </div>
           </div>
-
-          <div className="rounded-lg overflow-hidden bg-white shadow-md">
-            <div className="relative">
-              <div className="w-full h-[200px] bg-gray-200"></div>
-              <div className="absolute top-[175px] right-0 bg-[#FFFFFF1A] backdrop-blur-[24px] text-center py-2 px-4 rounded-lg">
-                <div className="h-4 bg-gray-200 rounded w-1/4 mb-2"></div>
-                <div className="h-4 bg-gray-200 rounded w-1/4"></div>
-              </div>
-            </div>
-
-            <div className="p-4">
-              <div className="flex items-center mb-3 mt-6">
-                <div className="h-4 bg-gray-200 rounded w-full"></div>
-              </div>
-              <div className="h-4 bg-gray-200 rounded w-1/2 mb-2"></div>
-              <div className="h-4 bg-gray-200 rounded w-full mb-2"></div>
-              <div className="h-10 bg-gray-200 rounded w-1/4"></div>
-            </div>
-          </div>
-
-          <div className="rounded-lg overflow-hidden bg-white shadow-md">
-            <div className="relative">
-              <div className="w-full h-[200px] bg-gray-200"></div>
-              <div className="absolute top-[175px] right-0 bg-[#FFFFFF1A] backdrop-blur-[24px] text-center py-2 px-4 rounded-lg">
-                <div className="h-4 bg-gray-200 rounded w-1/4 mb-2"></div>
-                <div className="h-4 bg-gray-200 rounded w-1/4"></div>
-              </div>
-            </div>
-
-            <div className="p-4">
-              <div className="flex items-center mb-3 mt-6">
-                <div className="h-4 bg-gray-200 rounded w-full"></div>
-              </div>
-              <div className="h-4 bg-gray-200 rounded w-1/2 mb-2"></div>
-              <div className="h-4 bg-gray-200 rounded w-full mb-2"></div>
-              <div className="h-10 bg-gray-200 rounded w-1/4"></div>
-            </div>
-          </div>
         </div>
       </div>
     );
   }
 
-  if (isError || !events || undefined) {
+  if (isError || !events) {
     return (
       <p className="bg-[#F5F5F5] text-center py-[120px] text-[20px] font-bold text-darkBlack">
-        No events found !
+        No events found!
       </p>
     );
   }
@@ -152,7 +114,7 @@ const UpcomingEvent = () => {
                 {/* Event Image */}
                 <div className="relative">
                   <Image
-                    src={event?.imageUrl}
+                    src={event?.imageUrl.src || dfaultEvent} 
                     alt={event?.title}
                     className="w-full h-[200px] object-cover"
                     width={357}
@@ -185,12 +147,13 @@ const UpcomingEvent = () => {
                   </h3>
                   {/* Event Description */}
                   <p className="text-[#475467] mb-9">
-                  <span
-                    dangerouslySetInnerHTML={{ __html: event?.description }}
-                    className="text-sm"
-                  />
-                </p>
-
+                    <span
+                      dangerouslySetInnerHTML={{
+                        __html: event?.description,
+                      }}
+                      className="text-sm"
+                    />
+                  </p>
 
                   {/* Read More Button */}
                   <div className="flex items-center">

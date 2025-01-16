@@ -1,4 +1,5 @@
 "use client";
+
 import { useState } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import { z } from "zod";
@@ -28,12 +29,13 @@ const resourceSchema = z.object({
 
 export default function Resource() {
   const [createresource] = useResourceCreateMutation();
+  const router = useRouter();
   const [formData, setFormData] = useState({
     title: "",
     description: "",
     resourceFile: null as File | null,
   });
-  const router = useRouter(); // Initialize useRouter
+  const [isLoading, setIsLoading] = useState(false); // Track loading state
 
   const handleEditorChange = (content: string) => {
     setFormData((prevData) => ({
@@ -59,6 +61,9 @@ export default function Resource() {
     try {
       // Validate form data
       resourceSchema.parse(formData);
+
+      // Set loading state to true while submitting
+      setIsLoading(true);
 
       // Prepare the FormData to send the request
       const formDataToSend = new FormData();
@@ -86,10 +91,12 @@ export default function Resource() {
           resourceFile: null as File | null,
         });
         toast.success("Resource created successfully!");
-        // Redirect to the resource list page
         router.push("/admin/resource-list");
+        console.log("Resource created successfully:", response);
       }
 
+      // Reset loading state after completion
+      setIsLoading(false);
     } catch (err) {
       if (err instanceof z.ZodError) {
         // Handle validation errors
@@ -102,6 +109,7 @@ export default function Resource() {
         console.error("API Error:", err);
         toast.error("Failed to create resource. Please try again.");
       }
+      setIsLoading(false); // Reset loading state on error
     }
   };
 
@@ -183,8 +191,9 @@ export default function Resource() {
             <button
               type="submit"
               className="bg-blue-500 text-white px-8 py-3 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
+              disabled={isLoading} // Disable the button when loading
             >
-              Create Resource
+              {isLoading ? "Creating Resource..." : "Create Resource"}
             </button>
           </div>
         </form>

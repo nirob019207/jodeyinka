@@ -1,6 +1,28 @@
 import React, { JSX } from "react";
 import { FaDollarSign, FaUsers, FaGift } from "react-icons/fa";
 
+const StatisticsCard = () => {
+  return (
+    <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+      <StatisticCard
+        title="Total Revenue"
+        value="$128.00"
+        icon={<FaDollarSign className="text-3xl" />}
+      />
+      <StatisticCard
+        title="Total Member"
+        value="228.00"
+        icon={<FaUsers className="text-3xl" />}
+      />
+      <StatisticCard
+        title="Total Sponsor"
+        value="228.00"
+        icon={<FaGift className="text-3xl" />}
+      />
+    </div>
+  );
+};
+
 interface StatisticCardProps {
   title: string;
   value: string;
@@ -29,26 +51,5 @@ const StatisticCard: React.FC<StatisticCardProps> = ({
   );
 };
 
-const StatisticsCard = () => {
-  return (
-    <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-      <StatisticCard
-        title="Total Revenue"
-        value="$128.00"
-        icon={<FaDollarSign className="text-3xl" />}
-      />
-      <StatisticCard
-        title="Total Member"
-        value="228.00"
-        icon={<FaUsers className="text-3xl" />}
-      />
-      <StatisticCard
-        title="Total Sponsor"
-        value="228.00"
-        icon={<FaGift className="text-3xl" />}
-      />
-    </div>
-  );
-};
 
 export default StatisticsCard;

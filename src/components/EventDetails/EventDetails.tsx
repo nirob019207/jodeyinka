@@ -4,6 +4,7 @@ import React from "react";
 import Image from "next/image";
 import { useEventDetailsQuery } from "@/redux/Api/eventApi";
 import { useParams } from "next/navigation";
+import defaultEvent from "@/asset/event/e1.svg"
 
 const EventDetails = () => {
   const id = useParams();
@@ -47,9 +48,13 @@ const EventDetails = () => {
     return `${startFormatted} - ${endFormatted}`;
   }
 
-  // Display loading, error, or event details
-  if (isLoading) {
-    return <p>Loading...</p>;
+   // Display loading, error, or event details
+   if (isLoading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="animate-spin rounded-full border-t-4 border-blue-500 h-16 w-16"></div>
+      </div>
+    );
   }
 
   if (isError || !singleEvent) {
@@ -66,7 +71,7 @@ const EventDetails = () => {
           {/* Left Section */}
           <div className="md:col-span-2 overflow-hidden rounded-tl-[8px] rounded-tr-[8px]">
             <Image
-              src={singleEvent?.imageUrl}
+              src={singleEvent?.imageUrl || defaultEvent}
               alt={singleEvent?.title || "Event Image"}
               width={100}
               height={100}
@@ -87,7 +92,7 @@ const EventDetails = () => {
             <div className="space-y-4 bg-white shadow-md rounded-lg p-6">
               <div className="flex items-center gap-[60px]">
                 <h2 className="text-xl font-medium text-default">Date:</h2>
-                <p className="text-[#475467">{formatMonthAndTime(singleEvent?.date).split('@')[0]}</p>
+                <p className="text-[#475467">{formatMonthAndTime(singleEvent?.date).split('@')[0] || "N/A"}</p>
               </div>
               <div className="flex items-center gap-[60px]">
                 <h2 className="text-xl font-medium text-default">Time:</h2>

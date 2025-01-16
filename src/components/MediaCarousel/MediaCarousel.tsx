@@ -12,7 +12,11 @@ import Link from "next/link";
 
 const MediaCarousel = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const { data, isLoading, isError } = useGetResourceQuery({ type: "MEDIA",limit:5 ,page:1});
+  const { data, isLoading, isError } = useGetResourceQuery({
+    type: "MEDIA",
+    limit: 5,
+    page: 1,
+  });
   const slides = data?.data;
 
   const [sliderRef, slider] = useKeenSlider({
@@ -37,7 +41,14 @@ const MediaCarousel = () => {
     },
   });
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="animate-spin rounded-full border-t-4 border-blue-500 h-16 w-16"></div>
+      </div>
+    );
+  }
+
   if (isError) return <p>Something went wrong!</p>;
 
   return (
@@ -54,7 +65,7 @@ const MediaCarousel = () => {
         </div>
 
         <div ref={sliderRef} className="keen-slider">
-          {slides?.map((slide:any) => (
+          {slides?.map((slide: any) => (
             <div
               key={slide.id}
               className="keen-slider__slide bg-gray-100 rounded-[8px] overflow-hidden shadow-lg"
@@ -71,16 +82,21 @@ const MediaCarousel = () => {
                   {slide.title}
                 </div>
                 <div className="p-4 bg-[#FFFFFF1A] backdrop-blur-[24px] absolute bottom-0 left-0 w-full md:w-[360px] rounded-bl-[8px]">
-                  <p className="text-[#FFFFFF] text-sm md:text-base">
-                    {slide.description}
-                  </p>
+                  <p
+                    className="text-[#FFFFFF] text-sm md:text-base"
+                    dangerouslySetInnerHTML={{
+                      __html: slide.description || "",
+                    }}
+                  />
                   <div className="mt-1 flex justify-end">
-                    <Link href={`/media-details/${slide.id}`}><button className="px-4 py-2 bg-gradient-to-l from-[#0061FF] to-[#003A99] text-white font-medium rounded-lg hover:bg-blue-700 flex items-center">
-                      Read More{" "}
-                      <span className="ml-2">
-                        <MdArrowRightAlt className="text-[20px] md:text-[24px]" />
-                      </span>
-                    </button></Link>
+                    <Link href={`/media-details/${slide.id}`}>
+                      <button className="px-4 py-2 bg-gradient-to-l from-[#0061FF] to-[#003A99] text-white font-medium rounded-lg hover:bg-blue-700 flex items-center">
+                        Read More{" "}
+                        <span className="ml-2">
+                          <MdArrowRightAlt className="text-[20px] md:text-[24px]" />
+                        </span>
+                      </button>
+                    </Link>
                   </div>
                 </div>
               </div>

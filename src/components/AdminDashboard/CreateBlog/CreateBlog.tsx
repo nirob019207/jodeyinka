@@ -1,4 +1,5 @@
 "use client";
+
 import { useState } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import { z } from "zod";
@@ -57,6 +58,9 @@ export default function CreateBlog() {
     e.preventDefault();
 
     try {
+      // Set loading state to true before starting the request
+      setIsLoading(true);
+
       // Validate form data
       resourceSchema.parse(formData);
 
@@ -90,6 +94,8 @@ export default function CreateBlog() {
           router.push("/admin/blog-list");
         }
         toast.success("Blog created successfully!");
+        // Redirect to the blog list page after successful creation
+        router.push("/admin/blog-list");
       } else {
         toast.error("Something went wrong. Please try again.");
       }
@@ -105,6 +111,7 @@ export default function CreateBlog() {
         console.error("API Error:", err);
         toast.error("Failed to create blog. Please try again.");
       }
+      setIsLoading(false); // Reset loading state in case of an error
     }
   };
 
@@ -119,10 +126,7 @@ export default function CreateBlog() {
       <div className="flex space-x-6">
         {/* Product Image Section */}
         <div className="col-span-2">
-          <label
-            htmlFor="resourceFile"
-            className="block text-sm font-medium text-gray-700"
-          >
+          <label htmlFor="resourceFile" className="block text-sm font-medium text-gray-700">
             Image
           </label>
           <input
@@ -138,10 +142,7 @@ export default function CreateBlog() {
           <div className="grid grid-cols-2 gap-4 mb-4">
             {/* Title Field */}
             <div className="col-span-2">
-              <label
-                htmlFor="title"
-                className="block text-sm font-medium text-gray-700"
-              >
+              <label htmlFor="title" className="block text-sm font-medium text-gray-700">
                 Title
               </label>
               <input
@@ -157,9 +158,7 @@ export default function CreateBlog() {
 
             {/* Description Editor */}
             <div className="col-span-2">
-              <label className="block font-medium text-darkGray">
-                Description
-              </label>
+              <label className="block font-medium text-darkGray">Description</label>
               <Editor
                 apiKey="g68nc1d1w7r6ws2cu6q6c6trlsejbpqf5dylpj1b8hjeoc7d"
                 initialValue="<p>Product description</p>"
@@ -187,8 +186,9 @@ export default function CreateBlog() {
               type="submit"
               disabled={isLoading}
               className="bg-blue-500 text-white px-8 py-3 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
+              disabled={isLoading} 
             >
-              Create Mdeia
+              {isLoading ? "Creating Blog..." : "Create Blog"} 
             </button>
           </div>
         </form>

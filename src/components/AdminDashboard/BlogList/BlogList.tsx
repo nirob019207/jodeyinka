@@ -1,7 +1,14 @@
 "use client";
 import React, { useState } from "react";
 import { FaTrashAlt } from "react-icons/fa";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import Image from "next/image";
 import Link from "next/link";
 import { useGetResourceQuery } from "@/redux/Api/resourceApi";
@@ -17,7 +24,7 @@ type ResourceEvent = {
 
 const BlogList = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const limit = 5; // Number of blogs per page
+  const limit = 6; 
 
   const { data, isLoading, isError } = useGetResourceQuery({
     type: "BLOG",
@@ -26,7 +33,7 @@ const BlogList = () => {
   });
 
   const blogList = data?.data;
-  const hasMoreData = blogList?.length === limit; 
+  const hasMoreData = blogList?.length === limit;
 
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
@@ -37,7 +44,10 @@ const BlogList = () => {
       <div className="px-16 py-6">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-semibold text-darkBlack">Blog History</h2>
-          <Link href={"/admin/create-blog"} className="text-blue-500 hover:text-blue-700">
+          <Link
+            href={"/admin/create-blog"}
+            className="text-blue-500 hover:text-blue-700"
+          >
             Create Blog
           </Link>
         </div>
@@ -53,7 +63,9 @@ const BlogList = () => {
   if (isError) {
     return (
       <div className="px-16 py-6">
-        <p className="text-red-500 text-center">Error fetching data. Please try again later.</p>
+        <p className="text-red-500 text-center">
+          Error fetching data. Please try again later.
+        </p>
       </div>
     );
   }
@@ -62,7 +74,10 @@ const BlogList = () => {
     <div className="px-16 py-6">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-semibold text-darkBlack">Blog History</h2>
-        <Link href={"/admin/create-blog"} className="text-blue-500 hover:text-blue-700">
+        <Link
+          href={"/admin/create-blog"}
+          className="text-blue-500 hover:text-blue-700"
+        >
           Create Blog
         </Link>
       </div>
@@ -71,22 +86,49 @@ const BlogList = () => {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className="text-default text-base text-center">Image</TableHead>
-              <TableHead className="text-default text-base text-center">Blog Title</TableHead>
-              <TableHead className="text-default text-base text-center">Description</TableHead>
-              <TableHead className="text-default text-base text-center">Type</TableHead>
-              <TableHead className="text-default text-base text-center">Actions</TableHead>
+              <TableHead className="text-default text-base text-center">
+                Image
+              </TableHead>
+              <TableHead className="text-default text-base text-center">
+                Blog Title
+              </TableHead>
+              <TableHead className="text-default text-base text-center">
+                Description
+              </TableHead>
+              <TableHead className="text-default text-base text-center">
+                Type
+              </TableHead>
+              <TableHead className="text-default text-base text-center">
+                Actions
+              </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {blogList?.map((event: ResourceEvent, index: number) => (
               <TableRow key={index}>
                 <TableCell className="px-4 py-4 text-center">
-                  <Image src={event.fileUrl} alt={event.title} width={48} height={48} className="w-16 h-16 object-cover rounded mx-auto" />
+                  <Image
+                    src={event.fileUrl}
+                    alt={event.title}
+                    width={48}
+                    height={48}
+                    className="w-16 h-16 object-cover rounded mx-auto"
+                  />
                 </TableCell>
-                <TableCell className="px-4 py-4 text-darkGray text-center">{event.title}</TableCell>
-                <TableCell className="px-4 py-4 text-darkGray text-center">{event.description}</TableCell>
-                <TableCell className="px-4 py-4 text-darkGray text-center">{event.type}</TableCell>
+                <TableCell className="px-4 py-4 text-darkGray text-center">
+                  {event.title}
+                </TableCell>
+                <TableCell className="px-4 py-4 text-darkGray text-center">
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: event.description || "",
+                    }}
+                  />
+                </TableCell>
+
+                <TableCell className="px-4 py-4 text-darkGray text-center">
+                  {event.type}
+                </TableCell>
                 <TableCell className="px-4 py-4 text-darkGray text-center">
                   <button className="text-red-500 hover:text-red-700">
                     <FaTrashAlt className="text-lg text-center" />
@@ -103,7 +145,11 @@ const BlogList = () => {
         <button
           onClick={() => handlePageChange(currentPage - 1)}
           disabled={currentPage === 1}
-          className={`py-2 px-4 rounded-l-md text-white ${currentPage === 1 ? "bg-slate-400 cursor-not-allowed" : "bg-blue-500 hover:bg-blue-600"}`}
+          className={`py-2 px-4 rounded-l-md text-white ${
+            currentPage === 1
+              ? "bg-slate-400 cursor-not-allowed"
+              : "bg-blue-500 hover:bg-blue-600"
+          }`}
         >
           <div className="flex items-center">
             <FaChevronLeft className="w-5 mr-2" />
@@ -114,7 +160,11 @@ const BlogList = () => {
         <button
           onClick={() => handlePageChange(currentPage + 1)}
           disabled={!hasMoreData}
-          className={`py-2 px-4 rounded-r-md text-white ${!hasMoreData ? "bg-slate-400 cursor-not-allowed" : "bg-blue-500 hover:bg-blue-600"}`}
+          className={`py-2 px-4 rounded-r-md text-white ${
+            !hasMoreData
+              ? "bg-slate-400 cursor-not-allowed"
+              : "bg-blue-500 hover:bg-blue-600"
+          }`}
         >
           <div className="flex items-center">
             <span className="mr-2">Next</span>
