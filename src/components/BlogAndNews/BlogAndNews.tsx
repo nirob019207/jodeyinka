@@ -10,7 +10,7 @@ import Link from "next/link";
 
 const BlogsAndNews = () => {
 
-    const { data} = useGetResourceQuery({ type: "BLOG",limit:3 });
+    const { data} = useGetResourceQuery({ type: "BLOG",limit:3,page:1 });
     const blogs = data?.data;
     // function formatMonthAndTime(isoDate: string) {
     //   const eventDate = new Date(isoDate);

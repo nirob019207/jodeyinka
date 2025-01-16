@@ -81,7 +81,7 @@ export default function LoginPage() {
             router.push("/");
             break;
           case "ADMIN":
-            router.push("/admin");
+            router.push("/admin/dashboard");
             break;
           default:
             console.error("Unknown role:", role);

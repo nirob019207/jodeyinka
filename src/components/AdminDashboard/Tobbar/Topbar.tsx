@@ -13,7 +13,7 @@ const Topbar = () => {
         </h1>
         <div>
           <div className="w-16 h-16 rounded-full cursor-pointer">
-            <Image src={profile} alt="profile image" />
+           
           </div>
         </div>
       </div>

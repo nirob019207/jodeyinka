@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import adminlogo from "@/asset/admin/adminlogo.svg";
 import Image from "next/image";
 import { LucideLayoutDashboard } from "lucide-react";
@@ -12,12 +12,18 @@ import { LuUser } from "react-icons/lu";
 import { MdOutlinePermMedia } from "react-icons/md";
 import { SiBlogger } from "react-icons/si";
 import { useGetMeQuery } from "@/redux/Api/userApi";
+import { setUser } from "@/redux/ReduxFunction";
+import { toast } from "sonner";
+import { useDispatch } from "react-redux";
+import cookies from "js-cookie";
 
 const Sidebar = () => {
   const pathname = usePathname();
    const { data, isLoading } = useGetMeQuery({});
    const role = data?.data?.role; // Current user role
    console.log("role", role)
+   const router=useRouter()
+   const dispatch=useDispatch()
 
    const menuItems = [
     { href: "/admin/dashboard", icon: LucideLayoutDashboard, label: "Dashboard", roles: ["ADMIN", "SPONSOR", "MEMBER"] },
@@ -35,6 +41,17 @@ const Sidebar = () => {
     // { href: "/admin/sponsor", icon: FaRegUser, label: "Sponsor", roles: ["ADMIN"] },
   ];
   const filteredMenuItems = menuItems.filter(item => item.roles.includes(role));
+  const handleLogout = () => {
+    // Clear user data in Redux
+    dispatch(setUser({ role: null, token: null, email: null }));
+
+    // Remove the token from cookies
+    cookies.remove("token");
+
+ 
+    toast.success("Logged out successfully!");
+    router.push("/login");
+  };
 
   return (
     <aside className="w-72 bg-white max-h-screen">
@@ -68,10 +85,10 @@ const Sidebar = () => {
       </nav>
 
       <div className="p-4 cursor-pointer mt-8">
-        <span className="flex items-center space-x-2">
+        <button onClick={handleLogout} className="flex items-center space-x-2">
           <RiLogoutCircleLine className="text-[24px] font-bold" />
           <span>Log Out</span>
-        </span>
+        </button>
       </div>
     </aside>
   );

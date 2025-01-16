@@ -17,6 +17,7 @@ const Resources = () => {
   const { data, isLoading, isError } = useGetResourceQuery({
     type: "RESOURCE",
     limit: 3,
+    page:1
   });
   const resources = data?.data || []; // Ensure resources is always an array
 

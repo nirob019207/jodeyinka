@@ -26,7 +26,7 @@ type ResourceEvent = {
 };
 
 const BlogList = () => {
-  const { data, isLoading, isError } = useEventQuery({limit: ""});
+  const { data, isLoading, isError } = useEventQuery({limit: 10});
 
   const EventList = data?.data;
   console.log(EventList)
