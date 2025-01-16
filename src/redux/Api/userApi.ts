@@ -102,6 +102,13 @@ const userApi = baseApi.injectEndpoints({
       }),
       providesTags:["User"]
     }),
+    acceptSponsor: build.mutation({
+      query: (id) => ({
+        url: `users/approve-sponsor/${id}`,
+        method: "PATCH",
+      }),
+      invalidatesTags:["User"]
+    }),
   }),
 });
 
@@ -115,5 +122,6 @@ export const {
   useGetMeQuery,
   useUpdateProfileMutation,
   useChangePasswordMutation,
-  useRequestVerifyQuery
+  useRequestVerifyQuery,
+  useAcceptSponsorMutation
 } = userApi;

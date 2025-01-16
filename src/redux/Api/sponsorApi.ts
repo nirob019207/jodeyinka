@@ -9,7 +9,7 @@ const eventApi = baseApi.injectEndpoints({
         method: "GET",
 
       }),
-      providesTags:['Sponsor']
+      providesTags:['User']
 
     }),
  

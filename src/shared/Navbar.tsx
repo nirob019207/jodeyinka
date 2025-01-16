@@ -150,7 +150,7 @@ export const Navbar = () => {
                     >
                       Logout
                     </button>
-                    <Link href={"/admin"}
+                    <Link href={"/admin/dashboard"}
                       className="block w-full text-left px-4 py-2 hover:bg-gray-200"
                     
                     >

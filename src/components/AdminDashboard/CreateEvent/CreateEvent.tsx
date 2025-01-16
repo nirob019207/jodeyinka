@@ -6,6 +6,7 @@ import { Editor } from "@tinymce/tinymce-react";
 import { useCreateEventMutation } from "@/redux/Api/eventApi";
 import { z } from "zod";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 const eventSchema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -38,6 +39,7 @@ const CreateEvent = () => {
   const [createEvent, { isLoading }] = useCreateEventMutation();
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [loadingLocation, setLoadingLocation] = useState(false);
+  const router=useRouter()
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -126,13 +128,17 @@ const CreateEvent = () => {
     try {
       eventSchema.parse(formData);
 
+      // Convert start and end dates to ISO format with time zone (Z for UTC)
+      const startDate = new Date(formData.startDate).toISOString();
+      const endDate = new Date(formData.endDate).toISOString();
+
       const formDataToSend = new FormData();
       const bodyData = {
         title: formData.title,
         description: formData.description,
-        date: new Date(formData.startDate).toISOString(),
+        date: startDate,  // Converted to ISO string with timezone
         venue: formData.address,
-        endTime: new Date(formData.endDate).toISOString(),
+        endTime: endDate,  // Converted to ISO string with timezone
         silverSponsorFee: parseFloat(formData.silverSponsorFee),
         goldSponsorFee: parseFloat(formData.goldSponsorFee),
         platinumSponsorFee: parseFloat(formData.platinumSponsorFee),
@@ -159,6 +165,9 @@ const CreateEvent = () => {
         longitude: null,
       });
       setImagePreview(null);
+      if(!isLoading){
+        router.push('/admin/event-history');
+      }
       toast.success("Event created successfully!");
     } catch (err) {
       if (err instanceof z.ZodError) {
@@ -220,7 +229,7 @@ const CreateEvent = () => {
           </div>
 
           <div>
-            <label className="block font-medium text-darkGray">Address</label>
+            <label className="block font-medium text-darkGray">Venue</label>
             <input
               type="text"
               name="address"
@@ -232,27 +241,30 @@ const CreateEvent = () => {
           </div>
 
           <div className="flex gap-6">
-            <div className="w-full">
-              <label className="block font-medium text-darkGray">Start Date</label>
-              <input
-                type="date"
-                name="startDate"
-                value={formData.startDate}
-                onChange={handleChange}
-                className="mt-2 px-4 py-3 w-full border rounded-[8px] focus:outline-none text-darkGray bg-transparent"
-              />
-            </div>
-            <div className="w-full">
-              <label className="block font-medium text-darkGray">End Date</label>
-              <input
-                type="date"
-                name="endDate"
-                value={formData.endDate}
-                onChange={handleChange}
-                className="mt-2 px-4 py-3 w-full border rounded-[8px] focus:outline-none text-darkGray bg-transparent"
-              />
-            </div>
-          </div>
+  <div className="w-full">
+    <label className="block font-medium text-darkGray">Start Date & Time</label>
+    <input
+      type="datetime-local"
+      name="startDate"
+      min={new Date().toISOString().slice(0, 16)} // Disable dates before current date and time
+
+      value={formData.startDate}
+      onChange={handleChange}
+      className="mt-2 px-4 py-3 w-full border rounded-[8px] focus:outline-none text-darkGray bg-transparent"
+    />
+  </div>
+  <div className="w-full">
+    <label className="block font-medium text-darkGray">End Date & Time</label>
+    <input
+      type="datetime-local"
+      name="endDate"
+      value={formData.endDate}
+      onChange={handleChange}
+      className="mt-2 px-4 py-3 w-full border rounded-[8px] focus:outline-none text-darkGray bg-transparent"
+    />
+  </div>
+</div>
+
 
           <div>
             <label className="block font-medium text-darkGray">Description</label>

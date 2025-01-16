@@ -1,4 +1,4 @@
-import Resource from '@/components/AdminDashboard/Resource/Resource'
+ import Resource from '@/components/AdminDashboard/Resource/Resource'
 import React from 'react'
 
 const page = () => {

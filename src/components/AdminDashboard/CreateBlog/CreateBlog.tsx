@@ -4,6 +4,7 @@ import { Editor } from "@tinymce/tinymce-react";
 import { z } from "zod";
 import { useBlogCreateMutation } from "@/redux/Api/resourceApi";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 // Zod validation schema
 const resourceSchema = z.object({
@@ -26,12 +27,13 @@ const resourceSchema = z.object({
 });
 
 export default function CreateBlog() {
-  const [createBlog] = useBlogCreateMutation();
+  const [createBlog, { isLoading }] = useBlogCreateMutation();
   const [formData, setFormData] = useState({
     title: "",
     description: "",
     resourceFile: null as File | null,
   });
+  const router = useRouter();
 
   const handleEditorChange = (content: string) => {
     setFormData((prevData) => ({
@@ -77,8 +79,6 @@ export default function CreateBlog() {
       // Make the API request using the mutation
       const response = await createBlog(formDataToSend).unwrap();
 
-      // Show success toast
-
       // Show success toast only if the request is successful
       if (response?.success) {
         setFormData({
@@ -86,19 +86,24 @@ export default function CreateBlog() {
           description: "",
           resourceFile: null as File | null,
         });
+        if (!isLoading) {
+          router.push("/admin/blog-list");
+        }
         toast.success("Blog created successfully!");
       } else {
         toast.error("Something went wrong. Please try again.");
       }
-
-      // If validation is successful, print the values in console
-      console.log("Form data:", formData);
     } catch (err) {
       if (err instanceof z.ZodError) {
-        // Handle validation errors
+        // Handle Zod validation errors
         err.errors.forEach((error) => {
           console.log(`Error in field ${error.path[0]}: ${error.message}`);
+          toast.error(`${error.path[0]}: ${error.message}`);
         });
+      } else {
+        // Handle API errors
+        console.error("API Error:", err);
+        toast.error("Failed to create blog. Please try again.");
       }
     }
   };
@@ -180,6 +185,7 @@ export default function CreateBlog() {
           <div className="text-center col-span-full mt-11">
             <button
               type="submit"
+              disabled={isLoading}
               className="bg-blue-500 text-white px-8 py-3 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
             >
               Create Mdeia

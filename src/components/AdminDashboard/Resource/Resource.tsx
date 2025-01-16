@@ -4,6 +4,7 @@ import { Editor } from "@tinymce/tinymce-react";
 import { z } from "zod";
 import { useResourceCreateMutation } from "@/redux/Api/resourceApi";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation"; // Import useRouter
 
 // Zod validation schema
 const resourceSchema = z.object({
@@ -32,6 +33,7 @@ export default function Resource() {
     description: "",
     resourceFile: null as File | null,
   });
+  const router = useRouter(); // Initialize useRouter
 
   const handleEditorChange = (content: string) => {
     setFormData((prevData) => ({
@@ -83,19 +85,22 @@ export default function Resource() {
           description: "",
           resourceFile: null as File | null,
         });
-        toast.success("Resource created successfully|");
-        // Handle the response if needed
-        console.log("Resource created successfully:", response);
+        toast.success("Resource created successfully!");
+        // Redirect to the resource list page
+        router.push("/admin/resource-list");
       }
 
-      // If validation is successful, print the values in console
-      console.log("Form data:", formData);
     } catch (err) {
       if (err instanceof z.ZodError) {
         // Handle validation errors
         err.errors.forEach((error) => {
           console.log(`Error in field ${error.path[0]}: ${error.message}`);
+          toast.error(`Error in field ${error.path[0]}: ${error.message}`);
         });
+      } else {
+        // Handle API errors
+        console.error("API Error:", err);
+        toast.error("Failed to create resource. Please try again.");
       }
     }
   };
