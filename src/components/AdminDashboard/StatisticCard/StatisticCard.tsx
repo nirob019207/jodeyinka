@@ -1,22 +1,38 @@
-import React, { JSX } from "react";
+"use client";
+import { useDashobardQuery } from "@/redux/Api/dashboardApi";
+import React from "react";
 import { FaDollarSign, FaUsers, FaGift } from "react-icons/fa";
 
 const StatisticsCard = () => {
+  const { data, isLoading, isError } = useDashobardQuery({});
+  
+  if (isLoading) {
+    return <div className="px-16">Loading...</div>;
+  }
+
+  if (isError) {
+    return <div className="px-16">Failed to load statistics. Please try again.</div>;
+  }
+
+  const totalRevenue = data?.data?.totalAmount?._sum?.amount || 0;
+  const totalMembers = data?.data?.totalMember?._sum?.amount || 0;
+  const totalSponsors = data?.data?.totalSponsor?._sum?.amount || 0;
+
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+    <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 px-16">
       <StatisticCard
         title="Total Revenue"
-        value="$128.00"
+        value={`$${totalRevenue.toLocaleString()}`}
         icon={<FaDollarSign className="text-3xl" />}
       />
       <StatisticCard
-        title="Total Member"
-        value="228.00"
+        title="Total Members"
+        value={totalMembers.toLocaleString()}
         icon={<FaUsers className="text-3xl" />}
       />
       <StatisticCard
-        title="Total Sponsor"
-        value="228.00"
+        title="Total Sponsors Amount"
+        value={totalSponsors.toLocaleString()}
         icon={<FaGift className="text-3xl" />}
       />
     </div>
@@ -26,17 +42,12 @@ const StatisticsCard = () => {
 interface StatisticCardProps {
   title: string;
   value: string;
-  icon: JSX.Element;
+  icon: React.ReactNode;
 }
 
-const StatisticCard: React.FC<StatisticCardProps> = ({
-  title,
-  value,
-  icon,
-}) => {
+const StatisticCard: React.FC<StatisticCardProps> = ({ title, value, icon }) => {
   return (
-   <div className="px-16">
-     <div className="bg-white p-4 rounded-lg shadow flex  justify-between space-x-4 h-[165px]">
+    <div className="bg-white p-4 rounded-lg shadow flex justify-between space-x-4 h-[165px]">
       <div className="flex flex-col justify-center items-start">
         <h4 className="font-medium text-darkBlack">{title}</h4>
         <p className="text-[28px] font-semibold text-gray-700 mt-[10px]">
@@ -47,9 +58,7 @@ const StatisticCard: React.FC<StatisticCardProps> = ({
         {icon}
       </div>
     </div>
-   </div>
   );
 };
-
 
 export default StatisticsCard;
