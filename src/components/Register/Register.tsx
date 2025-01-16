@@ -25,7 +25,7 @@ const states = [
   // Add more states as needed
 ]
 
-const formSchema = z.object({
+const formSchemar = z.object({
   organizationName:z.any(),
   firstName: z.string().min(2, 'First name is required'),
   lastName: z.string().min(2, 'Last name is required'),
@@ -42,7 +42,7 @@ const formSchema = z.object({
   path: ["confirmPassword"],
 })
 
-type FormSchemaType = z.infer<typeof formSchema>;
+type FormSchemaType = z.infer<typeof formSchemar>;
 
 export default function Register() {
   const [showPassword, setShowPassword] = useState(false)
@@ -57,7 +57,7 @@ export default function Register() {
     handleSubmit,
     formState: { errors },
   } = useForm<FormSchemaType>({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(formSchemar),
   })
 
   const onSubmit: SubmitHandler<FormSchemaType> = async (data) => {
