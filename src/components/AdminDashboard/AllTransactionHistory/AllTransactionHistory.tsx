@@ -1,4 +1,5 @@
 "use client";
+
 import {
   Table,
   TableBody,
@@ -43,56 +44,56 @@ const AllTransactionHistory = () => {
   }
 
   return (
-    <div className="px-4  py-6 font-inter  w-full lg:px-10">
+    <div className="px-4 py-6 font-inter w-full lg:px-10">
       <h2 className="text-2xl font-bold mb-4 text-darkBlack">
         Transaction History
       </h2>
 
       {/* Responsive Table */}
-      <div className=" w-full  rounded-lg  ">
+      <div className="w-full rounded-lg">
         <div className="overflow-x-auto">
-          <table className="min-w-full table-auto  border-collapse">
-            <thead className="bg-gray-100">
-              <tr>
-                <th className="px-4 py-4 text-center font-semibold text-gray-700 border border-gray-300">
+          <Table className="min-w-full table-auto">
+            <TableHeader>
+              <TableRow>
+                <TableHead className="px-4 py-4 text-center font-semibold text-gray-700 border border-gray-300">
                   Transaction ID
-                </th>
-                <th className="px-4 py-4 text-center font-semibold text-gray-700 border border-gray-300">
+                </TableHead>
+                <TableHead className="px-4 py-4 text-center font-semibold text-gray-700 border border-gray-300">
                   Payment Method
-                </th>
-                <th className="px-4 py-4 text-center font-semibold text-gray-700 border border-gray-300">
+                </TableHead>
+                <TableHead className="px-4 py-4 text-center font-semibold text-gray-700 border border-gray-300">
                   Transaction Date
-                </th>
-                <th className="px-4 py-4 text-center font-semibold text-gray-700 border border-gray-300">
+                </TableHead>
+                <TableHead className="px-4 py-4 text-center font-semibold text-gray-700 border border-gray-300">
                   Amount Paid
-                </th>
-                <th className="px-4 py-4 text-center font-semibold text-gray-700 border border-gray-300">
+                </TableHead>
+                <TableHead className="px-4 py-4 text-center font-semibold text-gray-700 border border-gray-300">
                   Type
-                </th>
-              </tr>
-            </thead>
-            <tbody>
+                </TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
               {transactions.map((transaction: Transaction, index: number) => (
-                <tr key={index} className="border-t border-gray-300">
-                  <td className="px-4 py-4 text-center text-gray-600 text-sm sm:text-base border border-gray-300">
+                <TableRow key={index} className="border-t border-gray-300">
+                  <TableCell className="px-4 py-4 text-center text-gray-600 text-sm sm:text-base border border-gray-300">
                     {transaction.id}
-                  </td>
-                  <td className="px-4 py-4 text-center text-gray-600 text-sm sm:text-base border border-gray-300">
+                  </TableCell>
+                  <TableCell className="px-4 py-4 text-center text-gray-600 text-sm sm:text-base border border-gray-300">
                     {transaction.method}
-                  </td>
-                  <td className="px-4 py-4 text-center text-gray-600 text-sm sm:text-base border border-gray-300">
+                  </TableCell>
+                  <TableCell className="px-4 py-4 text-center text-gray-600 text-sm sm:text-base border border-gray-300">
                     {new Date(transaction.createdAt).toLocaleString()}
-                  </td>
-                  <td className="px-4 py-4 text-center text-gray-600 text-sm sm:text-base border border-gray-300">
+                  </TableCell>
+                  <TableCell className="px-4 py-4 text-center text-gray-600 text-sm sm:text-base border border-gray-300">
                     ${transaction.amount}
-                  </td>
-                  <td className="px-4 py-4 text-center text-gray-600 text-sm sm:text-base border border-gray-300">
+                  </TableCell>
+                  <TableCell className="px-4 py-4 text-center text-gray-600 text-sm sm:text-base border border-gray-300">
                     {transaction.type}
-                  </td>
-                </tr>
+                  </TableCell>
+                </TableRow>
               ))}
-            </tbody>
-          </table>
+            </TableBody>
+          </Table>
         </div>
       </div>
 

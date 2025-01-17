@@ -23,7 +23,7 @@ interface SidebarProps {
 
 const Sidebar = ({ onCloseClick }: SidebarProps) => {
   const pathname = usePathname();
-  const { data, isLoading } = useGetMeQuery({});
+  const { data } = useGetMeQuery({});
   const role = data?.data?.role; // Current user role
   console.log("role", role);
   const router = useRouter();
