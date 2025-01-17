@@ -19,7 +19,7 @@ const StatisticsCard = () => {
   const totalSponsors = data?.data?.totalSponsor?._sum?.amount || 0;
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 px-16">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-16">
       <StatisticCard
         title="Total Revenue"
         value={`$${totalRevenue.toLocaleString()}`}
@@ -47,7 +47,7 @@ interface StatisticCardProps {
 
 const StatisticCard: React.FC<StatisticCardProps> = ({ title, value, icon }) => {
   return (
-    <div className="bg-white p-4 rounded-lg shadow flex justify-between space-x-4 h-[165px]">
+    <div className="bg-white p-4 rounded-lg shadow flex justify-between space-x-4 md:h-[165px]">
       <div className="flex flex-col justify-center items-start">
         <h4 className="font-medium text-darkBlack">{title}</h4>
         <p className="text-[28px] font-semibold text-gray-700 mt-[10px]">
