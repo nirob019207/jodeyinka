@@ -56,20 +56,49 @@ const Profile = () => {
     }
   };
 
+  // handle profile update funtionality 
   const handleUpdateClick = async () => {
     try {
+      // Convert avatar to base64 string if a new avatar is selected
+      let avatarBase64 = userInfo.avatarUrl;
+  
+      if (avatar) {
+        const reader = new FileReader();
+        await new Promise((resolve, reject) => {
+          reader.onload = () => {
+            avatarBase64 = reader.result as string;
+            resolve(true);
+          };
+          reader.onerror = () => {
+            toast.error("Failed to process the image.");
+            reject();
+          };
+          reader.readAsDataURL(avatar);
+        });
+      }
+  
+      // Prepare the updated data object
       const updatedData = {
         firstName: userInfo.firstName,
         lastName: userInfo.lastName,
         email: userInfo.email,
         address: userInfo.address,
-        avatarUrl: avatar ? URL.createObjectURL(avatar) : userInfo.avatarUrl || null,
+        avatarUrl: avatarBase64, 
       };
-
+  
+      // Call the API to update the profile
       const response = await updateProfile(updatedData).unwrap();
       if (response.success) {
         toast.success("Profile updated successfully!");
-        setIsEditing(false);
+  
+        // Update the userInfo state with the latest data
+        setUserInfo((prev) => ({
+          ...prev,
+          avatarUrl: response.data.avatarUrl,
+        }));
+  
+        setAvatar(null); 
+        setIsEditing(false); 
       } else {
         toast.error("Error updating profile. Please try again.");
       }
@@ -78,7 +107,9 @@ const Profile = () => {
       toast.error("An error occurred while updating your profile.");
     }
   };
+  
 
+  // handle change password funtionality
   const handleChangePasswordSubmit = async () => {
     try {
       if (data?.data?.password !== currentPassword) {
@@ -135,7 +166,7 @@ const Profile = () => {
               src={avatar ? URL.createObjectURL(avatar) : userInfo.avatarUrl || profile}
               alt="Profile"
               className="rounded-full object-cover"
-              fill
+              layout="fill"
             />
           )}
         </div>

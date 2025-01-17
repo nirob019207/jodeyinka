@@ -15,7 +15,6 @@ const eventSchema = z.object({
   endDate: z.string().min(1, "End date is required"),
   latitude: z.number().nullable().optional(),
   longitude: z.number().nullable().optional(),
-
 });
 
 const CreateEvent = () => {
@@ -32,16 +31,20 @@ const CreateEvent = () => {
     latitude: null as number | null,
     longitude: null as number | null,
   });
-  const [countries, setCountries] = useState<{ name: string; regions: string[] }[]>([]);
+  const [countries, setCountries] = useState<
+    { name: string; regions: string[] }[]
+  >([]);
   const [states, setStates] = useState<string[]>([]);
   const [selectedCountry, setSelectedCountry] = useState("");
 
   const [createEvent, { isLoading }] = useCreateEventMutation();
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [loadingLocation, setLoadingLocation] = useState(false);
-  const router=useRouter()
+  const router = useRouter();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
@@ -49,7 +52,7 @@ const CreateEvent = () => {
     }));
 
     // Fetch coordinates when address is updated
-    if (name === 'address' && selectedCountry) {
+    if (name === "address" && selectedCountry) {
       fetchCoordinates(value, selectedCountry);
     }
   };
@@ -74,7 +77,10 @@ const CreateEvent = () => {
     }
   };
 
-  const fetchCoordinates = async (city: string, country: string): Promise<void> => {
+  const fetchCoordinates = async (
+    city: string,
+    country: string
+  ): Promise<void> => {
     try {
       setLoadingLocation(true);
       const apiUrl = `https://api.api-ninjas.com/v1/geocoding?city=${city}&country=${country}`;
@@ -110,7 +116,9 @@ const CreateEvent = () => {
           name: country.name.common,
           regions: country.subregion ? [country.subregion] : [],
         }));
-        setCountries(countryData.sort((a:any, b:any) => a.name.localeCompare(b.name)));
+        setCountries(
+          countryData.sort((a: any, b: any) => a.name.localeCompare(b.name))
+        );
       } catch (error) {
         console.error("Error fetching countries:", error);
       }
@@ -141,9 +149,9 @@ const CreateEvent = () => {
       const bodyData = {
         title: formData.title,
         description: formData.description,
-        date: startDate,  // Converted to ISO string with timezone
+        date: startDate, // Converted to ISO string with timezone
         venue: formData.address,
-        endTime: endDate,  // Converted to ISO string with timezone
+        endTime: endDate, // Converted to ISO string with timezone
         silverSponsorFee: parseFloat(formData.silverSponsorFee),
         goldSponsorFee: parseFloat(formData.goldSponsorFee),
         platinumSponsorFee: parseFloat(formData.platinumSponsorFee),
@@ -152,7 +160,8 @@ const CreateEvent = () => {
       };
 
       formDataToSend.append("body", JSON.stringify(bodyData));
-      if (formData.eventImage) formDataToSend.append("eventImage", formData.eventImage);
+      if (formData.eventImage)
+        formDataToSend.append("eventImage", formData.eventImage);
 
       await createEvent(formDataToSend);
 
@@ -170,8 +179,8 @@ const CreateEvent = () => {
         longitude: null,
       });
       setImagePreview(null);
-      if(!isLoading){
-        router.push('/admin/event-history');
+      if (!isLoading) {
+        router.push("/admin/event-history");
       }
       toast.success("Event created successfully!");
     } catch (err) {
@@ -184,11 +193,16 @@ const CreateEvent = () => {
   };
 
   return (
-    <div className="px-16">
-      <h1 className="text-3xl font-semibold mb-6 border-b border-[#E0E0E0] pb-3">Create Event</h1>
+    <div className="lg:px-10 px-4">
+      <h1 className="text-3xl font-semibold mb-6 border-b border-[#E0E0E0] pb-3">
+        Create Event
+      </h1>
       <form onSubmit={handleSubmit} className="space-y-6 w-full">
-      <div className="col-span-2">
-          <label htmlFor="resourceFile" className="block text-sm font-medium text-gray-700">
+        <div className="col-span-2">
+          <label
+            htmlFor="resourceFile"
+            className="block text-sm font-medium text-gray-700"
+          >
             Image
           </label>
           <input
@@ -199,7 +213,11 @@ const CreateEvent = () => {
           />
           {imagePreview && (
             <div className="mt-2">
-              <Image src={imagePreview} alt="Preview" className="max-w-xs h-auto" />
+              <Image
+                src={imagePreview}
+                alt="Preview"
+                className="max-w-xs h-auto"
+              />
             </div>
           )}
         </div>
@@ -238,124 +256,136 @@ const CreateEvent = () => {
         </div>
         {/* Rest of your form components */}
         <div>
-            <label className="block font-medium text-darkGray">Title</label>
-            <input
-              type="text"
-              name="title"
-              value={formData.title}
-              onChange={handleChange}
-              className="mt-2 px-4 py-3 w-full border rounded-[8px] focus:outline-none bg-transparent"
-              placeholder="Event Title"
-            />
-          </div>
+          <label className="block font-medium text-darkGray">Title</label>
+          <input
+            type="text"
+            name="title"
+            value={formData.title}
+            onChange={handleChange}
+            className="mt-2 px-4 py-3 w-full border rounded-[8px] focus:outline-none bg-transparent"
+            placeholder="Event Title"
+          />
+        </div>
 
-          <div>
-            <label className="block font-medium text-darkGray">Venue</label>
+        <div>
+          <label className="block font-medium text-darkGray">Venue</label>
+          <input
+            type="text"
+            name="address"
+            value={formData.address}
+            onChange={handleChange}
+            className="mt-2 px-4 py-3 w-full border rounded-[8px] focus:outline-none text-darkGray bg-transparent"
+            placeholder="Address"
+          />
+          {loadingLocation && (
+            <span className="text-sm text-gray-500">
+              Fetching location coordinates...
+            </span>
+          )}
+        </div>
+
+        <div className="flex gap-6 md:flex-row flex-col">
+          <div className="w-full">
+            <label className="block font-medium text-darkGray">
+              Start Date & Time
+            </label>
             <input
-              type="text"
-              name="address"
-              value={formData.address}
+              type="datetime-local"
+              name="startDate"
+              min={new Date().toISOString().slice(0, 16)} // Disable dates before current date and time
+              value={formData.startDate}
               onChange={handleChange}
               className="mt-2 px-4 py-3 w-full border rounded-[8px] focus:outline-none text-darkGray bg-transparent"
-              placeholder="Address"
-            />
-            {loadingLocation && <span className="text-sm text-gray-500">Fetching location coordinates...</span>}
-          </div>
-
-          <div className="flex gap-6">
-  <div className="w-full">
-    <label className="block font-medium text-darkGray">Start Date & Time</label>
-    <input
-      type="datetime-local"
-      name="startDate"
-      min={new Date().toISOString().slice(0, 16)} // Disable dates before current date and time
-
-      value={formData.startDate}
-      onChange={handleChange}
-      className="mt-2 px-4 py-3 w-full border rounded-[8px] focus:outline-none text-darkGray bg-transparent"
-    />
-  </div>
-  <div className="w-full">
-    <label className="block font-medium text-darkGray">End Date & Time</label>
-    <input
-      type="datetime-local"
-      name="endDate"
-      value={formData.endDate}
-      onChange={handleChange}
-      className="mt-2 px-4 py-3 w-full border rounded-[8px] focus:outline-none text-darkGray bg-transparent"
-    />
-  </div>
-</div>
-
-
-          <div>
-            <label className="block font-medium text-darkGray">Description</label>
-            <Editor
-              apiKey="g68nc1d1w7r6ws2cu6q6c6trlsejbpqf5dylpj1b8hjeoc7d"
-              initialValue="<p>Product description</p>"
-              init={{
-                height: 200,
-                menubar: false,
-                plugins: [
-                  "advlist autolink lists link image charmap print preview anchor",
-                  "searchreplace visualblocks code fullscreen",
-                  "insertdatetime media table paste code help wordcount",
-                ],
-                toolbar:
-                  "undo redo | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help",
-                content_style:
-                  "body { font-family:Arial, Helvetica, sans-serif; font-size:14px }",
-              }}
-              onEditorChange={handleEditorChange}
             />
           </div>
-
-          {/* Sponsorship Fees */}
-          <div className="flex gap-6">
-            <div className="w-full">
-              <label className="block font-medium text-darkGray">Silver Sponsor Fee</label>
-              <input
-                type="text"
-                name="silverSponsorFee"
-                value={formData.silverSponsorFee}
-                onChange={handleChange}
-                className="mt-2 px-4 py-3 w-full border rounded-[8px] focus:outline-none text-darkGray bg-transparent"
-                placeholder="Silver Sponsor Fee"
-              />
-            </div>
-            <div className="w-full">
-              <label className="block font-medium text-darkGray">Gold Sponsor Fee</label>
-              <input
-                type="text"
-                name="goldSponsorFee"
-                value={formData.goldSponsorFee}
-                onChange={handleChange}
-                className="mt-2 px-4 py-3 w-full border rounded-[8px] focus:outline-none text-darkGray bg-transparent"
-                placeholder="Gold Sponsor Fee"
-              />
-            </div>
-            <div className="w-full">
-              <label className="block font-medium text-darkGray">Platinum Sponsor Fee</label>
-              <input
-                type="text"
-                name="platinumSponsorFee"
-                value={formData.platinumSponsorFee}
-                onChange={handleChange}
-                className="mt-2 px-4 py-3 w-full border rounded-[8px] focus:outline-none text-darkGray bg-transparent"
-                placeholder="Platinum Sponsor Fee"
-              />
-            </div>
+          <div className="w-full">
+            <label className="block font-medium text-darkGray">
+              End Date & Time
+            </label>
+            <input
+              type="datetime-local"
+              name="endDate"
+              value={formData.endDate}
+              onChange={handleChange}
+              className="mt-2 px-4 py-3 w-full border rounded-[8px] focus:outline-none text-darkGray bg-transparent"
+            />
           </div>
+        </div>
 
-          <div className="text-center">
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="bg-[#0061FF] text-white px-6 py-2 rounded mt-6"
-            >
-              Create Event
-            </button>
+        <div>
+          <label className="block font-medium text-darkGray">Description</label>
+          <Editor
+            apiKey="g68nc1d1w7r6ws2cu6q6c6trlsejbpqf5dylpj1b8hjeoc7d"
+            initialValue="<p>Product description</p>"
+            init={{
+              height: 200,
+              menubar: false,
+              plugins: [
+                "advlist autolink lists link image charmap print preview anchor",
+                "searchreplace visualblocks code fullscreen",
+                "insertdatetime media table paste code help wordcount",
+              ],
+              toolbar:
+                "undo redo | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help",
+              content_style:
+                "body { font-family:Arial, Helvetica, sans-serif; font-size:14px }",
+            }}
+            onEditorChange={handleEditorChange}
+          />
+        </div>
+
+        {/* Sponsorship Fees */}
+        <div className="flex gap-6 md:flex-row flex-col">
+          <div className="w-full">
+            <label className="block font-medium text-darkGray">
+              Silver Sponsor Fee
+            </label>
+            <input
+              type="text"
+              name="silverSponsorFee"
+              value={formData.silverSponsorFee}
+              onChange={handleChange}
+              className="mt-2 px-4 py-3 w-full border rounded-[8px] focus:outline-none text-darkGray bg-transparent"
+              placeholder="Silver Sponsor Fee"
+            />
           </div>
+          <div className="w-full">
+            <label className="block font-medium text-darkGray">
+              Gold Sponsor Fee
+            </label>
+            <input
+              type="text"
+              name="goldSponsorFee"
+              value={formData.goldSponsorFee}
+              onChange={handleChange}
+              className="mt-2 px-4 py-3 w-full border rounded-[8px] focus:outline-none text-darkGray bg-transparent"
+              placeholder="Gold Sponsor Fee"
+            />
+          </div>
+          <div className="w-full">
+            <label className="block font-medium text-darkGray">
+              Platinum Sponsor Fee
+            </label>
+            <input
+              type="text"
+              name="platinumSponsorFee"
+              value={formData.platinumSponsorFee}
+              onChange={handleChange}
+              className="mt-2 px-4 py-3 w-full border rounded-[8px] focus:outline-none text-darkGray bg-transparent"
+              placeholder="Platinum Sponsor Fee"
+            />
+          </div>
+        </div>
+
+        <div className="text-center">
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="bg-[#0061FF] text-white px-6 py-2 rounded mt-6"
+          >
+            Create Event
+          </button>
+        </div>
       </form>
     </div>
   );

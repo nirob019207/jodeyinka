@@ -13,6 +13,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEventQuery } from "@/redux/Api/eventApi";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
+import event1 from "@/asset/event/e1.svg"
 
 // Type for resource events
 type ResourceEvent = {
@@ -74,7 +75,7 @@ const EventHistory = () => {
   }
 
   return (
-    <div className="px-4 sm:px-16 py-6">
+    <div className="px-4 lg:px-10 py-6">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-semibold text-darkBlack">Event History</h2>
         <Link
@@ -121,7 +122,7 @@ const EventHistory = () => {
               <TableRow key={index}>
                 <TableCell className="px-4 py-4 text-center">
                   <Image
-                    src={event.imageUrl}
+                    src={event.imageUrl || event1}
                     alt={event.title}
                     width={48}
                     height={48}

@@ -43,7 +43,7 @@ const AllTransactionHistory = () => {
   }
 
   return (
-    <div className="px-4  py-6 font-inter  w-full ">
+    <div className="px-4  py-6 font-inter  w-full lg:px-10">
       <h2 className="text-2xl font-bold mb-4 text-darkBlack">
         Transaction History
       </h2>

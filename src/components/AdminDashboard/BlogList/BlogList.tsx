@@ -41,7 +41,7 @@ const BlogList = () => {
 
   if (isLoading) {
     return (
-      <div className="px-16 py-6">
+      <div className="lg:px-10 px-4 py-6">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-semibold text-darkBlack">Blog History</h2>
           <Link
@@ -62,7 +62,7 @@ const BlogList = () => {
 
   if (isError) {
     return (
-      <div className="px-16 py-6">
+      <div className="lg:px-10 px-4 py-6">
         <p className="text-red-500 text-center">
           Error fetching data. Please try again later.
         </p>
@@ -71,7 +71,7 @@ const BlogList = () => {
   }
 
   return (
-    <div className="px-16 py-6">
+    <div className="lg:px-10 px-4 py-6">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-semibold text-darkBlack">Blog History</h2>
         <Link
