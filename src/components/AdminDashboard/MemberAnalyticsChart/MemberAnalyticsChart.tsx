@@ -57,18 +57,20 @@ const MemberAnalyticsChart = () => {
   };
 
   if (isLoading) {
-    return <div className="px-16">Loading...</div>;
+    return <div className="px-4 sm:px-16">Loading...</div>;
   }
 
   if (isError) {
-    return <div className="px-16">Failed to load chart data. Please try again.</div>;
+    return <div className="px-4 sm:px-16">Failed to load chart data. Please try again.</div>;
   }
 
   return (
-    <div className="px-16">
-      <div className="bg-white p-6 rounded-lg mt-8">
+    <div className="px-4 sm:px-16">
+      <div className="bg-white p-4 sm:p-6 rounded-lg mt-8">
         <h3 className="text-xl font-semibold text-darkGray mb-4">Transaction Analytics</h3>
-        <Line data={chartData} options={options} />
+        <div className="w-full h-full ">
+          <Line data={chartData} options={options} />
+        </div>
       </div>
     </div>
   );
