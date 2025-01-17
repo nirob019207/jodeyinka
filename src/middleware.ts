@@ -10,21 +10,31 @@ export function middleware(request: NextRequest) {
   const homeRoute = `${request.nextUrl.origin}/login`;
   const unauthorizedRoute = `${request.nextUrl.origin}/unauthorized`;
 
+  const userRoutes = [
+    "/about-us",
+    "/career",
+    "/media",
+    "/media-details/:path*",
+    "/event-details/:path*",
+    "/event",
+    "/resources",
+    "/contact",
+  ];
 
-  const userRoutes = ["/about-us", "/career" ,"/media", "/media-details/:path*", "/event-details/:path*","/event" ,"/resources", "/contact"];
+  const allowedRolesForUserRoutes = ["MEMBER", "SPONSOR"];
 
-  const allowedRolesForUserRoutes = ["MEMBER","SPONSOR"];
+  // Special routes for User role
+  const userSpecificRoutes = ["/membership", "/donate"];
 
   // Log the requested URL
   const currentPath = request.nextUrl.pathname;
- 
 
   // Token Retrieval
   const token = request.cookies.get("token")?.value;
- 
 
   // If token is missing, redirect to login
   if (!token) {
+    console.warn("Token is missing. Redirecting to login.");
     return NextResponse.redirect(new URL(homeRoute, request.url));
   }
 
@@ -32,40 +42,41 @@ export function middleware(request: NextRequest) {
   let userInfo: Member;
   try {
     userInfo = jwtDecode<Member>(token);
- 
-  } catch (error) {
- 
+  } catch {
     return NextResponse.redirect(new URL(homeRoute, request.url));
   }
 
+  // If the user's role is "User", allow only /membership and /donate routes
+  if (userInfo.role === "USER" && !userSpecificRoutes.some((route) => currentPath.startsWith(route))) {
+    console.warn(`User role is User but attempting to access restricted route: ${currentPath}. Redirecting to unauthorized.`);
+    return NextResponse.redirect(new URL(unauthorizedRoute, request.url));
+  }
 
-  // Route Matching for User
+  // Route Matching for other roles
   if (userRoutes.some((route) => currentPath.startsWith(route))) {
     if (!allowedRolesForUserRoutes.includes(userInfo.role)) {
       console.warn(`User role ${userInfo.role} is not allowed. Redirecting to unauthorized.`);
       return NextResponse.redirect(new URL(unauthorizedRoute, request.url));
     }
-  
   }
 
-  // Default case if all checks pass
   return NextResponse.next();
 }
 
-  export const config = {
-    matcher: [
-      "/about-us",
-      "/career",
-      "/media",
-      "/media-details/:path*", // Matches dynamic routes like /media-details/1, /media-details/some-id
-      "/resources",
-      "/contact",
-      "/event",
-     
-      "/event-details/:path*",
-    ],
-  };
-  
+export const config = {
+  matcher: [
+    "/about-us",
+    "/career",
+    "/media",
+    "/media-details/:path*", // Matches dynamic routes like /media-details/1, /media-details/some-id
+    "/resources",
+    "/contact",
+    "/event",
+    "/event-details/:path*",
+    "/membership",
+    "/donate",
+  ],
+};
 
 
 

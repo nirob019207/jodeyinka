@@ -1,13 +1,12 @@
 'use client';
 
 import { usePaypalMutation } from "@/redux/Api/paypalApi"; // Adjust the import path based on your structure
-import { useRouter } from "next/navigation";
 import Image from "next/image";
 import payment from "@/asset/payment.svg";
 
 export default function MembershipPay() {
-  const router = useRouter();
-  const [paypal, { isLoading, isError, error }] = usePaypalMutation();
+
+  const [paypal, { isLoading, isError }] = usePaypalMutation();
 
   const handlePayment = async () => {
     try {

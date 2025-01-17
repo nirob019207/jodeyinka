@@ -106,7 +106,7 @@ const Profile = () => {
       } else {
         toast.error("Error changing password.");
       }
-    } catch (error) {
+    } catch {
       toast.error("An error occurred while changing the password.");
     }
   };

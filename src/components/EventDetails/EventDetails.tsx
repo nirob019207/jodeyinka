@@ -34,19 +34,7 @@ const EventDetails = () => {
   }
 
   // Helper function to format time range (start and end)
-  interface EventDetailsProps {
-    id: string;
-    title: string;
-    imageUrl: string;
-    date: string;
-    endTime: string;
-    description: string;
-    venue: string;
-    host: {
-      firstName: string;
-      lastName: string;
-    };
-  }
+
 
   function formatTimeRange(startTime: string, endTime: string): string {
     const start = new Date(startTime);

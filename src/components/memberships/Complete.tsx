@@ -7,9 +7,20 @@ import check from "@/asset/check.svg"
 import confetti from "@/asset/confetti.svg"
 import Image from 'next/image';
 import Link from 'next/link';
+import { useGetMeQuery } from '@/redux/Api/userApi';
+import cookies from "js-cookie";
+// import { setUser } from '@/redux/ReduxFunction';
+// import { useDispatch } from 'react-redux';
+
 
 export default function Complete() {
   const [complete] = useCompleteMutation();
+  const { data} = useGetMeQuery({});
+  // const dispatch=useDispatch()
+  
+    console.log("dlf",data?.data?.role);
+  
+    const role = data?.data?.role;
   const searchParams = useSearchParams();
   const router = useRouter();
   const hasExecuted = useRef(false); // To prevent multiple executions
@@ -28,28 +39,37 @@ export default function Complete() {
       }
 
       try {
-        const response = await complete({
+        await complete({
           userId,
           purpose,
           token,
           PayerID,
         }).unwrap();
 
+         // Clear user data in Redux
+
+    // Remove the token from cookies
+    // cookies.remove("token");
+
+
         toast.success('Payment completed successfully!');
         setTimeout(() => {
           router.push('/'); // Redirect to the home page after successful payment
-        }, 2000); // Delay of 2 seconds for user feedback
-      } catch (err) {
+        }, 1000); // Delay of 2 seconds for user feedback
+        
+      } catch  {
         toast.error('Failed to complete the payment. Please try again.');
       }
     };
+    cookies.set("role", role, { expires: 7, path: "/" });
+
 
     // Prevent double execution in strict mode
     if (!hasExecuted.current) {
       hasExecuted.current = true;
       handleComplete();
     }
-  }, [userId, purpose, token, PayerID, complete, router]);
+  }, [userId, purpose, token, PayerID, complete, router,role]);
 
   return (
     <div className="relative flex justify-center items-center min-h-screen bg-gray-100 overflow-hidden">

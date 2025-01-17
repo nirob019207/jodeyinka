@@ -1,8 +1,6 @@
 // components/SearchFilter.js
 import React from "react";
-import { FiSearch } from "react-icons/fi";
-import filter from "@/asset/resource/filter.svg"
-import Image from "next/image";
+
 
 const SearchFilter = () => {
   return (

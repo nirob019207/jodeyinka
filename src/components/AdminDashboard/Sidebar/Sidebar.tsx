@@ -4,10 +4,9 @@ import adminlogo from "@/asset/admin/adminlogo.svg";
 import Image from "next/image";
 import { LucideLayoutDashboard } from "lucide-react";
 import { RxMagicWand } from "react-icons/rx";
-import { FaRegUser } from "react-icons/fa6";
-import { GoHistory } from "react-icons/go";
+
 import { GrResources, GrTransaction } from "react-icons/gr";
-import { RiLogoutCircleLine, RiMoneyDollarBoxLine } from "react-icons/ri";
+import { RiLogoutCircleLine} from "react-icons/ri";
 import { LuUser } from "react-icons/lu";
 import { MdOutlinePermMedia } from "react-icons/md";
 import { SiBlogger } from "react-icons/si";
@@ -19,7 +18,7 @@ import cookies from "js-cookie";
 
 const Sidebar = () => {
   const pathname = usePathname();
-   const { data, isLoading } = useGetMeQuery({});
+   const { data } = useGetMeQuery({});
    const role = data?.data?.role; // Current user role
    console.log("role", role)
    const router=useRouter()
