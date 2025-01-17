@@ -28,70 +28,74 @@ const AllTransactionHistory = () => {
   });
   const transactions = allTransaction?.data || [];
 
-  const hasMoreData = transactions?.length === limit; 
+  const hasMoreData = transactions?.length === limit;
 
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
   };
-
 
   if (isLoading) {
     return (
       <div className="flex justify-center items-start min-h-screen">
         <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500 border-solid"></div>
       </div>
-    ); // Simple spinner while data is loading
+    );
   }
 
   return (
-    <div className="px-16 py-6 font-inter">
+    <div className="px-4  py-6 font-inter  w-full ">
       <h2 className="text-2xl font-bold mb-4 text-darkBlack">
         Transaction History
       </h2>
-      <div className="overflow-x-auto bg-white rounded-lg">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead className="px-4 py-4 text-center font-semibold text-default">
-                Transaction ID
-              </TableHead>
-              <TableHead className="px-4 py-4 text-center font-semibold text-default">
-                Payment Method
-              </TableHead>
-              <TableHead className="px-4 py-4 text-center font-semibold text-default">
-                Transaction Date
-              </TableHead>
-              <TableHead className="px-4 py-4 text-center font-semibold text-default">
-                Amount Paid
-              </TableHead>
-              <TableHead className="px-4 py-4 text-center font-semibold text-default">
-                Type
-              </TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {transactions.map((transaction: Transaction, index: number) => (
-              <TableRow key={index} className="border-t">
-                <TableCell className="px-4 py-4 text-center text-darkGray">
-                  {transaction.id}
-                </TableCell>
-                <TableCell className="px-4 py-4 text-center text-darkGray">
-                  {transaction.method}
-                </TableCell>
-                <TableCell className="px-4 py-4 text-center text-darkGray">
-                  {new Date(transaction.createdAt).toLocaleString()}
-                </TableCell>
-                <TableCell className="px-4 py-4 text-center text-darkGray">
-                  ${transaction.amount}
-                </TableCell>
-                <TableCell className="px-4 py-4 text-center text-darkGray">
-                  {transaction.type}
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+
+      {/* Responsive Table */}
+      <div className=" w-full  rounded-lg  ">
+        <div className="overflow-x-auto">
+          <table className="min-w-full table-auto  border-collapse">
+            <thead className="bg-gray-100">
+              <tr>
+                <th className="px-4 py-4 text-center font-semibold text-gray-700 border border-gray-300">
+                  Transaction ID
+                </th>
+                <th className="px-4 py-4 text-center font-semibold text-gray-700 border border-gray-300">
+                  Payment Method
+                </th>
+                <th className="px-4 py-4 text-center font-semibold text-gray-700 border border-gray-300">
+                  Transaction Date
+                </th>
+                <th className="px-4 py-4 text-center font-semibold text-gray-700 border border-gray-300">
+                  Amount Paid
+                </th>
+                <th className="px-4 py-4 text-center font-semibold text-gray-700 border border-gray-300">
+                  Type
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {transactions.map((transaction: Transaction, index: number) => (
+                <tr key={index} className="border-t border-gray-300">
+                  <td className="px-4 py-4 text-center text-gray-600 text-sm sm:text-base border border-gray-300">
+                    {transaction.id}
+                  </td>
+                  <td className="px-4 py-4 text-center text-gray-600 text-sm sm:text-base border border-gray-300">
+                    {transaction.method}
+                  </td>
+                  <td className="px-4 py-4 text-center text-gray-600 text-sm sm:text-base border border-gray-300">
+                    {new Date(transaction.createdAt).toLocaleString()}
+                  </td>
+                  <td className="px-4 py-4 text-center text-gray-600 text-sm sm:text-base border border-gray-300">
+                    ${transaction.amount}
+                  </td>
+                  <td className="px-4 py-4 text-center text-gray-600 text-sm sm:text-base border border-gray-300">
+                    {transaction.type}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
+
       {/* Pagination Controls */}
       <div className="flex justify-center items-center space-x-4 mt-6">
         <button

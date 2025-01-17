@@ -15,8 +15,13 @@ import { setUser } from "@/redux/ReduxFunction";
 import { toast } from "sonner";
 import { useDispatch } from "react-redux";
 import cookies from "js-cookie";
+import { AiOutlineClose } from "react-icons/ai";
 
-const Sidebar = () => {
+interface SidebarProps {
+  onCloseClick: () => void;
+}
+
+const Sidebar = ({ onCloseClick }: SidebarProps) => {
   const pathname = usePathname();
   const { data, isLoading } = useGetMeQuery({});
   const role = data?.data?.role; // Current user role
@@ -25,18 +30,65 @@ const Sidebar = () => {
   const dispatch = useDispatch();
 
   const menuItems = [
-    { href: "/admin/dashboard", icon: LucideLayoutDashboard, label: "Dashboard", roles: ["ADMIN"] },
-    { href: "/admin/profile", icon: LuUser, label: "Profile", roles: ["ADMIN", "SPONSOR", "USER", "MEMBER"] },
-    { href: "/admin/event-history", icon: RxMagicWand, label: "Event", roles: ["ADMIN"] },
-    { href: "/admin/all-transaction", icon: GrTransaction, label: "ALL Transaction", roles: ["ADMIN"] },
-    { href: "/admin/transaction", icon: GrTransaction, label: "Transaction", roles: ["MEMBER"] },
-    { href: "/admin/sponsor", icon: GrTransaction, label: "Sponsor Request", roles: ["ADMIN"] },
-    { href: "/admin/resource-list", icon: GrResources, label: "Resource", roles: ["ADMIN", "MEMBER"] },
-    { href: "/admin/media-list", icon: MdOutlinePermMedia, label: "Media", roles: ["ADMIN", "MEMBER"] },
-    { href: "/admin/blog-list", icon: SiBlogger, label: "Blog", roles: ["ADMIN", "MEMBER"] },
+    {
+      href: "/admin/dashboard",
+      icon: LucideLayoutDashboard,
+      label: "Dashboard",
+      roles: ["ADMIN"],
+    },
+    {
+      href: "/admin/profile",
+      icon: LuUser,
+      label: "Profile",
+      roles: ["ADMIN", "SPONSOR", "USER", "MEMBER"],
+    },
+    {
+      href: "/admin/event-history",
+      icon: RxMagicWand,
+      label: "Event",
+      roles: ["ADMIN"],
+    },
+    {
+      href: "/admin/all-transaction",
+      icon: GrTransaction,
+      label: "ALL Transaction",
+      roles: ["ADMIN"],
+    },
+    {
+      href: "/admin/transaction",
+      icon: GrTransaction,
+      label: "Transaction",
+      roles: ["MEMBER"],
+    },
+    {
+      href: "/admin/sponsor",
+      icon: GrTransaction,
+      label: "Sponsor Request",
+      roles: ["ADMIN"],
+    },
+    {
+      href: "/admin/resource-list",
+      icon: GrResources,
+      label: "Resource",
+      roles: ["ADMIN", "MEMBER"],
+    },
+    {
+      href: "/admin/media-list",
+      icon: MdOutlinePermMedia,
+      label: "Media",
+      roles: ["ADMIN", "MEMBER"],
+    },
+    {
+      href: "/admin/blog-list",
+      icon: SiBlogger,
+      label: "Blog",
+      roles: ["ADMIN", "MEMBER"],
+    },
   ];
 
-  const filteredMenuItems = menuItems.filter(item => item.roles.includes(role));
+  const filteredMenuItems = menuItems.filter((item) =>
+    item.roles.includes(role)
+  );
 
   const handleLogout = () => {
     // Clear user data in Redux
@@ -50,14 +102,15 @@ const Sidebar = () => {
   };
 
   return (
-    <div className="flex">
+    <div className="flex ">
       {/* Sidebar */}
-      <aside className="md:w-72 bg-white max-h-screen px-2">
-        <div className="py-7 pl-6 text-xl font-bold flex items-center space-x-2">
-          <div className="w-10">
+      <aside className="md:w-72 bg-white max-h-screen px-2 z[100]">
+        <div className="py-7 pl-6 text-xl font-bold flex items-center space-x-2 justify-between">
+          <div className="w-10 flex items-center gap-2">
             <Image src={adminlogo} alt="logo" />
+            <span>WSF</span>
           </div>
-          <span>WSF</span>
+          <AiOutlineClose onClick={onCloseClick} className="md:hidden flex" />
         </div>
 
         <nav className="mt-6">
@@ -65,10 +118,11 @@ const Sidebar = () => {
             {filteredMenuItems.map((item, index) => (
               <li key={index}>
                 <Link
+                onClick={onCloseClick}
                   href={item.href}
-                  className={`block pl-6 py-2 mb-3 ${
+                  className={`block px-4 py-2 mb-3 ${
                     pathname === item.href
-                      ? "bg-blue-700 py-4 text-white rounded-[8px] text-[18px] font-medium"
+                      ? "bg-blue-700 py-4 text-white rounded-[8px] text-base md:text-[18px] font-medium"
                       : ""
                   }`}
                 >
@@ -83,7 +137,10 @@ const Sidebar = () => {
         </nav>
 
         <div className="p-4 cursor-pointer mt-8">
-          <button onClick={handleLogout} className="flex items-center space-x-2">
+          <button
+            onClick={handleLogout}
+            className="flex items-center space-x-2"
+          >
             <RiLogoutCircleLine className="text-[24px] font-bold" />
             <span>Log Out</span>
           </button>

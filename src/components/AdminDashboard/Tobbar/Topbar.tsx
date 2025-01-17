@@ -9,7 +9,7 @@ const Topbar: React.FC<{ onHamburgerClick: () => void }> = ({ onHamburgerClick }
   const userInformation = data?.data;
 
   return (
-    <header className="bg-white shadow py-4 px-6 lg:px-16 z-[50] w-full">
+    <header className="bg-white shadow py-4 px-6 lg:px-16  w-full">
       <div className="flex justify-between items-center flex-wrap">
         {/* Hamburger Icon for Mobile */}
         <button
