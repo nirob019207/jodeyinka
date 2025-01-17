@@ -33,7 +33,7 @@ const SponsorHistorys = () => {
   };
 
   if (isLoading) return <div className="container">
-    <div className="px-6 md:px-16 py-6 animate-pulse">
+    <div className="px-4 md:px-10 py-6 animate-pulse">
       <div className="flex justify-between items-center mb-4">
         <div className="h-6 bg-gray-200 rounded w-1/2"></div>
         <div className="h-6 bg-gray-200 rounded w-1/4"></div>
@@ -93,7 +93,7 @@ const SponsorHistorys = () => {
   </div>;
 
   return (
-    <div className="px-6 md:px-16 py-6">
+    <div className="px-4 md:px-10 py-6">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-semibold text-darkBlack">Sponsor History</h2>
       </div>

@@ -4,7 +4,11 @@ import React, { useState, useEffect } from "react";
 import { FaEdit } from "react-icons/fa";
 import profile from "@/asset/admin/profileadmin.svg";
 import Image from "next/image";
-import { useGetMeQuery, useUpdateProfileMutation, useChangePasswordMutation } from "@/redux/Api/userApi";
+import {
+  useGetMeQuery,
+  useUpdateProfileMutation,
+  useChangePasswordMutation,
+} from "@/redux/Api/userApi";
 import { toast } from "sonner";
 
 const Profile = () => {
@@ -14,7 +18,6 @@ const Profile = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [isChangePasswordModalOpen, setIsChangePasswordModalOpen] = useState(false);
 
-  // Set the initial state for userInfo to ensure it's always controlled
   const [userInfo, setUserInfo] = useState({
     firstName: "",
     lastName: "",
@@ -24,7 +27,6 @@ const Profile = () => {
   });
 
   const [avatar, setAvatar] = useState<File | null>(null);
-
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
 
@@ -50,33 +52,53 @@ const Profile = () => {
 
   const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      const selectedAvatar = e.target.files[0];
-      setAvatar(selectedAvatar);
+      setAvatar(e.target.files[0]);
     }
   };
 
-  const handleEditClick = () => {
-    setIsEditing(true);
-  };
-
+  // handle profile update funtionality 
   const handleUpdateClick = async () => {
     try {
-      // Prepare updated data
+      // Convert avatar to base64 string if a new avatar is selected
+      let avatarBase64 = userInfo.avatarUrl;
+  
+      if (avatar) {
+        const reader = new FileReader();
+        await new Promise((resolve, reject) => {
+          reader.onload = () => {
+            avatarBase64 = reader.result as string;
+            resolve(true);
+          };
+          reader.onerror = () => {
+            toast.error("Failed to process the image.");
+            reject();
+          };
+          reader.readAsDataURL(avatar);
+        });
+      }
+  
+      // Prepare the updated data object
       const updatedData = {
         firstName: userInfo.firstName,
         lastName: userInfo.lastName,
         email: userInfo.email,
         address: userInfo.address,
-        avatarUrl: avatar ? URL.createObjectURL(avatar) : userInfo.avatarUrl || null, 
+        avatarUrl: avatarBase64, 
       };
-
-      // Call API to update profile
+  
+      // Call the API to update the profile
       const response = await updateProfile(updatedData).unwrap();
-      // console.log("response",response)
-
       if (response.success) {
         toast.success("Profile updated successfully!");
-        setIsEditing(false);
+  
+        // Update the userInfo state with the latest data
+        setUserInfo((prev) => ({
+          ...prev,
+          avatarUrl: response.data.avatarUrl,
+        }));
+  
+        setAvatar(null); 
+        setIsEditing(false); 
       } else {
         toast.error("Error updating profile. Please try again.");
       }
@@ -85,7 +107,9 @@ const Profile = () => {
       toast.error("An error occurred while updating your profile.");
     }
   };
+  
 
+  // handle change password funtionality
   const handleChangePasswordSubmit = async () => {
     try {
       if (data?.data?.password !== currentPassword) {
@@ -116,121 +140,114 @@ const Profile = () => {
   }
 
   return (
-    <div className="px-16 py-8 shadow rounded-lg">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold mb-6">Account Profile</h1>
+    <div className="p-4 md:p-8 lg:p-16 bg-transparent shadow rounded-lg">
+      <div className="flex flex-col sm:flex-row items-center sm:justify-between mb-6">
+        <h1 className="text-2xl font-bold mb-4 sm:mb-0">Account Profile</h1>
         <button
-          onClick={handleEditClick}
-          className="bg-transparent border border-[#D0D5DD] rounded-[8px] flex items-center gap-2 p-2 text-darkGray"
+          onClick={() => setIsEditing(!isEditing)}
+          className="flex items-center gap-2 border border-gray-300 rounded px-4 py-2 text-sm font-medium hover:bg-gray-100"
         >
+          <FaEdit />
           Edit
-          <FaEdit className="mr-1" />
         </button>
       </div>
 
-      <div className="flex items-center mb-6">
-        {isEditing ? (
-          <input
-            type="file"
-            name="avatar"
-            onChange={handleAvatarChange}
-            className="text-darkBlack mt-2 p-2 w-full border rounded-[8px] focus:outline-none bg-transparent"
-          />
-        ) : (
-          <Image
-            src={avatar ? URL.createObjectURL(avatar) : userInfo.avatarUrl || profile}
-            alt="Profile"
-            className="w-20 h-20 rounded-full object-cover"
-            width={20}
-            height={20}
-          />
-        )}
-        <div className="ml-4">
-          <h2 className="text-2xl font-semibold text-darkBlack">
+      <div className="flex flex-col lg:flex-row items-center mb-8 gap-6">
+        <div className="relative w-24 h-24 lg:w-32 lg:h-32 rounded-full">
+          {isEditing ? (
+            <input
+              type="file"
+              name="avatar"
+              onChange={handleAvatarChange}
+              className="absolute inset-0 opacity-50  cursor-pointer"
+            />
+          ) : (
+            <Image
+              src={avatar ? URL.createObjectURL(avatar) : userInfo.avatarUrl || profile}
+              alt="Profile"
+              className="rounded-full object-cover"
+              layout="fill"
+            />
+          )}
+        </div>
+        <div className="text-center sm:text-left">
+          <h2 className="text-xl font-semibold">
             {userInfo.firstName} {userInfo.lastName}
           </h2>
         </div>
       </div>
 
       <div className="mb-6">
-        <div className="flex items-center justify-between">
-          <h3 className="text-[24px] font-semibold mb-6">Personal Information</h3>
-        </div>
-        <div className="grid grid-cols-2 gap-4">
+        <h3 className="text-xl font-semibold mb-4">Personal Information</h3>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label className="text-darkGray">First Name</label>
+            <label className="block text-sm text-gray-600">First Name</label>
             {isEditing ? (
               <input
                 type="text"
                 name="firstName"
                 value={userInfo.firstName}
                 onChange={handleChange}
-                className="text-darkBlack text-lg font-medium mt-2 px-4 py-3 w-full border rounded-[8px] focus:outline-none bg-transparent"
+                className="w-full px-4 py-2 border rounded"
               />
             ) : (
-              <p className="text-darkBlack text-lg font-medium">{userInfo.firstName}</p>
+              <p>{userInfo.firstName}</p>
             )}
           </div>
           <div>
-            <label className="text-darkGray">Last Name</label>
+            <label className="block text-sm text-gray-600">Last Name</label>
             {isEditing ? (
               <input
                 type="text"
                 name="lastName"
                 value={userInfo.lastName}
                 onChange={handleChange}
-                className="text-darkBlack text-lg font-medium mt-2 px-4 py-3 w-full border rounded-[8px] focus:outline-none bg-transparent"
+                className="w-full px-4 py-2 border rounded"
               />
             ) : (
-              <p className="text-darkBlack text-lg font-medium">{userInfo.lastName}</p>
+              <p>{userInfo.lastName}</p>
             )}
           </div>
           <div>
-            <label className="text-darkGray">Email Address</label>
+            <label className="block text-sm text-gray-600">Email</label>
             {isEditing ? (
               <input
                 type="email"
                 name="email"
                 value={userInfo.email}
                 onChange={handleChange}
-                className="text-darkBlack text-lg font-medium mt-2 px-4 py-3 w-full border rounded-[8px] focus:outline-none bg-transparent"
+                className="w-full px-4 py-2 border rounded"
               />
             ) : (
-              <p className="text-darkBlack text-lg font-medium">{userInfo.email}</p>
+              <p>{userInfo.email}</p>
             )}
           </div>
         </div>
       </div>
 
       <div className="mb-6">
-        <div className="flex items-center justify-between">
-          <h3 className="text-[24px] font-semibold mb-6">Address</h3>
-        </div>
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <label className="text-darkGray">Address</label>
-            {isEditing ? (
-              <input
-                type="text"
-                name="address"
-                value={userInfo.address}
-                onChange={handleChange}
-                className="text-darkBlack text-lg font-medium mt-2 px-4 py-3 w-full border rounded-[8px] focus:outline-none bg-transparent"
-              />
-            ) : (
-              <p className="text-darkBlack text-[18px] font-medium">{userInfo.address}</p>
-            )}
-          </div>
+        <h3 className="text-xl font-semibold mb-4">Address</h3>
+        <div>
+          <label className="block text-sm text-gray-600">Address</label>
+          {isEditing ? (
+            <input
+              type="text"
+              name="address"
+              value={userInfo.address}
+              onChange={handleChange}
+              className="w-full px-4 py-2 border rounded"
+            />
+          ) : (
+            <p>{userInfo.address}</p>
+          )}
         </div>
       </div>
 
       <div className="mb-6">
-        <div className="flex items-center justify-between">
-          <h3 className="text-[24px] font-semibold mb-6">Password</h3>
-        </div>
+        <h3 className="text-xl font-semibold mb-4">Password</h3>
         <button
           onClick={() => setIsChangePasswordModalOpen(true)}
-          className="text-blue-500 cursor-pointer"
+          className="text-blue-500"
         >
           Change Password
         </button>
@@ -240,7 +257,7 @@ const Profile = () => {
         <div className="text-center">
           <button
             onClick={handleUpdateClick}
-            className="bg-[#0061FF] text-white px-8 py-4 rounded hover:bg-blue-600"
+            className="px-6 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
           >
             Update Profile
           </button>
@@ -249,15 +266,15 @@ const Profile = () => {
 
       {isChangePasswordModalOpen && (
         <div className="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center">
-          <div className="bg-white p-6 rounded-lg w-1/3">
-            <h3 className="text-lg font-semibold">Change Password</h3>
-            <div className="mt-4">
+          <div className="bg-slate-100 p-6 rounded-lg w-full max-w-md">
+            <h3 className="text-lg font-semibold mb-4">Change Password</h3>
+            <div>
               <label className="block text-sm">Current Password</label>
               <input
                 type="password"
                 value={currentPassword}
                 onChange={(e) => setCurrentPassword(e.target.value)}
-                className="w-full p-2 mt-2 border rounded-md"
+                className="w-full px-4 py-2 border rounded"
               />
             </div>
             <div className="mt-4">
@@ -266,19 +283,19 @@ const Profile = () => {
                 type="password"
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
-                className="w-full p-2 mt-2 border rounded-md"
+                className="w-full px-4 py-2 border rounded"
               />
             </div>
-            <div className="mt-4 flex justify-between">
+            <div className="mt-6 flex justify-end gap-4">
               <button
                 onClick={() => setIsChangePasswordModalOpen(false)}
-                className="bg-gray-300 text-black py-2 px-4 rounded"
+                className="px-4 py-2 border rounded text-gray-600"
               >
                 Cancel
               </button>
               <button
                 onClick={handleChangePasswordSubmit}
-                className="bg-blue-500 text-white py-2 px-4 rounded"
+                className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
               >
                 Submit
               </button>
