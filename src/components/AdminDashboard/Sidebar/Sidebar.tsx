@@ -18,7 +18,7 @@ import cookies from "js-cookie";
 
 const Sidebar = () => {
   const pathname = usePathname();
-  const { data, isLoading } = useGetMeQuery({});
+  const { data} = useGetMeQuery({});
   const role = data?.data?.role; // Current user role
   console.log("role", role);
   const router = useRouter();

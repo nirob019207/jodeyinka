@@ -324,9 +324,9 @@ export default function Register() {
           </div>
 
           <div className="flex items-center justify-between">
-            <Link href="/forgot-password" className="text-sm text-blue-600 hover:underline">
+            {/* <Link href="/forgot-password" className="text-sm text-blue-600 hover:underline">
               Forgot Password?
-            </Link>
+            </Link> */}
           </div>
 
           <div className="space-y-4">
