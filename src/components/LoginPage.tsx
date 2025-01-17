@@ -69,7 +69,7 @@ export default function LoginPage() {
        
         // Dispatch the user data to Redux
         dispatch(setUser({ role, token: accessToken, email }));
-        cookies.set("role", role, { expires: 7, path: "/" });
+         cookies.set("role", role, { expires: 7, path: "/" });
 
         // Store the token in cookies
         cookies.set("token", accessToken, { expires: 7 });

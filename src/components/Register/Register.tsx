@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
@@ -12,11 +12,7 @@ import { useRouter } from 'next/navigation'
 
 // import { useRegisterUserMutation } from '@/redux/Api/userApi'
 
-const countries = [
-  { id: 1, value: 'usa', label: 'USA' },
-  { id: 2, value: 'canada', label: 'Canada' },
-  // Add more countries as needed
-]
+
 
 const states = [
   { value: 'ny', label: 'New York' },
@@ -49,8 +45,22 @@ export default function Register() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [registerUser,{isLoading}]=useRegisterUserMutation()
   const [membershipType, setMembershipType] = useState('membership')
-  const router=useRouter()
+  const [countries, setCountries] = useState<any[]>([]) // State for countries
 
+  const router=useRouter()
+  useEffect(() => {
+    // Fetch countries dynamically (example using a public API)
+    const fetchCountries = async () => {
+      const res = await fetch('https://restcountries.com/v3.1/all')
+      const data = await res.json()
+      setCountries(data.map((country: any) => ({
+        value: country.cca2, 
+        label: country.name.common 
+      })))
+    }
+
+    fetchCountries()
+  }, [])
 
   const {
     register,
@@ -314,9 +324,9 @@ export default function Register() {
           </div>
 
           <div className="flex items-center justify-between">
-            <button type="button" className="text-sm text-blue-600 hover:underline">
+            <Link href="/forgot-password" className="text-sm text-blue-600 hover:underline">
               Forgot Password?
-            </button>
+            </Link>
           </div>
 
           <div className="space-y-4">
