@@ -9,7 +9,6 @@ import insta from "@/asset/social/insta.svg";
 import fb from "@/asset/social/fb.svg";
 import linkedin from "@/asset/social/linkedin.svg";
 import * as z from "zod";
-import capcha from "@/asset/capcha.png";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -62,7 +61,7 @@ export default function ContactPage() {
       await contact(values).unwrap();
       toast.success("Message sent successfully!"); // Show success message
       form.reset(); // Reset the form after successful submission
-    } catch (error) {
+    } catch {
       toast.error("Failed to send message. Please try again."); // Show error message
     }
   }

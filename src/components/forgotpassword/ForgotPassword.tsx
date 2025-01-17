@@ -24,7 +24,7 @@ const forgotPasswordSchema = z.object({
 type ForgotPasswordData = z.infer<typeof forgotPasswordSchema>;
 
 export default function ForgotPassword() {
-  const [forgotPas, { isLoading, isError, error }] = useForgotUserMutation(); // Hook usage
+  const [forgotPas, { isLoading }] = useForgotUserMutation(); // Hook usage
   const router = useRouter()
   const dispatch = useDispatch();
 

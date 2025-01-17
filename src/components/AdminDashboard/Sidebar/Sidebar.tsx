@@ -4,8 +4,7 @@ import adminlogo from "@/asset/admin/adminlogo.svg";
 import Image from "next/image";
 import { LucideLayoutDashboard } from "lucide-react";
 import { RxMagicWand } from "react-icons/rx";
-import { FaRegUser } from "react-icons/fa6";
-import { GoHistory } from "react-icons/go";
+
 import { GrResources, GrTransaction } from "react-icons/gr";
 import { RiLogoutCircleLine } from "react-icons/ri"; // Removed close icon
 import { LuUser } from "react-icons/lu";

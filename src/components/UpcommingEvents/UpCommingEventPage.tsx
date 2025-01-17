@@ -10,7 +10,7 @@ import CardSkeleton from "../CardSkelaton/CardSkeleton";
 import defaultEvent from "@/asset/event/e1.svg";
 
 const UpCommingEventPage = () => {
-  const { data, isLoading, isError } = useEventQuery({ limit: 10, page: 1 });
+  const { data, isLoading} = useEventQuery({ limit: 10, page: 1 });
   const events = data?.data;
 
   // function formatMonthAndTime(isoDate) {
@@ -27,19 +27,7 @@ const UpCommingEventPage = () => {
   //   return `${formattedDate} @ ${formattedTime}`;
   // }
 
-  interface Event {
-    id: string;
-    title: string;
-    description: string;
-    date: string;
-    endTime: string;
-    imageUrl?: string;
-    venue: string;
-  }
 
-  interface EventQueryResponse {
-    data: Event[];
-  }
 
   function formatTimeRange(startTime: string, endTime: string): string {
     const start = new Date(startTime);

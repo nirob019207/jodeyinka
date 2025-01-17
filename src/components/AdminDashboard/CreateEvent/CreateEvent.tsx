@@ -1,12 +1,12 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { FaCirclePlus } from "react-icons/fa6";
 import { Editor } from "@tinymce/tinymce-react";
 import { useCreateEventMutation } from "@/redux/Api/eventApi";
 import { z } from "zod";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 const eventSchema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -47,6 +47,11 @@ const CreateEvent = () => {
       ...prevData,
       [name]: value,
     }));
+
+    // Fetch coordinates when address is updated
+    if (name === 'address' && selectedCountry) {
+      fetchCoordinates(value, selectedCountry);
+    }
   };
 
   const handleEditorChange = (content: string) => {
@@ -182,6 +187,22 @@ const CreateEvent = () => {
     <div className="px-16">
       <h1 className="text-3xl font-semibold mb-6 border-b border-[#E0E0E0] pb-3">Create Event</h1>
       <form onSubmit={handleSubmit} className="space-y-6 w-full">
+      <div className="col-span-2">
+          <label htmlFor="resourceFile" className="block text-sm font-medium text-gray-700">
+            Image
+          </label>
+          <input
+            type="file"
+            id="resourceFile"
+            onChange={handleImageUpload}
+            className="w-full mt-1 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          {imagePreview && (
+            <div className="mt-2">
+              <Image src={imagePreview} alt="Preview" className="max-w-xs h-auto" />
+            </div>
+          )}
+        </div>
         <div>
           <label htmlFor="country">Country</label>
           <select
@@ -238,6 +259,7 @@ const CreateEvent = () => {
               className="mt-2 px-4 py-3 w-full border rounded-[8px] focus:outline-none text-darkGray bg-transparent"
               placeholder="Address"
             />
+            {loadingLocation && <span className="text-sm text-gray-500">Fetching location coordinates...</span>}
           </div>
 
           <div className="flex gap-6">

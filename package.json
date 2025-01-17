@@ -44,6 +44,7 @@
     "react-square-web-payments-sdk": "^3.2.1",
     "redux-persist": "^6.0.0",
     "shadcn": "^2.1.8",
+    "sharp": "^0.33.5",
     "sheet": "^0.2.0",
     "sonner": "^1.7.1",
     "square": "^39.1.1",

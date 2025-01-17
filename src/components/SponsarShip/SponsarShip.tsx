@@ -14,7 +14,7 @@ interface Plan {
 
 const Sponsorship: React.FC = () => {
   const { id } = useParams();
-  const { data: sponsor, isLoading: isFetchingEvent } = useEventDetailsQuery({
+  const { data: sponsor } = useEventDetailsQuery({
     id: id as string,
   });
   const sponsors = sponsor?.data?.event;
@@ -39,7 +39,6 @@ const Sponsorship: React.FC = () => {
   console.log(sponsors)
 
   const [selectedPlan, setSelectedPlan] = React.useState<Plan | null>(null);
-  const [error, setError] = React.useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = React.useState(false); // State for modal visibility
 
   const handleCloseModal = () => {
@@ -105,7 +104,6 @@ const Sponsorship: React.FC = () => {
                 type={selectedPlan.title}
                 handleCloseModal={handleCloseModal}
               />
-              {error && <div className="mt-4 text-red-500">{error}</div>}
             </div>
           </div>
         )}

@@ -35,7 +35,6 @@ const MedaiList = () => {
   });
 
   const mediaList = data?.data;
-  const hasMoreData = mediaList?.length === limit;
 
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);

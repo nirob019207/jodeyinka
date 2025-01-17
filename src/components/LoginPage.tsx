@@ -66,9 +66,10 @@ export default function LoginPage() {
         // Decode the token to get role and other details
         const decoded: DecodedToken = jwtDecode(accessToken);
         const { role, email } = decoded;
-
+       
         // Dispatch the user data to Redux
         dispatch(setUser({ role, token: accessToken, email }));
+        cookies.set("role", role, { expires: 7, path: "/" });
 
         // Store the token in cookies
         cookies.set("token", accessToken, { expires: 7 });

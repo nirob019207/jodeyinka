@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { CreditCard, PaymentForm } from "react-square-web-payments-sdk";
 import { toast } from "sonner"; // Import the toast library
 
-export default function SquareDonate({ price, type ,handleCloseModal}:any) {
+export default function SquareDonate({ price,handleCloseModal}:any) {
   const appId = "sandbox-sq0idb-fTR5BZkbFI-9otiV37IVwQ";
   const locationId = "LVYJA27247NQF";
   const [squareDonate] = useSquareDoanteMutation();
