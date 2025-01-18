@@ -1,7 +1,7 @@
 'use client';
 import { useCompleteMutation } from '@/redux/Api/paypalApi';
 import { useSearchParams, useRouter } from 'next/navigation';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';
 import check from "@/asset/check.svg"
 import confetti from "@/asset/confetti.svg"
@@ -15,11 +15,9 @@ import cookies from "js-cookie";
 
 export default function Complete() {
   const [complete] = useCompleteMutation();
-  // const dispatch=useDispatch()
-  
-   
-    const { data: refresh, error: refreshError } = useRefreshTokenQuery({})
-  
+  const { data: refresh, error: refreshError } = useRefreshTokenQuery({});
+  const [paymentComplete, setPaymentComplete] = useState(false); // Track payment completion
+
   const searchParams = useSearchParams();
   const router = useRouter();
   const hasExecuted = useRef(false); // To prevent multiple executions
@@ -46,25 +44,14 @@ export default function Complete() {
           PayerID,
         }).unwrap();
 
-        // Handle refresh token after payment success
-        if (refreshError) {
-          console.error('Failed to refresh token', refreshError);
-          toast.error('Failed to refresh token. Please log in again.');
-          return;
-        }
+        // After payment is completed, set paymentComplete state to true
+        setPaymentComplete(true);
+        toast.success('Payment completed successfully!');
 
-        if (refresh?.data) {
-          console.log(refresh)
-          // Store the new token in cookies
-          cookies.set('token', refresh, { expires: 7 });
-
-          toast.success('Payment completed successfully!');
-          setTimeout(() => {
-            router.push('/'); // Redirect to the home page after successful payment
-          }, 1000); // Delay for user feedback
-        } else {
-          toast.error('Failed to retrieve a new token.');
-        }
+        // Redirect to the home page after a short delay
+        setTimeout(() => {
+          router.push('/'); // Redirect to home page
+        }, 500); // Delay for user feedback
       } catch (error) {
         console.error('Payment completion error:', error);
         toast.error('Failed to complete the payment. Please try again.');
@@ -76,7 +63,22 @@ export default function Complete() {
       hasExecuted.current = true;
       handleComplete();
     }
-  }, [userId, purpose, token, PayerID, complete, router, refresh,refreshError]);
+  }, [userId, purpose, token, PayerID, complete, router]);
+
+  useEffect(() => {
+    // When the page loads after redirection, refresh the token
+    if (paymentComplete && refresh?.data) {
+      // Store the new token in cookies
+      cookies.set('token', refresh?.data, { expires: 7 });
+      toast.success('Token refreshed successfully!');
+    }
+
+    if (refreshError) {
+      console.error('Failed to refresh token', refreshError);
+      toast.error('Failed to refresh token. Please log in again.');
+    }
+  }, [paymentComplete, refresh, refreshError]);
+
   return (
     <div className="relative flex justify-center items-center min-h-screen bg-gray-100 overflow-hidden">
       {/* Confetti Background */}
