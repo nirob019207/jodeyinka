@@ -1,20 +1,22 @@
 'use client';
 import { useCompleteMutation } from '@/redux/Api/paypalApi';
 import { useSearchParams, useRouter } from 'next/navigation';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { toast } from 'sonner';
-import check from "@/asset/check.svg";
-import confetti from "@/asset/confetti.svg";
+import check from "@/asset/check.svg"
+import confetti from "@/asset/confetti.svg"
 import Image from 'next/image';
-import Link from 'next/link';
-import { useLazyRefreshTokenQuery } from '@/redux/Api/userApi';
-import cookies from "js-cookie";
+
+// import { setUser } from '@/redux/ReduxFunction';
+// import { useDispatch } from 'react-redux';
+
 
 export default function Complete() {
   const [complete] = useCompleteMutation();
-  const [refreshToken, { data: refresh, error: refreshError }] = useLazyRefreshTokenQuery();
-  const [paymentComplete, setPaymentComplete] = useState(false); // Track payment completion
 
+  // const dispatch=useDispatch()
+  
+  
   const searchParams = useSearchParams();
   const router = useRouter();
   const hasExecuted = useRef(false); // To prevent multiple executions
@@ -33,7 +35,6 @@ export default function Complete() {
       }
 
       try {
-        // Complete the payment
         await complete({
           userId,
           purpose,
@@ -41,20 +42,22 @@ export default function Complete() {
           PayerID,
         }).unwrap();
 
-        // After payment is completed, remove the old token and mark payment as complete
-        cookies.remove('token');
-        setPaymentComplete(true);
-        toast.success('Payment completed successfully!');
+         // Clear user data in Redux
 
-        // Redirect to the home page after a short delay
+    // Remove the token from cookies
+    // cookies.remove("token");
+
+
+        toast.success('Payment completed successfully!');
         setTimeout(() => {
-          router.push('/'); // Redirect to home page
-        }, 500);
-      } catch (error) {
-        console.error('Payment completion error:', error);
+          router.push('/gohome'); // Redirect to the home page after successful payment
+        }, 1000); // Delay of 2 seconds for user feedback
+        
+      } catch  {
         toast.error('Failed to complete the payment. Please try again.');
       }
     };
+
 
     // Prevent double execution in strict mode
     if (!hasExecuted.current) {
@@ -63,35 +66,13 @@ export default function Complete() {
     }
   }, [userId, purpose, token, PayerID, complete, router]);
 
-  useEffect(() => {
-    // Trigger token refresh only after the payment is marked complete
-    if (paymentComplete) {
-      refreshToken({}); // Trigger lazy query to refresh the token
-    }
-  }, [paymentComplete, refreshToken]);
-
-  useEffect(() => {
-    // Handle the new token response
-    if (refresh?.data) {
-      // Set the new token in cookies
-      cookies.set('token', refresh?.data, { expires: 7 });
-      toast.success('Token refreshed successfully!');
-      router.refresh(); // Refresh the page to reflect the new token
-    }
-
-    if (refreshError) {
-      console.error('Failed to refresh token', refreshError);
-      toast.error('Failed to refresh token. Please log in again.');
-    }
-  }, [refresh, refreshError, router]);
-
   return (
     <div className="relative flex justify-center items-center min-h-screen bg-gray-100 overflow-hidden">
       {/* Confetti Background */}
       <div
         className="absolute inset-0 bg-cover bg-center"
         style={{
-          backgroundImage: `url(${confetti.src})`,
+          backgroundImage: `url(${confetti.src})`, 
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
@@ -117,12 +98,7 @@ export default function Complete() {
 
         {/* Back to Home Link */}
         <div className="mt-8">
-          <Link
-            href="/"
-            className="text-blue-600 hover:underline text-lg font-medium"
-          >
-            Back to Home
-          </Link>
+         
         </div>
       </div>
     </div>
