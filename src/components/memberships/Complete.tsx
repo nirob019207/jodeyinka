@@ -7,15 +7,12 @@ import check from "@/asset/check.svg"
 import confetti from "@/asset/confetti.svg"
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRefreshTokenQuery } from '@/redux/Api/userApi';
+import { useLazyRefreshTokenQuery } from '@/redux/Api/userApi'; // Change to lazy query
 import cookies from "js-cookie";
-// import { setUser } from '@/redux/ReduxFunction';
-// import { useDispatch } from 'react-redux';
-
 
 export default function Complete() {
   const [complete] = useCompleteMutation();
-  const { data: refresh, error: refreshError } = useRefreshTokenQuery({});
+  const [refreshToken, { data: refresh, error: refreshError }] = useLazyRefreshTokenQuery(); // Use lazy query
   const [paymentComplete, setPaymentComplete] = useState(false); // Track payment completion
 
   const searchParams = useSearchParams();
@@ -67,17 +64,23 @@ export default function Complete() {
 
   useEffect(() => {
     // When the page loads after redirection, refresh the token
-    if (paymentComplete && refresh?.data) {
-      // Store the new token in cookies
-      cookies.set('token', refresh?.data, { expires: 7 });
-      toast.success('Token refreshed successfully!');
+    if (paymentComplete) {
+      refreshToken({}); // Trigger lazy query to refresh token
     }
 
     if (refreshError) {
       console.error('Failed to refresh token', refreshError);
       toast.error('Failed to refresh token. Please log in again.');
     }
-  }, [paymentComplete, refresh, refreshError]);
+  }, [paymentComplete, refreshToken, refreshError]);
+
+  useEffect(() => {
+    if (refresh?.data) {
+      // Store the new token in cookies
+      cookies.set('token', refresh?.data, { expires: 7 });
+      toast.success('Token refreshed successfully!');
+    }
+  }, [refresh]);
 
   return (
     <div className="relative flex justify-center items-center min-h-screen bg-gray-100 overflow-hidden">

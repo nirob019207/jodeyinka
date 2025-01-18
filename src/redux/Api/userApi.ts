@@ -131,5 +131,5 @@ export const {
   useChangePasswordMutation,
   useRequestVerifyQuery,
   useAcceptSponsorMutation,
-  useRefreshTokenQuery
+  useLazyRefreshTokenQuery
 } = userApi;

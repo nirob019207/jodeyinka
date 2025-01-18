@@ -7,11 +7,8 @@ import airbnb from '@/asset/companyLogo/airbnb.svg'
 import slack from '@/asset/companyLogo/slack.svg'
 import loom from '@/asset/companyLogo/loom.svg'
 import Image from 'next/image'
-import { useRefreshTokenQuery } from '@/redux/Api/userApi'
 
 const PartnerShip = () => {
-  const { data: refresh } = useRefreshTokenQuery({})
-  console.log(refresh?.data)
  
   return (
     <div className='bg-[#F6F6F6] px-6 md:px-0'>
