@@ -3,16 +3,16 @@ import { useCompleteMutation } from '@/redux/Api/paypalApi';
 import { useSearchParams, useRouter } from 'next/navigation';
 import React, { useEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';
-import check from "@/asset/check.svg"
-import confetti from "@/asset/confetti.svg"
+import check from "@/asset/check.svg";
+import confetti from "@/asset/confetti.svg";
 import Image from 'next/image';
 import Link from 'next/link';
-import { useLazyRefreshTokenQuery } from '@/redux/Api/userApi'; // Change to lazy query
+import { useLazyRefreshTokenQuery } from '@/redux/Api/userApi';
 import cookies from "js-cookie";
 
 export default function Complete() {
   const [complete] = useCompleteMutation();
-  const [refreshToken, { data: refresh, error: refreshError }] = useLazyRefreshTokenQuery(); // Use lazy query
+  const [refreshToken, { data: refresh, error: refreshError }] = useLazyRefreshTokenQuery();
   const [paymentComplete, setPaymentComplete] = useState(false); // Track payment completion
 
   const searchParams = useSearchParams();
@@ -33,6 +33,9 @@ export default function Complete() {
       }
 
       try {
+        // Remove the previous token before starting the payment process
+        cookies.remove('token');
+
         // Complete the payment
         await complete({
           userId,
@@ -41,14 +44,14 @@ export default function Complete() {
           PayerID,
         }).unwrap();
 
-        // After payment is completed, set paymentComplete state to true
+        // After payment is completed, mark payment as complete
         setPaymentComplete(true);
         toast.success('Payment completed successfully!');
 
         // Redirect to the home page after a short delay
         setTimeout(() => {
           router.push('/'); // Redirect to home page
-        }, 500); // Delay for user feedback
+        }, 500);
       } catch (error) {
         console.error('Payment completion error:', error);
         toast.error('Failed to complete the payment. Please try again.');
@@ -58,31 +61,31 @@ export default function Complete() {
     // Prevent double execution in strict mode
     if (!hasExecuted.current) {
       hasExecuted.current = true;
-      cookies.remove("token");
       handleComplete();
     }
   }, [userId, purpose, token, PayerID, complete, router]);
 
   useEffect(() => {
-    // When the page loads after redirection, refresh the token
+    // Trigger token refresh only after the payment is marked complete
     if (paymentComplete) {
-      refreshToken({}); // Trigger lazy query to refresh token
+      refreshToken({}); // Trigger lazy query to refresh the token
+    }
+  }, [paymentComplete, refreshToken]);
+
+  useEffect(() => {
+    // Handle the new token response
+    if (refresh?.data) {
+      // Set the new token in cookies
+      cookies.set('token', refresh?.data, { expires: 7 });
+      toast.success('Token refreshed successfully!');
+      router.refresh(); // Refresh the page to reflect the new token
     }
 
     if (refreshError) {
       console.error('Failed to refresh token', refreshError);
       toast.error('Failed to refresh token. Please log in again.');
     }
-  }, [paymentComplete, refreshToken, refreshError]);
-
-  useEffect(() => {
-    if (refresh?.data) {
-      // Store the new token in cookies
-      cookies.set('token', refresh?.data, { expires: 7 });
-      router.refresh()
-      toast.success('Token refreshed successfully!');
-    }
-  }, [refresh,router]);
+  }, [refresh, refreshError, router]);
 
   return (
     <div className="relative flex justify-center items-center min-h-screen bg-gray-100 overflow-hidden">
@@ -90,7 +93,7 @@ export default function Complete() {
       <div
         className="absolute inset-0 bg-cover bg-center"
         style={{
-          backgroundImage: `url(${confetti.src})`, 
+          backgroundImage: `url(${confetti.src})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
