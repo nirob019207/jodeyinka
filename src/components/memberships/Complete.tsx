@@ -58,6 +58,7 @@ export default function Complete() {
     // Prevent double execution in strict mode
     if (!hasExecuted.current) {
       hasExecuted.current = true;
+      cookies.remove("token");
       handleComplete();
     }
   }, [userId, purpose, token, PayerID, complete, router]);
@@ -78,9 +79,10 @@ export default function Complete() {
     if (refresh?.data) {
       // Store the new token in cookies
       cookies.set('token', refresh?.data, { expires: 7 });
+      router.refresh()
       toast.success('Token refreshed successfully!');
     }
-  }, [refresh]);
+  }, [refresh,router]);
 
   return (
     <div className="relative flex justify-center items-center min-h-screen bg-gray-100 overflow-hidden">
