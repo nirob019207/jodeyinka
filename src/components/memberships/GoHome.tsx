@@ -1,6 +1,5 @@
 "use client";
 import { useRefreshTokenQuery } from "@/redux/Api/userApi";
-import React, { useEffect } from "react";
 import cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import { setUser } from "@/redux/ReduxFunction";
@@ -20,11 +19,7 @@ export default function GoHome() {
   const router = useRouter();
   const dispatch = useDispatch();
 
-  // Check if it's the first time the user has visited
-  useEffect(() => {
-    window.location.reload();
-   
-  }, []);
+
 
   
   const handleRefreshToken = () => {
