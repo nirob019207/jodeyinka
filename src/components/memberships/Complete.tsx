@@ -1,22 +1,13 @@
 'use client';
 import { useCompleteMutation } from '@/redux/Api/paypalApi';
 import { useSearchParams, useRouter } from 'next/navigation';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';
-import check from "@/asset/check.svg"
-import confetti from "@/asset/confetti.svg"
-import Image from 'next/image';
-
-// import { setUser } from '@/redux/ReduxFunction';
-// import { useDispatch } from 'react-redux';
-
+import confetti from '@/asset/confetti.svg';
 
 export default function Complete() {
   const [complete] = useCompleteMutation();
-
-  // const dispatch=useDispatch()
-  
-  
+  const [isLoading, setIsLoading] = useState(false); // State for loading
   const searchParams = useSearchParams();
   const router = useRouter();
   const hasExecuted = useRef(false); // To prevent multiple executions
@@ -34,6 +25,8 @@ export default function Complete() {
         return;
       }
 
+      setIsLoading(true); // Start loading
+
       try {
         await complete({
           userId,
@@ -42,22 +35,16 @@ export default function Complete() {
           PayerID,
         }).unwrap();
 
-         // Clear user data in Redux
-
-    // Remove the token from cookies
-    // cookies.remove("token");
-
-
         toast.success('Payment completed successfully!');
         setTimeout(() => {
-          router.push('/gohome'); // Redirect to the home page after successful payment
-        }, 1000); // Delay of 2 seconds for user feedback
-        
-      } catch  {
+          router.replace('/gohome'); // Use replace to avoid causing a window reload
+        }, 1000);
+      } catch {
         toast.error('Failed to complete the payment. Please try again.');
+      } finally {
+        setIsLoading(false); // Stop loading
       }
     };
-
 
     // Prevent double execution in strict mode
     if (!hasExecuted.current) {
@@ -72,34 +59,31 @@ export default function Complete() {
       <div
         className="absolute inset-0 bg-cover bg-center"
         style={{
-          backgroundImage: `url(${confetti.src})`, 
-          backgroundSize: "cover",
-          backgroundPosition: "center",
+          backgroundImage: `url(${confetti.src})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
         }}
       ></div>
 
-      {/* Payment Box */}
       <div className="relative z-10 bg-white rounded-lg shadow-lg p-8 text-center max-w-md w-full">
-        {/* Success Icon */}
-        <div className="flex justify-center mb-6">
-          <Image src={check} alt="Check" width={50} height={50} />
-        </div>
-
-        {/* Title */}
-        <h1 className="text-2xl md:text-3xl font-bold text-[#090043] mb-4">
-          Payment Successful!
-        </h1>
-
-        {/* Description */}
-        <p className="text-gray-600 text-base md:text-lg">
-          Your payment was successful! Thank you for your transaction; a
-          confirmation has been sent to your email.
-        </p>
-
-        {/* Back to Home Link */}
-        <div className="mt-8">
-         
-        </div>
+        {isLoading ? (
+          // Skeleton Loader
+          <div className="animate-pulse space-y-4">
+            <div className="h-4 bg-gray-200 rounded w-3/4 mx-auto"></div>
+            <div className="h-4 bg-gray-200 rounded w-1/2 mx-auto"></div>
+            <div className="h-4 bg-gray-200 rounded w-4/5 mx-auto"></div>
+          </div>
+        ) : (
+          <div>
+            {/* Content after successful payment */}
+            <h2 className="text-lg font-semibold text-gray-800">
+              Completing Payment...
+            </h2>
+            <p className="text-sm text-gray-600">
+              Please wait while we process your payment.
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );
