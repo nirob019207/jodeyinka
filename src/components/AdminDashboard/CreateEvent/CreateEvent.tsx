@@ -1,12 +1,13 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import { useCreateEventMutation } from "@/redux/Api/eventApi";
 import { z } from "zod";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { Country, City } from "country-state-city";
 
 const eventSchema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -31,10 +32,8 @@ const CreateEvent = () => {
     latitude: null as number | null,
     longitude: null as number | null,
   });
-  const [countries, setCountries] = useState<
-    { name: string; regions: string[] }[]
-  >([]);
-  const [states, setStates] = useState<string[]>([]);
+
+  const [cities, setCities] = useState<string[]>([]);
   const [selectedCountry, setSelectedCountry] = useState("");
 
   const [createEvent, { isLoading }] = useCreateEventMutation();
@@ -105,36 +104,23 @@ const CreateEvent = () => {
     }
   };
 
-  useEffect(() => {
-    const fetchCountries = async () => {
-      try {
-        const response = await fetch("https://restcountries.com/v3.1/all");
-        if (!response.ok) throw new Error("Error fetching countries");
-
-        const data = await response.json();
-        const countryData = data.map((country: any) => ({
-          name: country.name.common,
-          regions: country.subregion ? [country.subregion] : [],
-        }));
-        setCountries(
-          countryData.sort((a: any, b: any) => a.name.localeCompare(b.name))
-        );
-      } catch (error) {
-        console.error("Error fetching countries:", error);
-      }
-    };
-
-    fetchCountries();
-  }, []);
+  const countries = Country.getAllCountries();
 
   const handleCountryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const countryName = event.target.value;
     setSelectedCountry(countryName);
 
-    const selected = countries.find((country) => country.name === countryName);
-    setStates(selected?.regions || []);
-  };
+    // Filter cities based on the selected country
+    const countryCities = City.getAllCities()
+      .filter((city) => city.countryCode === countryName)
+      .map((city) => city.name);
 
+    setCities(countryCities); // Update the city list
+    setFormData((prevData) => ({
+      ...prevData,
+      address: "", // Reset city when the country changes
+    }));
+  };
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -216,6 +202,8 @@ const CreateEvent = () => {
               <Image
                 src={imagePreview}
                 alt="Preview"
+                height={100}
+                width={100}
                 className="max-w-xs h-auto"
               />
             </div>
@@ -232,28 +220,32 @@ const CreateEvent = () => {
           >
             <option value="">Select a Country</option>
             {countries.map((country) => (
-              <option key={country.name} value={country.name}>
+              <option key={country.isoCode} value={country.isoCode}>
                 {country.name}
               </option>
             ))}
           </select>
         </div>
+
         <div>
-          <label htmlFor="state">State/Region</label>
+          <label htmlFor="city">City</label>
           <select
-            id="state"
-            name="state"
+            id="city"
+            name="address"
+            value={formData.address}
+            onChange={handleChange}
             className="block w-full mt-2 px-4 py-2 border rounded"
-            disabled={!states.length}
+            disabled={!cities.length}
           >
-            <option value="">Select a State/Region</option>
-            {states.map((state, index) => (
-              <option key={index} value={state}>
-                {state}
+            <option value="">Select a City</option>
+            {cities.map((city, index) => (
+              <option key={index} value={city}>
+                {city}
               </option>
             ))}
           </select>
         </div>
+
         {/* Rest of your form components */}
         <div>
           <label className="block font-medium text-darkGray">Title</label>
@@ -285,32 +277,61 @@ const CreateEvent = () => {
         </div>
 
         <div className="flex gap-6 md:flex-row flex-col">
-          <div className="w-full">
-            <label className="block font-medium text-darkGray">
-              Start Date & Time
-            </label>
-            <input
-              type="datetime-local"
-              name="startDate"
-              min={new Date().toISOString().slice(0, 16)} // Disable dates before current date and time
-              value={formData.startDate}
-              onChange={handleChange}
-              className="mt-2 px-4 py-3 w-full border rounded-[8px] focus:outline-none text-darkGray bg-transparent"
-            />
-          </div>
-          <div className="w-full">
-            <label className="block font-medium text-darkGray">
-              End Date & Time
-            </label>
-            <input
-              type="datetime-local"
-              name="endDate"
-              value={formData.endDate}
-              onChange={handleChange}
-              className="mt-2 px-4 py-3 w-full border rounded-[8px] focus:outline-none text-darkGray bg-transparent"
-            />
-          </div>
-        </div>
+  <div className="w-full">
+    <label className="block font-medium text-darkGray">
+      Start Date & Time
+    </label>
+    <input
+      type="datetime-local"
+      name="startDate"
+      min={new Date().toISOString().slice(0, 16)} // Disable dates before the current date and time
+      value={formData.startDate}
+      onChange={(e) => {
+        handleChange(e);
+
+        // Reset endDate if it is less than the new startDate
+        if (
+          formData.endDate &&
+          new Date(e.target.value) > new Date(formData.endDate)
+        ) {
+          setFormData((prevData) => ({
+            ...prevData,
+            endDate: "", // Clear the invalid endDate
+          }));
+        }
+      }}
+      className="mt-2 px-4 py-3 w-full border rounded-[8px] focus:outline-none text-darkGray bg-transparent"
+    />
+  </div>
+  <div className="w-full">
+    <label className="block font-medium text-darkGray">
+      End Date & Time
+    </label>
+    <input
+      type="datetime-local"
+      name="endDate"
+      min={formData.startDate || new Date().toISOString().slice(0, 16)} // End date must be after the selected start date
+      value={formData.endDate}
+      onChange={handleChange}
+      className="mt-2 px-4 py-3 w-full border rounded-[8px] focus:outline-none text-darkGray bg-transparent"
+      disabled={!formData.startDate} // Disable if startDate is not selected
+    />
+    {/* Show message when endDate is disabled */}
+    {!formData.startDate && (
+      <small className="text-red-500 mt-1 block">
+        Please select a start date first.
+      </small>
+    )}
+    {/* Show message when endDate is invalid */}
+    {formData.startDate && formData.endDate && 
+      new Date(formData.endDate) < new Date(formData.startDate) && (
+      <small className="text-red-500 mt-1 block">
+        End date cannot be earlier than the start date.
+      </small>
+    )}
+  </div>
+</div>
+
 
         <div>
           <label className="block font-medium text-darkGray">Description</label>
