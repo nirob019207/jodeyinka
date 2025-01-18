@@ -76,7 +76,7 @@ export default function Complete() {
       hasExecuted.current = true;
       handleComplete();
     }
-  }, [userId, purpose, token, PayerID, complete, router, refresh]);
+  }, [userId, purpose, token, PayerID, complete, router, refresh,refreshError]);
   return (
     <div className="relative flex justify-center items-center min-h-screen bg-gray-100 overflow-hidden">
       {/* Confetti Background */}
