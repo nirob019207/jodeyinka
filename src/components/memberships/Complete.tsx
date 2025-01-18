@@ -33,9 +33,6 @@ export default function Complete() {
       }
 
       try {
-        // Remove the previous token before starting the payment process
-        cookies.remove('token');
-
         // Complete the payment
         await complete({
           userId,
@@ -44,7 +41,8 @@ export default function Complete() {
           PayerID,
         }).unwrap();
 
-        // After payment is completed, mark payment as complete
+        // After payment is completed, remove the old token and mark payment as complete
+        cookies.remove('token');
         setPaymentComplete(true);
         toast.success('Payment completed successfully!');
 
