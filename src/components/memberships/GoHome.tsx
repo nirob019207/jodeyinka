@@ -75,16 +75,17 @@ export default function GoHome() {
         <p className="text-gray-600 text-base md:text-lg">
           Your payment was successful! Thank you for your transaction; a confirmation has been sent to your email.
         </p>
-      </div>
-
-      {/* Back to Home Button */}
-      <button
+        <button
         type="button"
         onClick={handleRefreshToken}
-        className="text-blue-600 hover:underline text-lg font-medium"
+        className="text-blue-600 hover:underline text-lg font-medium z-50"
       >
         Back to Home
       </button>
+      </div>
+
+      {/* Back to Home Button */}
+      
     </div>
   );
 }
