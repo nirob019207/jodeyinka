@@ -57,7 +57,7 @@ export function middleware(request: NextRequest) {
       "/about-us",
       "/career",
       "/media",
-      "/media-details/:path*", // Matches dynamic routes like /media-details/1, /media-details/some-id
+      "/media-details/:path*", 
       "/resources",
       "/contact",
       "/event",
