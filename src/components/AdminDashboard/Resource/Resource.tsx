@@ -114,14 +114,14 @@ export default function Resource() {
   };
 
   return (
-    <div className="px-16">
+    <div className="lg:px-10 px-4">
       {/* Header */}
       <h1 className="text-3xl font-semibold mb-6 border-b border-[#E0E0E0] pb-3">
         Create Resource
       </h1>
 
       {/* Main Container */}
-      <div className="flex space-x-6">
+      <div className="flex md:space-x-6 space-x-0 md:flex-row flex-col">
         {/* Product Image Section */}
         <div className="col-span-2">
           <label
@@ -140,7 +140,7 @@ export default function Resource() {
 
         {/* Form Section */}
         <form className="flex-1" onSubmit={handleSubmit}>
-          <div className="grid grid-cols-2 gap-4 mb-4">
+          <div className="grid grid-cols-2 gap-4 mb-4 mt-4 md:mt-0">
             {/* Title Field */}
             <div className="col-span-2">
               <label

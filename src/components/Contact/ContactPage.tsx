@@ -9,7 +9,6 @@ import insta from "@/asset/social/insta.svg";
 import fb from "@/asset/social/fb.svg";
 import linkedin from "@/asset/social/linkedin.svg";
 import * as z from "zod";
-import capcha from "@/asset/capcha.png";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -30,11 +29,10 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "../ui/textarea";
 import Image from "next/image";
-import { Checkbox } from "@radix-ui/react-checkbox";
 import { useContactMutation } from "@/redux/Api/userApi";
 import { toast } from "sonner";
 
-const formSchema = z.object({
+const formSchemac = z.object({
   name: z.any().optional(),
   emailPhone: z.any().optional(),
   country: z.any().optional(),
@@ -46,8 +44,8 @@ const formSchema = z.object({
 
 export default function ContactPage() {
   const [contact, { isLoading }] = useContactMutation();
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof formSchemac>>({
+    resolver: zodResolver(formSchemac),
     defaultValues: {
       name: "",
       emailPhone: "",
@@ -57,13 +55,13 @@ export default function ContactPage() {
     },
   });
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof formSchemac>) {
     try {
       // Simulate API call
       await contact(values).unwrap();
       toast.success("Message sent successfully!"); // Show success message
       form.reset(); // Reset the form after successful submission
-    } catch (error) {
+    } catch {
       toast.error("Failed to send message. Please try again."); // Show error message
     }
   }

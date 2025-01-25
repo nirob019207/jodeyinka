@@ -47,11 +47,11 @@ export default function OTPVerification() {
       dispatch(setOtp({ otp: data.otp }));
 
  
-      const response = await otpUser({ email: getEmail, otp }).unwrap();
+      await otpUser({ email: getEmail, otp }).unwrap();
       reset();
       router.push("/change-password");
       toast.success("OTP verified successfully");
-    } catch (err) {
+    } catch  {
       toast.error("The provided OTP is incorrect");
     }
   };

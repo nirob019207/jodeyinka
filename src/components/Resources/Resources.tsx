@@ -14,7 +14,7 @@ interface Resource {
 }
 
 const Resources = () => {
-  const { data, isLoading, isError } = useGetResourceQuery({
+  const { data, isLoading} = useGetResourceQuery({
     type: "RESOURCE",
     limit: 3,
     page:1

@@ -116,16 +116,16 @@ export default function CreateBlog() {
   };
 
   return (
-    <div className="px-16">
+    <div className="lg:px-10 px-4">
       {/* Header */}
       <h1 className="text-3xl font-semibold mb-6 border-b border-[#E0E0E0] pb-3">
         Create Blog
       </h1>
 
       {/* Main Container */}
-      <div className="flex space-x-6">
+      <div className="flex md:space-x-6 space-x-0  flex-col md:flex-row">
         {/* Product Image Section */}
-        <div className="col-span-2">
+        <div className="md:col-span-2 col-span-full">
           <label htmlFor="resourceFile" className="block text-sm font-medium text-gray-700">
             Image
           </label>
@@ -139,9 +139,9 @@ export default function CreateBlog() {
 
         {/* Form Section */}
         <form className="flex-1" onSubmit={handleSubmit}>
-          <div className="grid grid-cols-2 gap-4 mb-4">
+          <div className="grid md:grid-cols-2 col-span-full gap-4 mb-4 ">
             {/* Title Field */}
-            <div className="col-span-2">
+            <div className="col-span-2 mt-4 md:mt-0">
               <label htmlFor="title" className="block text-sm font-medium text-gray-700">
                 Title
               </label>

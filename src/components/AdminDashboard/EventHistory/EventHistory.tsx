@@ -9,11 +9,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-
 import Image from "next/image";
 import Link from "next/link";
 import { useEventQuery } from "@/redux/Api/eventApi";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
+import event1 from "@/asset/event/e1.svg"
 
 // Type for resource events
 type ResourceEvent = {
@@ -26,10 +26,13 @@ type ResourceEvent = {
   platinumSponsorFee: number;
 };
 
-const BlogList = () => {
+const EventHistory = () => {
   const limit = 6;
-  const [currentPage, setCurrentPage] = useState(1)
-  const { data, isLoading, isError } = useEventQuery({ limit: limit, page:  currentPage});
+  const [currentPage, setCurrentPage] = useState(1);
+  const { data, isLoading, isError } = useEventQuery({
+    limit: limit,
+    page: currentPage,
+  });
 
   const EventList = data?.data;
   console.log(EventList);
@@ -42,14 +45,14 @@ const BlogList = () => {
 
   if (isLoading) {
     return (
-      <div className="px-16 py-6">
+      <div className="px-4 sm:px-16 py-6">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-semibold text-darkBlack">Blog History</h2>
+          <h2 className="text-xl font-semibold text-darkBlack">Event History</h2>
           <Link
-            href={"/admin/create-resource"}
+            href={"/admin/create-event"}
             className="text-blue-500 hover:text-blue-700"
           >
-            Create Blog
+            Create Event
           </Link>
         </div>
 
@@ -63,7 +66,7 @@ const BlogList = () => {
 
   if (isError) {
     return (
-      <div className="px-16 py-6">
+      <div className="px-4 sm:px-16 py-6">
         <p className="text-red-500 text-center">
           Error fetching data. Please try again later.
         </p>
@@ -72,7 +75,7 @@ const BlogList = () => {
   }
 
   return (
-    <div className="px-16 py-6">
+    <div className="px-4 lg:px-10 py-6">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-semibold text-darkBlack">Event History</h2>
         <Link
@@ -85,7 +88,7 @@ const BlogList = () => {
 
       {/* Replacing TableContainer with a div for responsiveness */}
       <div className="overflow-x-auto bg-white rounded-lg">
-        <Table>
+        <Table className="min-w-full">
           <TableHeader>
             <TableRow>
               <TableHead className="text-default text-base text-center">
@@ -119,7 +122,7 @@ const BlogList = () => {
               <TableRow key={index}>
                 <TableCell className="px-4 py-4 text-center">
                   <Image
-                    src={event.imageUrl}
+                    src={event.imageUrl || event1}
                     alt={event.title}
                     width={48}
                     height={48}
@@ -159,40 +162,41 @@ const BlogList = () => {
           </TableBody>
         </Table>
       </div>
-       {/* Pagination Controls */}
-            <div className="flex justify-center items-center space-x-4 mt-6">
-              <button
-                onClick={() => handlePageChange(currentPage - 1)}
-                disabled={currentPage === 1}
-                className={`bg-gray-800 text-white py-2 px-4 rounded-l-md ${
-                  currentPage === 1
-                    ? "bg-slate-400 cursor-not-allowed"
-                    : "bg-blue-500 hover:bg-blue-600"
-                }`}
-              >
-                <div className="flex items-center">
-                  <FaChevronLeft className="w-5 mr-2" />
-                  <span>Prev</span>
-                </div>
-              </button>
-      
-              <button
-                onClick={() => handlePageChange(currentPage + 1)}
-                disabled={!hasMoreData}
-                className={`bg-gray-800 text-white py-2 px-4 rounded-r-md ${
-                  !hasMoreData
-                    ? "bg-slate-400 cursor-not-allowed"
-                    : "bg-blue-500 hover:bg-blue-600"
-                }`}
-              >
-                <div className="flex items-center">
-                  <span className="mr-2">Next</span>
-                  <FaChevronRight className="w-5 ml-2" />
-                </div>
-              </button>
-            </div>
+
+      {/* Pagination Controls */}
+      <div className="flex justify-center items-center space-x-4 mt-6">
+        <button
+          onClick={() => handlePageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+          className={`bg-gray-800 text-white py-2 px-4 rounded-l-md ${
+            currentPage === 1
+              ? "bg-slate-400 cursor-not-allowed"
+              : "bg-blue-500 hover:bg-blue-600"
+          }`}
+        >
+          <div className="flex items-center">
+            <FaChevronLeft className="w-5 mr-2" />
+            <span>Prev</span>
+          </div>
+        </button>
+
+        <button
+          onClick={() => handlePageChange(currentPage + 1)}
+          disabled={!hasMoreData}
+          className={`bg-gray-800 text-white py-2 px-4 rounded-r-md ${
+            !hasMoreData
+              ? "bg-slate-400 cursor-not-allowed"
+              : "bg-blue-500 hover:bg-blue-600"
+          }`}
+        >
+          <div className="flex items-center">
+            <span className="mr-2">Next</span>
+            <FaChevronRight className="w-5 ml-2" />
+          </div>
+        </button>
+      </div>
     </div>
   );
 };
 
-export default BlogList;
+export default EventHistory;

@@ -1,7 +1,6 @@
 import { useSquareMutation } from "@/redux/Api/squareApi";
 import { useParams } from "next/navigation";
 import { CreditCard, PaymentForm } from "react-square-web-payments-sdk";
-import { useRouter } from "next/navigation";
 import { toast } from "sonner"; // Import the toast library
 
 export default function SquarePaymentForm({ price, type ,handleCloseModal} : any) {
@@ -9,7 +8,6 @@ export default function SquarePaymentForm({ price, type ,handleCloseModal} : any
   const locationId = "LVYJA27247NQF";
   const [square] = useSquareMutation();
   const { id } = useParams();
-  const router = useRouter();
 
   const handlePayment = async (token: any) => {
     try {

@@ -1,7 +1,6 @@
 "use client";
 import React, { useState } from "react";
 import logo from "@/asset/logo.svg";
-import searchIcon from "@/asset/icon/search.png";
 import Image from "next/image";
 import Link from "next/link";
 import banner from "@/asset/banner.svg";

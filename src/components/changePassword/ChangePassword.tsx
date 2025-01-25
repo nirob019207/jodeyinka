@@ -12,6 +12,7 @@ import { RootState } from "@/redux/store";
 import { useRouter } from "next/navigation";
 import { useResetPassMutation } from "@/redux/Api/userApi";
 import { useSelector } from "react-redux";
+import { toast } from "sonner";
 
 
 
@@ -51,17 +52,26 @@ export default function ChangePassword() {
     mode: "onSubmit",
   });
 
+
   const onSubmit = async (data: ChangePasswordFormData) => {
     try {
-      const response = await resetPass({
+      await resetPass({
         email: getEmail,
-        otp:getOtp,
+        otp: getOtp,
         password: data.newPassword,
       }).unwrap();
       router.push("/login");
-    } catch (err) {
+  
+      // Show success toast message
+      toast.success('Password reset successful!');
+    } catch (error: any) {
+      console.error("Error resetting password:", error);
+      
+      // Show error toast message from the error response (if available)
+      toast.error(error?.message || 'An error occurred during password reset.');
     }
   };
+  
 
 
   return (

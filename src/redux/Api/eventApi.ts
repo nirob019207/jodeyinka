@@ -27,6 +27,8 @@ const eventApi = baseApi.injectEndpoints({
         method: "POST",
         body: data,
       }),
+      invalidatesTags: ['Events']
+
     }), // Add a comma here
 
     registerForEvent: build.mutation({

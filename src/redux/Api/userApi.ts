@@ -109,6 +109,13 @@ const userApi = baseApi.injectEndpoints({
       }),
       invalidatesTags:["User"]
     }),
+    refreshToken: build.query({
+      query: () => ({
+        url: `/auth/refresh-token`,
+        method: "GET",
+      }),
+      providesTags:["User"]
+    }),
   }),
 });
 
@@ -123,5 +130,6 @@ export const {
   useUpdateProfileMutation,
   useChangePasswordMutation,
   useRequestVerifyQuery,
-  useAcceptSponsorMutation
+  useAcceptSponsorMutation,
+  useRefreshTokenQuery
 } = userApi;

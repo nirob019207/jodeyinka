@@ -41,7 +41,7 @@ const ResourceList = () => {
 
   if (isLoading) {
     return (
-      <div className="px-16 py-6">
+      <div className="md:px-10 px-4 py-6">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-semibold text-darkBlack">
             Resource History
@@ -73,7 +73,7 @@ const ResourceList = () => {
   }
 
   return (
-    <div className="px-16 py-6">
+    <div className="lg:px-10 px-4 py-6">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-semibold text-darkBlack">
           Resource History

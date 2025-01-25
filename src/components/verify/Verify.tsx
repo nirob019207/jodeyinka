@@ -1,5 +1,5 @@
 'use client';
-import { useSearchParams, useRouter, useParams } from 'next/navigation';
+import {  useRouter, useParams } from 'next/navigation';
 import React, { useEffect } from 'react';
 import { toast } from 'sonner';
 import check from "@/asset/check.svg";
@@ -69,7 +69,7 @@ export default function Verify() {
         {/* Back to Home Link */}
         <div className="mt-8">
           <Link
-            href="/"
+            href="/membership"
             className="text-blue-600 hover:underline text-lg font-medium"
           >
             Back to Home

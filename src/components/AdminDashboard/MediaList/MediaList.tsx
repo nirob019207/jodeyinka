@@ -35,7 +35,6 @@ const MedaiList = () => {
   });
 
   const mediaList = data?.data;
-  const hasMoreData = mediaList?.length === limit;
 
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
@@ -43,7 +42,7 @@ const MedaiList = () => {
 
   if (isLoading) {
     return (
-      <div className="px-16 py-6">
+      <div className="lg:px-10 px-4 py-6">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-semibold text-darkBlack">
             Media History
@@ -66,7 +65,7 @@ const MedaiList = () => {
 
   if (isError) {
     return (
-      <div className="px-16 py-6">
+      <div className="lg:px-10 px-4 py-6">
         <p className="text-red-500 text-center">
           Error fetching data. Please try again later.
         </p>
@@ -75,7 +74,7 @@ const MedaiList = () => {
   }
 
   return (
-    <div className="px-16 py-6">
+    <div className="lg:px-10 px-4 py-6">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-semibold text-darkBlack">Media History</h2>
         <Link

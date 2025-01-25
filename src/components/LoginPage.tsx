@@ -16,7 +16,6 @@ import {
   CardTitle,
   CardDescription,
 } from "@/components/ui/card";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
@@ -67,9 +66,10 @@ export default function LoginPage() {
         // Decode the token to get role and other details
         const decoded: DecodedToken = jwtDecode(accessToken);
         const { role, email } = decoded;
-
+       
         // Dispatch the user data to Redux
         dispatch(setUser({ role, token: accessToken, email }));
+         cookies.set("role", role, { expires: 7, path: "/" });
 
         // Store the token in cookies
         cookies.set("token", accessToken, { expires: 7 });

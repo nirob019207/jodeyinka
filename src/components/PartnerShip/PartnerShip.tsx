@@ -1,3 +1,4 @@
+"use client"
 import React from 'react'
 import pinterest from '@/asset/companyLogo/pinterest.svg'
 import paypal from '@/asset/companyLogo/paypal.svg'
@@ -8,6 +9,7 @@ import loom from '@/asset/companyLogo/loom.svg'
 import Image from 'next/image'
 
 const PartnerShip = () => {
+ 
   return (
     <div className='bg-[#F6F6F6] px-6 md:px-0'>
 

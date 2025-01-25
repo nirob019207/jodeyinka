@@ -13,10 +13,10 @@ import CardSkeleton from "../CardSkelaton/CardSkeleton";
 
 const MediaContent: React.FC = () => {
   const path = useParams();
-  const { data, isLoading, isError } = useGetResourceSingleQuery({
+  const { data, isLoading } = useGetResourceSingleQuery({
     id: Array.isArray(path?.id) ? path.id[0] : path?.id || "",
   });
-  const [addComment, { isLoading: addLoading, isError: addError }] =
+  const [addComment, { isLoading: addLoading }] =
     useAddComentMutation();
   const singleDetails = data?.data;
 
@@ -45,7 +45,7 @@ const MediaContent: React.FC = () => {
         await addComment({ content: commentText, id: Array.isArray(path?.id) ? path.id[0] : path?.id || "" });
         toast.success("Comment added successfully!");
         setCommentText(""); // Clear the input field after successful submission
-      } catch (error) {
+      } catch  {
         toast.error("Failed to add comment. Please try again.");
       }
     } else {

@@ -13,21 +13,21 @@ const UpcomingEvent = () => {
   const events = data?.data; // Show only the latest 3 events
 
   // Helper function to format date and time
-  function formatMonthAndTime(isoDate: string) {
-    const eventDate = new Date(isoDate);
+  // function formatMonthAndTime(isoDate: string) {
+  //   const eventDate = new Date(isoDate);
 
-    // Format month and day
-    const options: Intl.DateTimeFormatOptions = { month: "long", day: "numeric" };
-    const formattedDate = eventDate.toLocaleDateString("en-US", options);
+  //   // Format month and day
+  //   const options: Intl.DateTimeFormatOptions = { month: "long", day: "numeric" };
+  //   const formattedDate = eventDate.toLocaleDateString("en-US", options);
 
-    // Format time
-    const hours = eventDate.getHours();
-    const minutes = eventDate.getMinutes().toString().padStart(2, "0");
-    const ampm = hours >= 12 ? "pm" : "am";
-    const formattedTime = `${hours % 12 || 12}:${minutes} ${ampm}`;
+  //   // Format time
+  //   const hours = eventDate.getHours();
+  //   const minutes = eventDate.getMinutes().toString().padStart(2, "0");
+  //   const ampm = hours >= 12 ? "pm" : "am";
+  //   const formattedTime = `${hours % 12 || 12}:${minutes} ${ampm}`;
 
-    return `${formattedDate} @ ${formattedTime}`;
-  }
+  //   return `${formattedDate} @ ${formattedTime}`;
+  // }
 
   // Helper function to format time range (start and end)
   function formatTimeRange(startTime: string, endTime: string) {
@@ -55,7 +55,7 @@ const UpcomingEvent = () => {
   if (isLoading) {
     return (
       <div className="container">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 md:gap-6 animate-pulse gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  md:gap-6 animate-pulse gap-4">
           <div className="rounded-lg overflow-hidden bg-white shadow-md">
             <div className="relative">
               <div className="w-full h-[200px] bg-gray-200"></div>

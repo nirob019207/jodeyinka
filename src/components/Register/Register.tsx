@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, {useState } from 'react'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
@@ -8,24 +8,16 @@ import Link from 'next/link'
 import { useRegisterUserMutation } from '@/redux/Api/userApi'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
+import { Country, State, IState }  from 'country-state-city';
 
 
-// import { useRegisterUserMutation } from '@/redux/Api/userApi'
 
-const countries = [
-  { id: 1, value: 'usa', label: 'USA' },
-  { id: 2, value: 'canada', label: 'Canada' },
-  // Add more countries as needed
-]
 
-const states = [
-  { value: 'ny', label: 'New York' },
-  { value: 'ca', label: 'California' },
-  { value: 'tx', label: 'Texas' },
-  // Add more states as needed
-]
 
-const formSchema = z.object({
+
+
+
+const formSchemar = z.object({
   organizationName:z.any(),
   firstName: z.string().min(2, 'First name is required'),
   lastName: z.string().min(2, 'Last name is required'),
@@ -42,22 +34,38 @@ const formSchema = z.object({
   path: ["confirmPassword"],
 })
 
-type FormSchemaType = z.infer<typeof formSchema>;
+type FormSchemaType = z.infer<typeof formSchemar>;
 
 export default function Register() {
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [registerUser,{isLoading}]=useRegisterUserMutation()
   const [membershipType, setMembershipType] = useState('membership')
-  const router=useRouter()
+  const [states, setStates] = useState<IState[]>([]);
+  const [selectedCountry, setSelectedCountry] = useState<string>('');
 
+  const router=useRouter()
+ 
+    // Fetch countries dynamically (example using a public API)
+
+      const countries = Country.getAllCountries();
+
+      // Handle country change to populate states
+      const handleCountryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        const countryCode = event.target.value;
+        setSelectedCountry(countryCode);
+    
+        // Fetch states for the selected country
+        const countryStates = State.getStatesOfCountry(countryCode);
+        setStates(countryStates);
+      };
 
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<FormSchemaType>({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(formSchemar),
   })
 
   const onSubmit: SubmitHandler<FormSchemaType> = async (data) => {
@@ -88,6 +96,7 @@ export default function Register() {
     }
   }
   
+
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-100 p-4">
@@ -173,43 +182,49 @@ export default function Register() {
           </div>
 
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-            <div>
-              <label htmlFor="country" className="block text-sm font-medium text-gray-700">Country*</label>
-              <select
-                id="country"
-                {...register('country')}
-                className="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
-              >
-                <option value="">Select Country</option>
-                {countries.map((country) => (
-                  <option key={country.id} value={country.value}>
-                    {country.label}
-                  </option>
-                ))}
-              </select>
-              {errors.country && (
-                <p className="mt-1 text-sm text-red-500">{errors.country.message}</p>
-              )}
-            </div>
-            <div>
-              <label htmlFor="state" className="block text-sm font-medium text-gray-700">State</label>
-              <select
-                id="state"
-                {...register('state')}
-                className="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
-              >
-                <option value="">Select State</option>
-                {states.map((state) => (
-                  <option key={state.value} value={state.value}>
-                    {state.label}
-                  </option>
-                ))}
-              </select>
-              {errors.state && (
-                <p className="mt-1 text-sm text-red-500">{errors.state.message}</p>
-              )}
-            </div>
-          </div>
+        <div>
+          <label htmlFor="country" className="block text-sm font-medium text-gray-700">
+            Country*
+          </label>
+          <select
+            id="country"
+            {...register('country')}
+            onChange={handleCountryChange}
+            value={selectedCountry}
+            className="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+          >
+            <option value="">Select Country</option>
+            {countries.map((country) => (
+              <option key={country.isoCode} value={country.isoCode}>
+                {country.name}
+              </option>
+            ))}
+          </select>
+          {errors.country && (
+            <p className="mt-1 text-sm text-red-500">{errors.country.message}</p>
+          )}
+        </div>
+        <div>
+          <label htmlFor="state" className="block text-sm font-medium text-gray-700">
+            State
+          </label>
+          <select
+            id="state"
+            {...register('state')}
+            className="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+          >
+            <option value="">Select State</option>
+            {states.map((state) => (
+              <option key={state.isoCode} value={state.isoCode}>
+                {state.name}
+              </option>
+            ))}
+          </select>
+          {errors.state && (
+            <p className="mt-1 text-sm text-red-500">{errors.state.message}</p>
+          )}
+        </div>
+      </div>
           <div>
             <label htmlFor="dob" className="block text-sm font-medium text-gray-700">Date of Birth</label>
             <input
@@ -314,9 +329,9 @@ export default function Register() {
           </div>
 
           <div className="flex items-center justify-between">
-            <button type="button" className="text-sm text-blue-600 hover:underline">
+            {/* <Link href="/forgot-password" className="text-sm text-blue-600 hover:underline">
               Forgot Password?
-            </button>
+            </Link> */}
           </div>
 
           <div className="space-y-4">

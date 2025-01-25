@@ -7,6 +7,7 @@ import Link from "next/link";
 
 const News = () => {
   const { data, isLoading, isError } = useGetResourceQuery({ type: "MEDIA",limit:10, page:1 });
+
   const newsItems = data?.data;
 
   return (
