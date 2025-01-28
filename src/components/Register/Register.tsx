@@ -364,7 +364,7 @@ type FormSchemaType = z.infer<typeof formSchemar>;
             <div className="mt-4 text-center text-sm text-gray-600">
               Already have an account?{' '}
               <Link href="/login" className="text-blue-600 hover:underline">
-                Log in Here!
+                Log in Here
               </Link>
             </div>
           </div>
