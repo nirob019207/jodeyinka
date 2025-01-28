@@ -26,6 +26,7 @@ export const Navbar = () => {
   console.log(data?.data?.role);
 
   const userInformation = data?.data;
+  console.log(userInformation?.role)
 
   const toggleDrawer = () => {
     setIsDrawerOpen(!isDrawerOpen);
@@ -78,13 +79,13 @@ export const Navbar = () => {
     // Remove the token from cookies
     cookies.remove("token");
 
- 
     toast.success("Logged out successfully!");
     router.push("/login");
   };
 
   // Function to determine active link
   const isActive = (href: string) => pathname === href;
+  console.log(userInformation?.role);
 
   return (
     <div className="bg-[#090043] font-inter relative">
@@ -144,10 +145,25 @@ export const Navbar = () => {
                 </div>
                 {isDropdownOpen && (
                   <div className="absolute right-0 mt-2 bg-white text-black rounded-md shadow-lg w-[150px] z-[100]">
-                   
-                   <Link href={userInformation.role === "ADMIN" ? "/admin/dashboard" : "/admin/profile"} className="block w-full text-left px-4 py-2 hover:bg-gray-200">
- Dashboard
-</Link>
+                    {userInformation.role !== "MEMBER" && (
+                      <Link
+                        href="/membership"
+                        className="block w-full text-left px-4 py-2 hover:bg-gray-200"
+                      >
+                        Membership
+                      </Link>
+                    )}
+
+                    <Link
+                      href={
+                        userInformation.role === "ADMIN"
+                          ? "/admin/dashboard"
+                          : "/admin/profile"
+                      }
+                      className="block w-full text-left px-4 py-2 hover:bg-gray-200"
+                    >
+                      Dashboard
+                    </Link>
 
                     <button
                       className="block w-full text-left px-4 py-2 hover:bg-gray-200"
@@ -235,10 +251,13 @@ export const Navbar = () => {
             >
               Resource
             </Link>
-            <Link href="/career "  className={`hover:text-blue-400 ${
+            <Link
+              href="/career "
+              className={`hover:text-blue-400 ${
                 isActive("/career") ? "text-blue-400 font-bold" : ""
-              }`}>
-             Career 
+              }`}
+            >
+              Career
             </Link>
             <Link
               href="/contact"

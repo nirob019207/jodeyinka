@@ -19,6 +19,7 @@ export function middleware(request: NextRequest) {
     "/event",
     "/resources",
     "/contact",
+    "/donate"
   ];
 
   const allowedRolesForUserRoutes = ["MEMBER", "SPONSOR"];
