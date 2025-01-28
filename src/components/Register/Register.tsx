@@ -9,6 +9,7 @@ import { useRegisterUserMutation } from '@/redux/Api/userApi'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
 import { Country, State, IState }  from 'country-state-city';
+import { GoogleReCaptchaProvider, useGoogleReCaptcha } from "react-google-recaptcha-v3";
 
 
 
@@ -36,13 +37,14 @@ const formSchemar = z.object({
 
 type FormSchemaType = z.infer<typeof formSchemar>;
 
-export default function Register() {
+ function RegisterForm() {
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [registerUser,{isLoading}]=useRegisterUserMutation()
   const [membershipType, setMembershipType] = useState('membership')
   const [states, setStates] = useState<IState[]>([]);
   const [selectedCountry, setSelectedCountry] = useState<string>('');
+  const { executeRecaptcha } = useGoogleReCaptcha();
 
   const router=useRouter()
  
@@ -70,6 +72,18 @@ export default function Register() {
 
   const onSubmit: SubmitHandler<FormSchemaType> = async (data) => {
     try {
+      if (!executeRecaptcha) {
+        toast.error("reCAPTCHA is not ready. Please try again.");
+        return;
+      }
+
+      // Execute reCAPTCHA and get the token
+      const recaptchaToken = await executeRecaptcha("register");
+      if (!recaptchaToken) {
+        toast.error("Unable to verify reCAPTCHA. Please reload the page.");
+        return;
+      }
+
       const updatedData = {
         organizationName:data.organizationName,
         firstName: data.firstName,
@@ -81,8 +95,8 @@ export default function Register() {
         address: data.address,
         dob: new Date(data.dob).toISOString(),
       }
-
-      await registerUser(updatedData).unwrap()
+      
+      await registerUser({ ...updatedData, "g-recaptcha-response": recaptchaToken }).unwrap()
       
       router.push('/')
 
@@ -99,6 +113,8 @@ export default function Register() {
 
 
   return (
+   
+    
     <div className="flex min-h-screen items-center justify-center bg-gray-100 p-4">
       <div className="w-full max-w-2xl rounded-lg bg-white p-8 shadow-md">
         <div className="mb-8 text-center">
@@ -355,5 +371,16 @@ export default function Register() {
         </form>
       </div>
     </div>
+ 
   )
+}
+
+export default function LoginPage() {
+  return (
+    <GoogleReCaptchaProvider
+      reCaptchaKey="6Le_DLoqAAAAAHITXN_ClmNM2jORj0YRiwmu-41k" // Replace with your actual site key
+    >
+      <RegisterForm />
+    </GoogleReCaptchaProvider>
+  );
 }
