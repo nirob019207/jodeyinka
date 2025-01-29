@@ -9,6 +9,8 @@ import insta from "@/asset/social/insta.svg";
 import fb from "@/asset/social/fb.svg";
 import linkedin from "@/asset/social/linkedin.svg";
 import * as z from "zod";
+import { GoogleReCaptchaProvider, useGoogleReCaptcha } from "react-google-recaptcha-v3";
+
 
 import { Button } from "@/components/ui/button";
 import {
@@ -42,8 +44,10 @@ const formSchemac = z.object({
   message: z.any().optional(),
 });
 
-export default function ContactPage() {
+ function ContacForm() {
   const [contact, { isLoading }] = useContactMutation();
+    const { executeRecaptcha } = useGoogleReCaptcha();
+  
   const form = useForm<z.infer<typeof formSchemac>>({
     resolver: zodResolver(formSchemac),
     defaultValues: {
@@ -57,6 +61,18 @@ export default function ContactPage() {
 
   async function onSubmit(values: z.infer<typeof formSchemac>) {
     try {
+       if (!executeRecaptcha) {
+              toast.error("reCAPTCHA is not ready. Please try again.");
+              return;
+            }
+      
+            // Execute reCAPTCHA and get the token
+            const recaptchaToken = await executeRecaptcha("register");
+            if (!recaptchaToken) {
+              toast.error("Unable to verify reCAPTCHA. Please reload the page.");
+              return;
+            }
+      
       // Simulate API call
       await contact(values).unwrap();
       toast.success("Message sent successfully!"); // Show success message
@@ -295,5 +311,15 @@ export default function ContactPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function ContactPage() {
+  return (
+    <GoogleReCaptchaProvider
+      reCaptchaKey="6Le_DLoqAAAAAHITXN_ClmNM2jORj0YRiwmu-41k" // Replace with your actual site key
+    >
+      <ContacForm />
+    </GoogleReCaptchaProvider>
   );
 }
