@@ -14,6 +14,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useGetResourceQuery } from "@/redux/Api/resourceApi";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
+import { Eye } from "lucide-react";
 
 type ResourceEvent = {
   fileUrl: string;
@@ -133,9 +134,12 @@ const ResourceList = () => {
                 <TableCell className="px-4 py-4 text-darkGray text-center">
                   {event.type}
                 </TableCell>
-                <TableCell className="px-4 py-4 text-darkGray text-center">
+                <TableCell className="px-4 py-4 text-darkGray text-center flex">
                   <button className="text-red-500 hover:text-red-700">
                     <FaTrashAlt className="text-lg text-center" />
+                  </button>
+                  <button>
+                  <Eye className="text-green-400" />
                   </button>
                 </TableCell>
               </TableRow>
