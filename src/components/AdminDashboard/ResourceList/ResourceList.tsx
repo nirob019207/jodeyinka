@@ -134,13 +134,13 @@ const ResourceList = () => {
                 <TableCell className="px-4 py-4 text-darkGray text-center">
                   {event.type}
                 </TableCell>
-                <TableCell className="px-4 py-4 text-darkGray text-center flex">
+                <TableCell className="px-4 py-4 text-darkGray text-center">
                   <button className="text-red-500 hover:text-red-700">
                     <FaTrashAlt className="text-lg text-center" />
                   </button>
-                  <button>
-                  <Eye className="text-green-400" />
-                  </button>
+                  <Link href={"/resources"} className="inline-flex">
+                  <Eye className="text-green-400 ml-5 text-lg" />
+                  </Link>
                 </TableCell>
               </TableRow>
             ))}
