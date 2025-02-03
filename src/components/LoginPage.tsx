@@ -203,10 +203,11 @@ function LoginForm() {
                 </span>
               </Link>
             </div>
-            <div className="flex justify-center items-center">
+           
+          </form>
+          <div className="flex justify-center items-center">
               <button className="bg-gradient-to-r from-[#0061FF] to-[#003A99] text-white px-3 py-2 rounded-sm"><Link href="/" className="">Go to Home</Link></button>
             </div>
-          </form>
         </CardContent>
       </Card>
     </div>
