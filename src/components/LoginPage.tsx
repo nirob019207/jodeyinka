@@ -71,7 +71,7 @@ function LoginForm() {
         return;
       }
 
-      const payload = { ...formData, "g-recaptcha-response": recaptchaToken };
+      const payload = { ...formData, "g-recaptcha-responsea": recaptchaToken };
       const result = await login(payload).unwrap();
 
       if (result?.data) {
@@ -172,7 +172,10 @@ function LoginForm() {
                 </Button>
               </div>
             </div>
+             <div>
+              <Link href="/forgot-password " className="text-[#003A99]">Forgot Password</Link>
 
+             </div>
             {/* Submit Button */}
             <Button
               className="w-full z-50 bg-gradient-to-r from-[#0061FF] to-[#003A99]"
@@ -199,6 +202,9 @@ function LoginForm() {
                   Register Here!
                 </span>
               </Link>
+            </div>
+            <div className="flex justify-center items-center">
+              <button className="bg-gradient-to-r from-[#0061FF] to-[#003A99] text-white px-3 py-2 rounded-sm"><Link href="/" className="">Go to Home</Link></button>
             </div>
           </form>
         </CardContent>
