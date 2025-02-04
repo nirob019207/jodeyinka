@@ -4,10 +4,9 @@ import { Eye, EyeOff } from "lucide-react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import {jwtDecode} from "jwt-decode"; // Import jwt-decode for token decoding
+import {jwtDecode} from "jwt-decode"; // Correct import for jwt-decode
 import cookies from "js-cookie";
 import { toast } from "sonner";
-
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -24,6 +23,7 @@ import { setUser } from "@/redux/ReduxFunction";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 import { SerializedError } from "@reduxjs/toolkit";
+import { GoogleReCaptchaProvider, useGoogleReCaptcha } from "react-google-recaptcha-v3";
 
 const loginSchema = z.object({
   email: z
@@ -42,11 +42,12 @@ interface DecodedToken {
   email: string;
 }
 
-export default function LoginPage() {
+function LoginForm() {
   const [login, { isLoading, isError, error }] = useLoginUserMutation();
   const [showPassword, setShowPassword] = React.useState(false);
   const dispatch = useDispatch();
   const router = useRouter();
+  const { executeRecaptcha } = useGoogleReCaptcha();
 
   const {
     register,
@@ -58,18 +59,31 @@ export default function LoginPage() {
 
   const onSubmit: SubmitHandler<FormData> = async (formData) => {
     try {
-      const result = await login(formData).unwrap();
-      
+      if (!executeRecaptcha) {
+        toast.error("reCAPTCHA is not ready. Please try again.");
+        return;
+      }
+
+      // Execute reCAPTCHA and get the token
+      const recaptchaToken = await executeRecaptcha("login");
+      if (!recaptchaToken) {
+        toast.error("Unable to verify reCAPTCHA. Please reload the page.");
+        return;
+      }
+
+      const payload = { ...formData, "g-recaptcha-responsea": recaptchaToken };
+      const result = await login(payload).unwrap();
+
       if (result?.data) {
         const { accessToken } = result.data;
 
         // Decode the token to get role and other details
         const decoded: DecodedToken = jwtDecode(accessToken);
-        const { role, email } = decoded;
-       
+        const { role, email } = decoded;  
+
         // Dispatch the user data to Redux
         dispatch(setUser({ role, token: accessToken, email }));
-         cookies.set("role", role, { expires: 7, path: "/" });
+        cookies.set("role", role, { expires: 7, path: "/" });  
 
         // Store the token in cookies
         cookies.set("token", accessToken, { expires: 7 });
@@ -88,7 +102,6 @@ export default function LoginPage() {
             console.error("Unknown role:", role);
             break;
         }
-        
 
         // Show success toast
         toast.success("Login successful!");
@@ -159,20 +172,10 @@ export default function LoginPage() {
                 </Button>
               </div>
             </div>
+             <div>
+              <Link href="/forgot-password " className="text-[#003A99]">Forgot Password</Link>
 
-            {/* Remember Me & Forgot Password */}
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-2">
-                {/* <Checkbox id="remember" /> */}
-                {/* <Label htmlFor="remember" className="text-sm">
-                  Remember Me
-                </Label> */}
-              </div>
-              <Link href="/forgot-password" className="px-0 text-[#0061FF]">
-                Forgot Password?
-              </Link>
-            </div>
-
+             </div>
             {/* Submit Button */}
             <Button
               className="w-full z-50 bg-gradient-to-r from-[#0061FF] to-[#003A99]"
@@ -200,9 +203,23 @@ export default function LoginPage() {
                 </span>
               </Link>
             </div>
+           
           </form>
+          <div className="flex justify-center items-center">
+              <button className="bg-gradient-to-r from-[#0061FF] to-[#003A99] text-white px-3 py-2 rounded-sm"><Link href="/" className="">Go to Home</Link></button>
+            </div>
         </CardContent>
       </Card>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <GoogleReCaptchaProvider
+      reCaptchaKey="6Le_DLoqAAAAAHITXN_ClmNM2jORj0YRiwmu-41k" // Replace with your actual site key
+    >
+      <LoginForm />
+    </GoogleReCaptchaProvider>
   );
 }

@@ -14,6 +14,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useGetResourceQuery } from "@/redux/Api/resourceApi";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
+import { Eye } from "lucide-react";
 
 type ResourceEvent = {
   fileUrl: string;
@@ -137,6 +138,9 @@ const ResourceList = () => {
                   <button className="text-red-500 hover:text-red-700">
                     <FaTrashAlt className="text-lg text-center" />
                   </button>
+                  <Link href={"/resources"} className="inline-flex">
+                  <Eye className="text-green-400 ml-5 text-lg" />
+                  </Link>
                 </TableCell>
               </TableRow>
             ))}

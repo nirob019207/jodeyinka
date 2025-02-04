@@ -3,6 +3,7 @@ import { AiOutlineMenu } from "react-icons/ai"; // Hamburger icon
 import Image from "next/image";
 import hi from "@/asset/admin/hi.png";
 import { useGetMeQuery } from "@/redux/Api/userApi";
+import Link from "next/link";
 
 const Topbar: React.FC<{ onHamburgerClick: () => void }> = ({ onHamburgerClick }) => {
   const { data } = useGetMeQuery({});
@@ -24,6 +25,8 @@ const Topbar: React.FC<{ onHamburgerClick: () => void }> = ({ onHamburgerClick }
           Welcome, {userInformation?.firstName || "User"} {userInformation?.lastName || ""}
           <Image className="w-6 sm:w-8" src={hi} alt="welcome image" />
         </h1>
+
+        <Link className="bg-gradient-to-l from-[#0061FF] to-[#003A99] px-4 py-3 rounded-lg text-white font-medium" href={"/"}>Back to home</Link>
       </div>
     </header>
   );

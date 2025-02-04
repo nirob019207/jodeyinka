@@ -23,10 +23,9 @@ export const Navbar = () => {
 
   const { data, isLoading } = useGetMeQuery({});
 
-  console.log(data?.data?.role);
+  console.log(data);
 
   const userInformation = data?.data;
-  console.log(userInformation?.role)
 
   const toggleDrawer = () => {
     setIsDrawerOpen(!isDrawerOpen);
@@ -78,6 +77,15 @@ export const Navbar = () => {
 
     // Remove the token from cookies
     cookies.remove("token");
+    cookies.remove("role");
+    cookies.remove("_grecaptcha");
+
+    localStorage.removeItem("_grecaptcha");
+    localStorage.clear()
+    window.location.reload()
+
+
+
 
     toast.success("Logged out successfully!");
     router.push("/login");
@@ -85,7 +93,6 @@ export const Navbar = () => {
 
   // Function to determine active link
   const isActive = (href: string) => pathname === href;
-  console.log(userInformation?.role);
 
   return (
     <div className="bg-[#090043] font-inter relative">

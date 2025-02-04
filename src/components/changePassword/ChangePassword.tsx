@@ -38,7 +38,8 @@ export default function ChangePassword() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [resetPass, { isLoading }] = useResetPassMutation();
   const router = useRouter();
-  const getEmail = useSelector((state: RootState) => state.forgotPass.email);
+  const getEmail = useSelector((state:any) => state.forgotPass.email);
+  
   const getOtp=useSelector((state: RootState) => state.forgotPass.otp)
 
 
@@ -56,7 +57,7 @@ export default function ChangePassword() {
   const onSubmit = async (data: ChangePasswordFormData) => {
     try {
       await resetPass({
-        email: getEmail,
+        email: getEmail?.email,
         otp: getOtp,
         password: data.newPassword,
       }).unwrap();
