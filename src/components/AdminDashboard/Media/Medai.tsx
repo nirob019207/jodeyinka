@@ -18,7 +18,7 @@ const resourceSchema = z.object({
     .instanceof(File)
     .refine((file) => file.size <= 2 * 1024 * 1024, "File size must be less than 2MB")
     .refine(
-      (file) => ["image/jpeg", "image/png", "application/pdf"].includes(file.type),
+      (file) => ["image/jpeg", "image/png", "application/pdf", "video/mp4", "video/avi", "video/mpeg", "video/quicktime"].includes(file.type),
       "Invalid file type"
     ),
 });

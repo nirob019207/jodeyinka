@@ -13,9 +13,10 @@ import {
 
 import Image from "next/image";
 import Link from "next/link";
-import { useGetResourceQuery } from "@/redux/Api/resourceApi";
+import { useDeleteResourceMutation, useGetResourceQuery } from "@/redux/Api/resourceApi";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
 import { Eye } from "lucide-react";
+import { toast } from "sonner";
 
 // Type for resource events
 type MediaEvent = {
@@ -23,6 +24,7 @@ type MediaEvent = {
   title: string;
   description: string;
   type: string;
+  id: string;
 };
 
 const MedaiList = () => {
@@ -34,6 +36,7 @@ const MedaiList = () => {
     limit: limit,
     page: currentPage,
   });
+  const [deleteMediaFn] = useDeleteResourceMutation()
 
   const mediaList = data?.data;
 
@@ -63,6 +66,16 @@ const MedaiList = () => {
       </div>
     );
   }
+
+  const handleDelete = async (id: string): Promise<void> => {
+    // Implementation for delete
+   const response =  await deleteMediaFn(id)
+   if(response){
+    toast.success("Media Delete Successfully")
+   }else{
+    toast.error("Media Delete Failed!")
+   }
+  };
 
   if (isError) {
     return (
@@ -120,12 +133,16 @@ const MedaiList = () => {
                   />
                 </TableCell>
                 <TableCell className="px-4 py-4 text-darkGray text-center">
-                  {event.title}
+                  {event.title.split(" ").slice(0, 10).join(" ") + "..."}
                 </TableCell>
                 <TableCell className="px-4 py-4 text-darkGray text-center">
                   <div
                     dangerouslySetInnerHTML={{
-                      __html: event.description || "",
+                      __html:
+                        (event.description || "")
+                          .split(" ")
+                          .slice(0, 2)
+                          .join(" ") + "...",
                     }}
                   />
                 </TableCell>
@@ -134,11 +151,11 @@ const MedaiList = () => {
                   {event.type}
                 </TableCell>
                 <TableCell className="px-4 py-4 text-darkGray text-center">
-                  <button className="text-red-500 hover:text-red-700">
+                  <button onClick={()=>handleDelete(event.id)} className="text-red-500 hover:text-red-700">
                     <FaTrashAlt className="text-lg text-center" />
                   </button>
                   <Link href={"/media"} className="inline-flex">
-                  <Eye className="text-green-400 ml-5 text-lg" />
+                    <Eye className="text-green-400 ml-5 text-lg" />
                   </Link>
                 </TableCell>
               </TableRow>

@@ -17,7 +17,9 @@ const Sponsorship: React.FC = () => {
   const { data: sponsor } = useEventDetailsQuery({
     id: id as string,
   });
-  const sponsors = sponsor?.data?.event;
+  
+  const sponsors = sponsor?.data;
+  console.log("dsklfjdksl",sponsors)
 
   const plans: Plan[] = [
     {

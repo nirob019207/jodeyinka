@@ -63,7 +63,17 @@ const resourceApi = baseApi.injectEndpoints({
 
     }),
 
+    deleteResource: build.mutation({
+      query: (id) => ({
+        url: `/resource/${id}`,
+        method: "DELETE",
+
+      }),
+      invalidatesTags: ["Resource"],
+
+    }),
+
   }),
 });
 
-export const { useGetResourceQuery,useGetResourceSingleQuery,useAddComentMutation,useResourceCreateMutation, useMediaCreateMutation, useBlogCreateMutation} = resourceApi
+export const { useGetResourceQuery,useGetResourceSingleQuery,useAddComentMutation,useResourceCreateMutation, useMediaCreateMutation, useBlogCreateMutation, useDeleteResourceMutation} = resourceApi

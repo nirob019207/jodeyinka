@@ -10,10 +10,14 @@ import CardSkeleton from "../CardSkelaton/CardSkeleton";
 import defaultEvent from "@/asset/event/e1.svg";
 import { FaPlay } from "react-icons/fa6";
 import thumb from "@/asset/media/thubnail.jpg"
+import Sponsorship from "../SponsarShip/SponsarShip";
+import { useGetMeQuery } from "@/redux/Api/userApi";
+import EventRegister from "../EventRegister/EventRegister";
 
 const UpCommingEventPage = () => {
   const { data, isLoading} = useEventQuery({ limit: 10, page: 1 });
   const events = data?.data;
+ 
 
   // function formatMonthAndTime(isoDate) {
   //   const eventDate = new Date(isoDate);
@@ -178,6 +182,12 @@ const UpCommingEventPage = () => {
         </div>
       </div>
 
+
+    
+
+
+
+           
 
        {/* Video Modal */}
        {isModalOpen && (

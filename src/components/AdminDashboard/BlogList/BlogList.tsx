@@ -11,12 +11,14 @@ import {
 } from "@/components/ui/table";
 import Image from "next/image";
 import Link from "next/link";
-import { useGetResourceQuery } from "@/redux/Api/resourceApi";
+import { useDeleteResourceMutation, useGetResourceQuery } from "@/redux/Api/resourceApi";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
 import { Eye } from "lucide-react";
+import { toast } from "sonner";
 
 // Type for resource events
 type ResourceEvent = {
+  id: string;
   fileUrl: string;
   title: string;
   description: string;
@@ -25,13 +27,15 @@ type ResourceEvent = {
 
 const BlogList = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const limit = 6; 
+  const limit = 6;
 
   const { data, isLoading, isError } = useGetResourceQuery({
     type: "BLOG",
     limit: limit,
     page: currentPage,
   });
+
+  const [deleteBlogFn]= useDeleteResourceMutation()
 
   const blogList = data?.data;
   const hasMoreData = blogList?.length === limit;
@@ -60,6 +64,17 @@ const BlogList = () => {
       </div>
     );
   }
+  // delete functionality
+
+  const handleDelete = async (id: string): Promise<void> => {
+    // Implementation for delete
+   const response =  await deleteBlogFn(id)
+   if(response){
+    toast.success("Blog Delete Successfully")
+   }else{
+    toast.error("Blog Delete Failed!")
+   }
+  };
 
   if (isError) {
     return (
@@ -122,7 +137,11 @@ const BlogList = () => {
                 <TableCell className="px-4 py-4 text-darkGray text-center">
                   <div
                     dangerouslySetInnerHTML={{
-                      __html: event.description || "",
+                      __html:
+                        (event.description || "")
+                          .split(" ")
+                          .slice(0, 2)
+                          .join(" ") + "...",
                     }}
                   />
                 </TableCell>
@@ -131,11 +150,11 @@ const BlogList = () => {
                   {event.type}
                 </TableCell>
                 <TableCell className="px-4 py-4 text-darkGray text-center">
-                  <button className="text-red-500 hover:text-red-700">
+                  <button onClick={()=>handleDelete(event.id)} className="text-red-500 hover:text-red-700">
                     <FaTrashAlt className="text-lg text-center" />
                   </button>
                   <Link href={"/blog"} className="inline-flex">
-                  <Eye className="text-green-400 ml-5 text-lg" />
+                    <Eye className="text-green-400 ml-5 text-lg" />
                   </Link>
                 </TableCell>
               </TableRow>
