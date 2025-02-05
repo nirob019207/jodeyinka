@@ -9,6 +9,7 @@ export default function SquarePaymentForm({ price, type ,handleCloseModal} : any
   const [square] = useSquareMutation();
   const { id } = useParams();
 
+
   const handlePayment = async (token: any) => {
     try {
       // Display loading toast
@@ -16,11 +17,11 @@ export default function SquarePaymentForm({ price, type ,handleCloseModal} : any
 
       // Send payment request
       const response : any = await square({
-        data: { sourceId: token.token, amount: price, tier: type, id: id },
+        data: { sourceId: token.token, amount:200, tier: type, id: id },
       });
-
+console.warn("|dkfljj",response)
       
-      if (response?.success) {
+      if (response?.data?.success) {
         toast.dismiss(); 
         handleCloseModal()
         toast.success("Payment successful!"); 

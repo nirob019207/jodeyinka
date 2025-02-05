@@ -8,7 +8,6 @@ interface Member {
 
 export function middleware(request: NextRequest) {
   const homeRoute = `${request.nextUrl.origin}/login`;
-  const unauthorizedRoute = `${request.nextUrl.origin}/unauthorized`;
 
   const userRoutes = [
     "/about-us",
@@ -22,7 +21,10 @@ export function middleware(request: NextRequest) {
     "/donate"
   ];
 
-  const allowedRolesForUserRoutes = ["MEMBER", "SPONSOR"];
+  const allowedRolesForUserRoutes = ["MEMBER"];
+  const allowedRolesForSponsorRoutes = ["SPONSOR"];
+  
+  
 
   // Special routes for User role
   const userSpecificRoutes = ["/membership", "/donate"];
@@ -43,22 +45,37 @@ export function middleware(request: NextRequest) {
   let userInfo: Member;
   try {
     userInfo = jwtDecode<Member>(token);
+    console.warn(userInfo)
   } catch {
-    return NextResponse.redirect(new URL(homeRoute, request.url));
+    return NextResponse.redirect(new URL('/membership', request.url));
   }
 
   // If the user's role is "User", allow only /membership and /donate routes
   if (userInfo.role === "USER" && !userSpecificRoutes.some((route) => currentPath.startsWith(route))) {
     console.warn(`User role is User but attempting to access restricted route: ${currentPath}. Redirecting to unauthorized.`);
-    return NextResponse.redirect(new URL(unauthorizedRoute, request.url));
+    return NextResponse.redirect(new URL("/membership", request.url));
   }
+ 
+  
 
   // Route Matching for other roles
   if (userRoutes.some((route) => currentPath.startsWith(route))) {
     if (!allowedRolesForUserRoutes.includes(userInfo.role)) {
       console.warn(`User role ${userInfo.role} is not allowed. Redirecting to unauthorized.`);
-      return NextResponse.redirect(new URL(unauthorizedRoute, request.url));
+      return NextResponse.redirect(new URL('/membership', request.url));
+      
     }
+    
+  }
+  
+  // Route Matching for other roles
+  if (userRoutes.some((route) => currentPath.startsWith(route))) {
+    if (!allowedRolesForSponsorRoutes.includes(userInfo.role)) {
+      console.warn(`User role ${userInfo.role} is not allowed. Redirecting to unauthorized.`);
+      return NextResponse.redirect(new URL('/', request.url));
+      
+    }
+    
   }
 
   return NextResponse.next();

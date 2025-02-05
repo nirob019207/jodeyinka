@@ -5,7 +5,7 @@ import { Editor } from "@tinymce/tinymce-react";
 import { z } from "zod";
 import { useResourceCreateMutation } from "@/redux/Api/resourceApi";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation"; // Import useRouter
+import { useRouter } from "next/navigation"; 
 
 // Zod validation schema
 const resourceSchema = z.object({
@@ -166,7 +166,7 @@ export default function Resource() {
                 Description
               </label>
               <Editor
-                apiKey="g68nc1d1w7r6ws2cu6q6c6trlsejbpqf5dylpj1b8hjeoc7d"
+                apiKey="4kjrncewwa4057zz04om0mle4q3to49bypq57bh6qgq5f0n3"
                 initialValue="<p>Product description</p>"
                 init={{
                   height: 200,

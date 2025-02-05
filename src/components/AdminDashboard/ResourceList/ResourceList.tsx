@@ -12,9 +12,10 @@ import {
 
 import Image from "next/image";
 import Link from "next/link";
-import { useGetResourceQuery } from "@/redux/Api/resourceApi";
+import { useDeleteResourceMutation, useGetResourceQuery } from "@/redux/Api/resourceApi";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
 import { Eye } from "lucide-react";
+import { toast } from "sonner";
 
 type ResourceEvent = {
   fileUrl: string;
@@ -33,11 +34,39 @@ const ResourceList = () => {
     page: currentPage,
   });
 
+  const [deleteResourceFn] = useDeleteResourceMutation()
+
   const resourceList = data?.data;
   const hasMoreData = resourceList?.length === limit;
 
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
+  };
+
+  interface ResourceEvent {
+    id: string;
+    fileUrl: string;
+    title: string;
+    description: string;
+    type: string;
+  }
+
+  interface ResourceListProps {
+    data: {
+      data: ResourceEvent[];
+    };
+    isLoading: boolean;
+    isError: boolean;
+  }
+
+  const handleDelete = async (id: string): Promise<void> => {
+    // Implementation for delete
+   const response =  await deleteResourceFn(id)
+   if(response){
+    toast.success("Resouce Delete Successfully")
+   }else{
+    toast.error("Resource Delete Failed!")
+   }
   };
 
   if (isLoading) {
@@ -126,7 +155,11 @@ const ResourceList = () => {
                 <TableCell className="px-4 py-4 text-darkGray text-center">
                   <div
                     dangerouslySetInnerHTML={{
-                      __html: event.description || "",
+                      __html:
+                        (event.description || "")
+                          .split(" ")
+                          .slice(0, 2)
+                          .join(" ") + "...",
                     }}
                   />
                 </TableCell>
@@ -135,11 +168,11 @@ const ResourceList = () => {
                   {event.type}
                 </TableCell>
                 <TableCell className="px-4 py-4 text-darkGray text-center">
-                  <button className="text-red-500 hover:text-red-700">
+                  <button onClick={()=>handleDelete(event.id)} className="text-red-500 hover:text-red-700">
                     <FaTrashAlt className="text-lg text-center" />
                   </button>
                   <Link href={"/resources"} className="inline-flex">
-                  <Eye className="text-green-400 ml-5 text-lg" />
+                    <Eye className="text-green-400 ml-5 text-lg" />
                   </Link>
                 </TableCell>
               </TableRow>

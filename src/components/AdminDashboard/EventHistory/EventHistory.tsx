@@ -14,12 +14,15 @@ import Link from "next/link";
 import { useEventQuery } from "@/redux/Api/eventApi";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
 import event1 from "@/asset/event/e1.svg"
+import { toast } from "sonner";
+import { useDeleteResourceMutation } from "@/redux/Api/resourceApi";
 
 // Type for resource events
 type ResourceEvent = {
   imageUrl: string;
   title: string;
   description: string;
+  id: string;
   type: string;
   silverSponsorFee: number;
   goldSponsorFee: number;
@@ -33,6 +36,8 @@ const EventHistory = () => {
     limit: limit,
     page: currentPage,
   });
+
+const [deleteEventFn] = useDeleteResourceMutation()
 
   const EventList = data?.data;
   console.log(EventList);
@@ -63,6 +68,19 @@ const EventHistory = () => {
       </div>
     );
   }
+
+  // delete functionality
+
+  const handleDelete = async (id: string): Promise<void> => {
+    // Implementation for delete
+   const response =  await deleteEventFn(id)
+   if(response){
+    toast.success("Event Delete Successfully")
+   }else{
+    toast.error("Event Delete Failed!")
+   }
+  };
+
 
   if (isError) {
     return (
@@ -97,9 +115,9 @@ const EventHistory = () => {
               <TableHead className="text-default text-base text-center">
                 Event Title
               </TableHead>
-              <TableHead className="text-default text-base text-center">
+              {/* <TableHead className="text-default text-base text-center">
                 Description
-              </TableHead>
+              </TableHead> */}
               <TableHead className="text-default text-base text-center">
                 Type
               </TableHead>
@@ -132,13 +150,13 @@ const EventHistory = () => {
                 <TableCell className="px-4 py-4 text-darkGray text-center">
                   {event.title}
                 </TableCell>
-                <TableCell className="px-4 py-4 text-darkGray text-center">
+                {/* <TableCell className="px-4 py-4 text-darkGray text-center">
                   <div
                     dangerouslySetInnerHTML={{
                       __html: event.description || "",
                     }}
                   />
-                </TableCell>
+                </TableCell> */}
 
                 <TableCell className="px-4 py-4 text-darkGray text-center">
                   {event?.type || "N/A"}
@@ -153,7 +171,7 @@ const EventHistory = () => {
                   {event.platinumSponsorFee}
                 </TableCell>
                 <TableCell className="px-4 py-4 text-darkGray text-center">
-                  <button className="text-red-500 hover:text-red-700">
+                  <button onClick={()=>handleDelete(event.id)} className="text-red-500 hover:text-red-700">
                     <FaTrashAlt className="text-lg text-center" />
                   </button>
                 </TableCell>
