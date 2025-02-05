@@ -4,11 +4,13 @@ import type { NextRequest } from "next/server";
 
 interface Member {
   role: string;
+  sponsorStatus?: string;
 }
 
 export function middleware(request: NextRequest) {
   const homeRoute = `${request.nextUrl.origin}/login`;
 
+  // Routes allowed for MEMBERS and SPONSORS
   const userRoutes = [
     "/about-us",
     "/career",
@@ -18,64 +20,56 @@ export function middleware(request: NextRequest) {
     "/event",
     "/resources",
     "/contact",
-    "/donate"
+    "/donate",
   ];
 
-  const allowedRolesForUserRoutes = ["MEMBER"];
-  const allowedRolesForSponsorRoutes = ["SPONSOR"];
-  
-  
-
-  // Special routes for User role
+  // Routes specifically for USERS
   const userSpecificRoutes = ["/membership", "/donate"];
 
-  // Log the requested URL
   const currentPath = request.nextUrl.pathname;
 
   // Token Retrieval
   const token = request.cookies.get("token")?.value;
 
-  // If token is missing, redirect to login
   if (!token) {
     console.warn("Token is missing. Redirecting to login.");
     return NextResponse.redirect(new URL(homeRoute, request.url));
   }
 
-  // Decode the token
+
   let userInfo: Member;
   try {
     userInfo = jwtDecode<Member>(token);
-    console.warn(userInfo)
+    console.warn(userInfo);
   } catch {
-    return NextResponse.redirect(new URL('/membership', request.url));
+    return NextResponse.redirect(new URL("/login", request.url));
   }
 
-  // If the user's role is "User", allow only /membership and /donate routes
-  if (userInfo.role === "USER" && !userSpecificRoutes.some((route) => currentPath.startsWith(route))) {
-    console.warn(`User role is User but attempting to access restricted route: ${currentPath}. Redirecting to unauthorized.`);
-    return NextResponse.redirect(new URL("/membership", request.url));
+
+  if (userInfo.role === "USER" && userInfo.sponsorStatus === "PENDING") {
+    console.warn(`Sponsorship status is pending. Redirecting to home with message.`);
+    return NextResponse.redirect(new URL(`/?message=Sponsorship pending`, request.url));
   }
+  
+
  
-  
-
-  // Route Matching for other roles
-  if (userRoutes.some((route) => currentPath.startsWith(route))) {
-    if (!allowedRolesForUserRoutes.includes(userInfo.role)) {
-      console.warn(`User role ${userInfo.role} is not allowed. Redirecting to unauthorized.`);
-      return NextResponse.redirect(new URL('/membership', request.url));
-      
+  if (userInfo.role === "USER") {
+    if (!userSpecificRoutes.some((route) => currentPath.startsWith(route))) {
+      console.warn(`User role can only access /membership and /donate. Redirecting to /membership.`);
+      return NextResponse.redirect(new URL("/membership", request.url));
     }
-    
+    return NextResponse.next(); 
   }
-  
-  // Route Matching for other roles
-  if (userRoutes.some((route) => currentPath.startsWith(route))) {
-    if (!allowedRolesForSponsorRoutes.includes(userInfo.role)) {
-      console.warn(`User role ${userInfo.role} is not allowed. Redirecting to unauthorized.`);
-      return NextResponse.redirect(new URL('/', request.url));
-      
-    }
-    
+
+
+  if (userInfo.role === "MEMBER" && userRoutes.some((route) => currentPath.startsWith(route))) {
+    return NextResponse.next(); 
+  }
+
+ 
+  if (userInfo.role === "SPONSOR" && !userRoutes.some((route) => currentPath.startsWith(route))) {
+    console.warn(`Sponsor role is not allowed on ${currentPath}. Redirecting to home.`);
+    return NextResponse.redirect(new URL("/", request.url));
   }
 
   return NextResponse.next();
@@ -86,7 +80,7 @@ export const config = {
     "/about-us",
     "/career",
     "/media",
-    "/media-details/:path*", // Matches dynamic routes like /media-details/1, /media-details/some-id
+    "/media-details/:path*",
     "/resources",
     "/contact",
     "/event",
