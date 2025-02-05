@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import logo from "@/asset/logo.svg";
 import Image from "next/image";
 import Link from "next/link";
@@ -14,12 +14,32 @@ import { toast } from "sonner";
 import { useDispatch } from "react-redux";
 import { setUser } from "@/redux/ReduxFunction";
 import cookies from "js-cookie";
+import Notification from "@/components/NotificationModal/Notification";
 
 export const Navbar = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
   const dispatch = useDispatch();
   const router = useRouter();
+  const [checkedSponsorStatus, setCheckedSponsorStatus] = useState(false);
+  
+  useEffect(() => {
+    const searchParams = new URLSearchParams(window.location.search);
+    const message = searchParams.get("message");
+    setTimeout(() => setShowModal(true), 0);
+
+  
+    if (message) {
+      setModalMessage(message);
+      setShowModal(true);
+    } else {
+      setShowModal(false); // Ensure modal doesn't show on route change
+    }
+  }, [typeof window !== "undefined" ? window.location.search : ""]);
+  
+
 
   const { data, isLoading } = useGetMeQuery({});
 
@@ -67,7 +87,15 @@ export const Navbar = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
-  // handle logout
+
+useEffect(() => {
+  if (!checkedSponsorStatus && userInformation?.sponsorStatus === "pending") {
+    setModalMessage("You don't have access to this page as a pending sponsor.");
+    setShowModal(true);
+    setCheckedSponsorStatus(true); // Prevent showing again on route changes
+  }
+}, [userInformation, checkedSponsorStatus]);
+
 
   // const dispatch = useDispatch()
 
@@ -81,11 +109,8 @@ export const Navbar = () => {
     cookies.remove("_grecaptcha");
 
     localStorage.removeItem("_grecaptcha");
-    localStorage.clear()
-    window.location.reload()
-
-
-
+    localStorage.clear();
+    window.location.reload();
 
     toast.success("Logged out successfully!");
     router.push("/login");
@@ -96,6 +121,16 @@ export const Navbar = () => {
 
   return (
     <div className="bg-[#090043] font-inter relative">
+      {showModal && (
+        <Notification
+          message={modalMessage}
+          onClose={() => {
+            setShowModal(false);
+            window.history.replaceState(null, " ", window.location.pathname);
+          }}
+        />
+      )}
+
       {/* Desktop Banner Section */}
       <div
         style={{
@@ -152,14 +187,16 @@ export const Navbar = () => {
                 </div>
                 {isDropdownOpen && (
                   <div className="absolute right-0 mt-2 bg-white text-black rounded-md shadow-lg w-[150px] z-[100]">
-                    {userInformation.role !== "MEMBER" && (
-                      <Link
-                        href="/membership"
-                        className="block w-full text-left px-4 py-2 hover:bg-gray-200"
-                      >
-                        Membership
-                      </Link>
-                    )}
+                    {userInformation.role !== "MEMBER" &&
+                      userInformation.role == "SPONSOR" &&
+                      userInformation.sponsorStatus == "pending" && (
+                        <Link
+                          href="/membership"
+                          className="block w-full text-left px-4 py-2 hover:bg-gray-200"
+                        >
+                          Membership
+                        </Link>
+                      )}
 
                     <Link
                       href={
