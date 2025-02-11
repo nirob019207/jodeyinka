@@ -1,49 +1,29 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import logo from "@/asset/logo.svg";
 import Image from "next/image";
 import Link from "next/link";
 import banner from "@/asset/banner.svg";
 import anotherBanner from "@/asset/anotherBanner.svg";
-import { FiMenu, FiX } from "react-icons/fi";
+import { FiBell, FiMenu, FiX } from "react-icons/fi";
 // import { useRouter } from "next/router";
 import { useParams, usePathname, useRouter } from "next/navigation";
-import { useGetMeQuery } from "@/redux/Api/userApi";
+import { useGetMeQuery, useGetnotifyQuery } from "@/redux/Api/userApi";
 import profileavater from "@/asset/profilavater.webp";
 import { toast } from "sonner";
 import { useDispatch } from "react-redux";
 import { setUser } from "@/redux/ReduxFunction";
 import cookies from "js-cookie";
-import Notification from "@/components/NotificationModal/Notification";
 
 export const Navbar = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [showModal, setShowModal] = useState(false);
-  const [modalMessage, setModalMessage] = useState("");
+  const [isNotifOpen, setIsNotifOpen] = useState(false);
+
   const dispatch = useDispatch();
   const router = useRouter();
-  const [checkedSponsorStatus, setCheckedSponsorStatus] = useState(false);
-  
-  // useEffect(() => {
-  //   const searchParams = new URLSearchParams(window.location.search);
-  //   const message = searchParams.get("message");
-  //   setTimeout(() => setShowModal(true), 0);
-
-  
-  //   if (message) {
-  //     setModalMessage(message);
-  //     setShowModal(true);
-  //   } else {
-  //     setShowModal(false); // Ensure modal doesn't show on route change
-  //   }
-  // }, [typeof window !== "undefined" ? window.location.search : ""]);
-  
-
 
   const { data, isLoading } = useGetMeQuery({});
-
-  console.log(data);
 
   const userInformation = data?.data;
 
@@ -87,15 +67,15 @@ export const Navbar = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
+  const { data: notifications } = useGetnotifyQuery({});
+  const birthdayNotifications =
+    notifications?.data?.birthdayNotifications || [];
+  const anniversaryNotifications =
+    notifications?.data?.memberAnniversaryNotifications || [];
+  const totalNotifications =
+    birthdayNotifications.length + anniversaryNotifications.length;
 
-useEffect(() => {
-  if (!checkedSponsorStatus && userInformation?.sponsorStatus === "pending") {
-    setModalMessage("You don't have access to this page as a pending sponsor.");
-    setShowModal(true);
-    setCheckedSponsorStatus(true); // Prevent showing again on route changes
-  }
-}, [userInformation, checkedSponsorStatus]);
-
+  const toggleNotifDropdown = () => setIsNotifOpen(!isNotifOpen);
 
   // const dispatch = useDispatch()
 
@@ -121,16 +101,6 @@ useEffect(() => {
 
   return (
     <div className="bg-[#090043] font-inter relative">
-      {showModal && (
-        <Notification
-          message={modalMessage}
-          onClose={() => {
-            setShowModal(false);
-            window.history.replaceState(null, " ", window.location.pathname);
-          }}
-        />
-      )}
-
       {/* Desktop Banner Section */}
       <div
         style={{
@@ -147,6 +117,8 @@ useEffect(() => {
             <Link href={"/"}>
               <Image className="w-12 md:w-20" src={logo} alt="Logo" />
             </Link>
+
+         
             {/* Hamburger Menu for Mobile */}
             <button
               className="lg:hidden text-white text-2xl"
@@ -184,6 +156,46 @@ useEffect(() => {
                       height={48}
                     />
                   </div>
+                  <div className="flex items-center gap-6">
+              {/* Notification Icon */}
+              <div className="relative">
+                <button
+                  className="text-white text-2xl relative"
+                  onClick={toggleNotifDropdown}
+                >
+                  <FiBell />
+                  {totalNotifications > 0 && (
+                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-4 h-4 flex items-center justify-center rounded-full">
+                      {totalNotifications}
+                    </span>
+                  )}
+                </button>
+                {isNotifOpen && (
+                  <div className="absolute right-0 mt-2 bg-white text-black rounded-md shadow-lg w-[200px] z-50 p-2">
+                    {totalNotifications === 0 ? (
+                      <p className="text-center text-gray-500">
+                        No new notifications
+                      </p>
+                    ) : (
+                      <div>
+                        {birthdayNotifications.map((notif: any, index: any) => (
+                          <p key={index} className="text-sm border-b p-2">
+                            🎂 {notif}
+                          </p>
+                        ))}
+                        {anniversaryNotifications.map(
+                          (notif: any, index: any) => (
+                            <p key={index} className="text-sm border-b p-2">
+                              🎉 {notif}
+                            </p>
+                          )
+                        )}
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            </div>
                 </div>
                 {isDropdownOpen && (
                   <div className="absolute right-0 mt-2 bg-white text-black rounded-md shadow-lg w-[150px] z-[100]">
@@ -235,23 +247,6 @@ useEffect(() => {
               </div>
             )}
           </div>
-
-          {/* Search Box */}
-          {/* <div className="relative  w-[80%] mx-auto md:w-[548px] mt-6">
-            <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-              <Image
-                src={searchIcon}
-                alt="Search Icon"
-                width={24}
-                height={24}
-              />
-            </div>
-            <input
-              type="text"
-              placeholder="Search here"
-              className="w-full pl-10 px-4 py-2 text-white bg-transparent border border-[#667085] rounded-xl"
-            />
-          </div> */}
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex bg-[#FFFFFF1A] backdrop-blur-[4px] rounded-xl px-[45px] py-3 mt-6 gap-6  items-center text-white shadow-lg">

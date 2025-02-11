@@ -116,6 +116,13 @@ const userApi = baseApi.injectEndpoints({
       }),
       providesTags:["User"]
     }),
+    getnotify: build.query({
+      query: () => ({
+        url: `/notification`,
+        method: "GET",
+      }),
+      providesTags:["User"]
+    }),
   }),
 });
 
@@ -131,5 +138,6 @@ export const {
   useChangePasswordMutation,
   useRequestVerifyQuery,
   useAcceptSponsorMutation,
-  useRefreshTokenQuery
+  useRefreshTokenQuery,
+  useGetnotifyQuery
 } = userApi;

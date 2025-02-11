@@ -160,7 +160,7 @@ const MediaContent: React.FC = () => {
                     {/* Comment content */}
                     <div>
                       <p className="text-sm font-semibold text-gray-900">
-                        {comment.Author?.userName || "Anonymous"}
+                        {comment.Author?.username || "Anonymous"}
                       </p>
                       <p className="text-sm text-gray-600">{comment.content}</p>
                       <p className="text-xs text-gray-400">
