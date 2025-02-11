@@ -74,10 +74,10 @@ const [deleteEventFn] = useDeleteResourceMutation()
   const handleDelete = async (id: string): Promise<void> => {
     // Implementation for delete
    const response =  await deleteEventFn(id)
-   if(response){
-    toast.success("Event Delete Successfully")
-   }else{
-    toast.error("Event Delete Failed!")
+   if ('error' in response) {
+    toast.error("Event Delete Failed!");
+   } else {
+    toast.success("Event Delete Successfully");
    }
   };
 

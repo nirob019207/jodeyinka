@@ -17,35 +17,55 @@ const Sponsorship: React.FC = () => {
   const { data: sponsor } = useEventDetailsQuery({
     id: id as string,
   });
-  
+
   const sponsors = sponsor?.data;
-  console.log("dsklfjdksl",sponsors)
 
   const plans: Plan[] = [
     {
       title: "SILVER",
-      price: sponsors?.silverSponsorFee || 0,
-      isAvailable: sponsors?.silverSponsorAvailable || false,
+      price: sponsors?.event?.silverSponsorFee || 0,
+      isAvailable: sponsors?.event?.silverSponsorAvailable || false,
     },
     {
       title: "GOLD",
-      price: sponsors?.goldSponsorFee || 0,
-      isAvailable: sponsors?.goldSponsorAvailable || false,
+      price: sponsors?.event?.goldSponsorFee || 0,
+      isAvailable: sponsors?.event?.goldSponsorAvailable || false,
     },
     {
       title: "PLATINUM",
-      price: sponsors?.platinumSponsorFee || 0,
-      isAvailable: sponsors?.platinumSponsorAvailable || false,
+      price: sponsors?.event?.platinumSponsorFee || 0,
+      isAvailable: sponsors?.event?.platinumSponsorAvailable || false,
     },
   ];
-  console.log(sponsors)
 
   const [selectedPlan, setSelectedPlan] = React.useState<Plan | null>(null);
-  const [isModalOpen, setIsModalOpen] = React.useState(false); // State for modal visibility
+  const [isModalOpen, setIsModalOpen] = React.useState(false);
+  const [isPaymentDone, setIsPaymentDone] = React.useState(false); // New state to track payment status
+
+  // Check if any plan was already selected and paid for in localStorage
+  const paidPlan = localStorage.getItem("paidPlan");
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
-    setSelectedPlan(null); // Reset selected plan
+    setSelectedPlan(null);
+  };
+
+  React.useEffect(() => {
+    // Disable the select buttons if a plan has been paid for
+    if (paidPlan) {
+      setIsPaymentDone(true); // Set payment status to true when a plan has been paid for
+      const plan = plans.find((plan) => plan.title === paidPlan);
+      if (plan) {
+        setSelectedPlan(plan);
+      }
+    }
+  }, [plans, paidPlan]);
+
+  const handlePaymentSuccess = (planTitle: string) => {
+    // Save the paid plan to localStorage
+    localStorage.setItem("paidPlan", planTitle);
+    setSelectedPlan(plans.find((plan) => plan.title === planTitle) || null);
+    setIsPaymentDone(true); // Set payment status to true once payment is successful
   };
 
   return (
@@ -77,12 +97,19 @@ const Sponsorship: React.FC = () => {
 
               <button
                 onClick={() => {
-                  setSelectedPlan(plan);
-                  setIsModalOpen(true); // Open the modal when a plan is selected
+                  if (!paidPlan) {
+                    setSelectedPlan(plan);
+                    setIsModalOpen(true); 
+                  }
                 }}
-                className="w-full bg-gradient-to-l from-[#0061FF] to-[#003A99] py-3 px-4 rounded-lg text-white"
+                disabled={isPaymentDone || paidPlan === plan.title} // Disable if any plan has been paid for
+                className={`w-full bg-gradient-to-l from-[#0061FF] to-[#003A99] py-3 px-4 rounded-lg text-white ${
+                  isPaymentDone || paidPlan === plan.title
+                    ? "opacity-50 cursor-not-allowed"
+                    : ""
+                }`}
               >
-                Select Plan
+               { paidPlan === plan.title ? "Payment Compelete" : "Select Plan"}
               </button>
             </div>
           ))}
@@ -100,11 +127,11 @@ const Sponsorship: React.FC = () => {
                   <MdClose />
                 </div>
               </button>
-              {/* Pass the price and type as part of the selectedPlan to SquarePaymentForm */}
               <SquarePaymentForm
                 price={selectedPlan.price}
                 type={selectedPlan.title}
                 handleCloseModal={handleCloseModal}
+                onPaymentSuccess={() => handlePaymentSuccess(selectedPlan.title)}
               />
             </div>
           </div>

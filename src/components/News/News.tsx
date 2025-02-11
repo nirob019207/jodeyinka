@@ -65,7 +65,7 @@ const News = () => {
                   <h3 className="text-lg md:text-[24px] font-medium text-default mb-4">
                     {news.title}
                   </h3>
-                  <p className="text-[#475467] mb-9" dangerouslySetInnerHTML={{ __html: news.description }}></p>
+                  <p className="text-[#475467] mb-9" dangerouslySetInnerHTML={{ __html: news.description?.slice(0, 150) + "..." }}></p>
                   <Link href={`/media-details/${news.id}`} className="px-4 py-3 flex items-center gap-2 text-white bg-gradient-to-l from-[#0061FF] to-[#003A99] rounded-xl w-[150px]">
                     Read More <MdArrowRightAlt className="text-[25px]" />
                   </Link>

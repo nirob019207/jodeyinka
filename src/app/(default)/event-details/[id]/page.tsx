@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import EventDetails from "@/components/EventDetails/EventDetails";
 import EventRegister from "@/components/EventRegister/EventRegister";
 import Sponsorship from "@/components/SponsarShip/SponsarShip";
@@ -6,21 +6,18 @@ import { useGetMeQuery } from "@/redux/Api/userApi";
 import React from "react";
 
 export default function page() {
-  const { data:sponsor } = useGetMeQuery({});
-  
-  
+  const { data: sponsor } = useGetMeQuery({});
+
+  console.log("sponsor", sponsor)
   const userInformation = sponsor?.data;
+  console.log("userinfo", userInformation)
   return (
     <div>
       <EventDetails />
-      {userInformation?.role === "SPONSOR" && userInformation?.sponsorStatus === "APPROVED" && (
-         <Sponsorship />
-        )}
-        
-          {userInformation?.role === "MEMBERSHIP" && (
-         <EventRegister />
-        )}
+      {userInformation?.role === "SPONSOR" &&
+        userInformation?.sponsorStatus === "APPROVED" && <Sponsorship />}
 
+      {userInformation?.role === "MEMBER" && <EventRegister />}
     </div>
   );
 }

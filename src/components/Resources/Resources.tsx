@@ -61,7 +61,7 @@ const Resources = () => {
                   </h3>
                   <p
                     className="text-gray mt-2"
-                    dangerouslySetInnerHTML={{ __html: resource?.description }}
+                    dangerouslySetInnerHTML={{ __html: resource?.description?.slice(0, 150) + "..." }}
                   />
                   <div className="mt-6 pb-7">
                     <Link

@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRegisterForEventMutation } from "@/redux/Api/eventApi";
 import { useParams } from "next/navigation";
 import React from "react";
@@ -11,11 +11,20 @@ const EventRegister = () => {
   const [showModal, setShowModal] = useState(false);
   const [isRegistered, setIsRegistered] = useState(false);
 
+  // Check localStorage on component mount
+  useEffect(() => {
+    const registered = localStorage.getItem(`event_${id}_registered`);
+    if (registered === "true") {
+      setIsRegistered(true);
+    }
+  }, [id]);
+
   const handleRegister = async () => {
     const response = await registerForEvent(id).unwrap();
     if (response.success) {
       toast.success("Event registered successfully");
       setIsRegistered(true);
+      localStorage.setItem(`event_${id}_registered`, "true"); 
       setShowModal(false);
     }
   };
@@ -36,10 +45,12 @@ const EventRegister = () => {
         </p>
         <button
           onClick={() => setShowModal(true)} // Show the modal on button click
-          className={`px-4 py-2 text-white bg-gradient-to-l from-[#0061FF] to-[#003A99] rounded-xl w-[140px] ${isRegistered ? 'bg-slate-400 cursor-not-allowed' : ''}`} 
-          disabled={isRegistered} 
+          className={`px-4 py-2 text-white bg-gradient-to-l from-[#0061FF] to-[#003A99] rounded-xl w-[140px] ${
+            isRegistered ? "bg-slate-400 cursor-not-allowed" : ""
+          }`}
+          disabled={isRegistered}
         >
-          {isRegistered ? 'Registered' : 'Register Now'}
+          {isRegistered ? "Registered" : "Register Now"}
         </button>
       </div>
 
