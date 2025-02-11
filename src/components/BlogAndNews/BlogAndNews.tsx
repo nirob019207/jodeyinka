@@ -86,7 +86,7 @@ const BlogsAndNews = () => {
                 {/* Blog Description */}
                 <p
                   className="text-gray mt-4"
-                  dangerouslySetInnerHTML={{ __html: blog.description }}
+                  dangerouslySetInnerHTML={{ __html: blog.description?.slice(0, 150) + "..." }}
                 ></p>
 
                 {/* Read More Button */}

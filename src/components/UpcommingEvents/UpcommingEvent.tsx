@@ -149,7 +149,7 @@ const UpcomingEvent = () => {
                   <p className="text-[#475467] mb-9">
                     <span
                       dangerouslySetInnerHTML={{
-                        __html: event?.description,
+                        __html: event?.description?.slice(0, 150) + "...",
                       }}
                       className="text-sm"
                     />

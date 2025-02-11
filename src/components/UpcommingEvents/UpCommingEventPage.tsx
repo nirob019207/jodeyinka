@@ -9,15 +9,14 @@ import Link from "next/link";
 import CardSkeleton from "../CardSkelaton/CardSkeleton";
 import defaultEvent from "@/asset/event/e1.svg";
 import { FaPlay } from "react-icons/fa6";
-import thumb from "@/asset/media/thubnail.jpg"
+import thumb from "@/asset/media/thubnail.jpg";
 import Sponsorship from "../SponsarShip/SponsarShip";
 import { useGetMeQuery } from "@/redux/Api/userApi";
 import EventRegister from "../EventRegister/EventRegister";
 
 const UpCommingEventPage = () => {
-  const { data, isLoading} = useEventQuery({ limit: 10, page: 1 });
+  const { data, isLoading } = useEventQuery({ limit: 10, page: 1 });
   const events = data?.data;
- 
 
   // function formatMonthAndTime(isoDate) {
   //   const eventDate = new Date(isoDate);
@@ -33,8 +32,6 @@ const UpCommingEventPage = () => {
   //   return `${formattedDate} @ ${formattedTime}`;
   // }
 
-
-
   function formatTimeRange(startTime: string, endTime: string): string {
     const start = new Date(startTime);
     const end = new Date(endTime);
@@ -42,7 +39,9 @@ const UpCommingEventPage = () => {
     const startHours = start.getHours();
     const startMinutes = start.getMinutes().toString().padStart(2, "0");
     const startAmpm = startHours >= 12 ? "pm" : "am";
-    const startFormatted = `${startHours % 12 || 12}:${startMinutes} ${startAmpm}`;
+    const startFormatted = `${
+      startHours % 12 || 12
+    }:${startMinutes} ${startAmpm}`;
 
     const endHours = end.getHours();
     const endMinutes = end.getMinutes().toString().padStart(2, "0");
@@ -89,14 +88,14 @@ const UpCommingEventPage = () => {
             ? Array.from({ length: 6 }).map((_, index) => (
                 <CardSkeleton key={index} />
               ))
-            : events?.map((event:any) => (
+            : events?.map((event: any) => (
                 <div
                   key={event.id}
                   className="rounded-lg overflow-hidden bg-white shadow"
                 >
                   {/* Event Image */}
                   <div className="relative">
-                  {event?.imageUrl && isImage(event.imageUrl) ? (
+                    {event?.imageUrl && isImage(event.imageUrl) ? (
                       <Image
                         src={event.imageUrl}
                         alt={event.title}
@@ -160,7 +159,7 @@ const UpCommingEventPage = () => {
                     <p className="text-[#475467] mb-9">
                       <span
                         dangerouslySetInnerHTML={{
-                          __html: event?.description,
+                          __html: event?.description?.slice(0, 150) + "...",
                         }}
                         className="text-sm"
                       />
@@ -182,26 +181,14 @@ const UpCommingEventPage = () => {
         </div>
       </div>
 
-
-    
-
-
-
-           
-
-       {/* Video Modal */}
-       {isModalOpen && (
+      {/* Video Modal */}
+      {isModalOpen && (
         <div
           className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
           onClick={closeModal}
         >
           <div className="relative w-[80%] md:w-[60%] h-[80%]">
-            <video
-              src={videoUrl}
-              className="w-full h-full"
-              autoPlay
-              controls
-            />
+            <video src={videoUrl} className="w-full h-full" autoPlay controls />
             <button
               onClick={closeModal}
               className="absolute top-2 right-2 bg-red-600 text-white rounded-full p-2"

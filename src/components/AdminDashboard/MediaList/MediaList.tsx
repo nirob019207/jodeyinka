@@ -70,10 +70,10 @@ const MedaiList = () => {
   const handleDelete = async (id: string): Promise<void> => {
     // Implementation for delete
    const response =  await deleteMediaFn(id)
-   if(response){
-    toast.success("Media Delete Successfully")
-   }else{
+   if ('error' in response) {
     toast.error("Media Delete Failed!")
+   } else {
+    toast.success("Media Delete Successfully")
    }
   };
 

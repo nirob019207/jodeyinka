@@ -69,10 +69,10 @@ const BlogList = () => {
   const handleDelete = async (id: string): Promise<void> => {
     // Implementation for delete
    const response =  await deleteBlogFn(id)
-   if(response){
-    toast.success("Blog Delete Successfully")
-   }else{
-    toast.error("Blog Delete Failed!")
+   if ('data' in response) {
+    toast.success("Blog Delete Successfully");
+   } else {
+    toast.error("Blog Delete Failed!");
    }
   };
 
