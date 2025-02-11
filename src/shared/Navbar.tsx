@@ -25,19 +25,19 @@ export const Navbar = () => {
   const router = useRouter();
   const [checkedSponsorStatus, setCheckedSponsorStatus] = useState(false);
   
-  useEffect(() => {
-    const searchParams = new URLSearchParams(window.location.search);
-    const message = searchParams.get("message");
-    setTimeout(() => setShowModal(true), 0);
+  // useEffect(() => {
+  //   const searchParams = new URLSearchParams(window.location.search);
+  //   const message = searchParams.get("message");
+  //   setTimeout(() => setShowModal(true), 0);
 
   
-    if (message) {
-      setModalMessage(message);
-      setShowModal(true);
-    } else {
-      setShowModal(false); // Ensure modal doesn't show on route change
-    }
-  }, [typeof window !== "undefined" ? window.location.search : ""]);
+  //   if (message) {
+  //     setModalMessage(message);
+  //     setShowModal(true);
+  //   } else {
+  //     setShowModal(false); // Ensure modal doesn't show on route change
+  //   }
+  // }, [typeof window !== "undefined" ? window.location.search : ""]);
   
 
 
