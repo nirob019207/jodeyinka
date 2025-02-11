@@ -99,6 +99,12 @@ export const Navbar = () => {
   // Function to determine active link
   const isActive = (href: string) => pathname === href;
 
+  const getYears = (createdAt: string) => {
+    const joinDate = new Date(createdAt);
+    const currentDate = new Date();
+    return currentDate.getFullYear() - joinDate.getFullYear();
+  };
+
   return (
     <div className="bg-[#090043] font-inter relative">
       {/* Desktop Banner Section */}
@@ -118,7 +124,6 @@ export const Navbar = () => {
               <Image className="w-12 md:w-20" src={logo} alt="Logo" />
             </Link>
 
-         
             {/* Hamburger Menu for Mobile */}
             <button
               className="lg:hidden text-white text-2xl"
@@ -141,7 +146,7 @@ export const Navbar = () => {
                 <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-white"></div>
               </div>
             ) : userInformation ? (
-              <div className="relative">
+              <div className="relative flex gap-2 items-center justify-center">
                 <div
                   className="flex items-center gap-3 cursor-pointer"
                   onClick={toggleDropdown}
@@ -156,46 +161,48 @@ export const Navbar = () => {
                       height={48}
                     />
                   </div>
+                </div>
+                <div>
                   <div className="flex items-center gap-6">
-              {/* Notification Icon */}
-              <div className="relative">
-                <button
-                  className="text-white text-2xl relative"
-                  onClick={toggleNotifDropdown}
-                >
-                  <FiBell />
-                  {totalNotifications > 0 && (
-                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-4 h-4 flex items-center justify-center rounded-full">
-                      {totalNotifications}
-                    </span>
-                  )}
-                </button>
-                {isNotifOpen && (
-                  <div className="absolute right-0 mt-2 bg-white text-black rounded-md shadow-lg w-[200px] z-50 p-2">
-                    {totalNotifications === 0 ? (
-                      <p className="text-center text-gray-500">
-                        No new notifications
-                      </p>
-                    ) : (
-                      <div>
-                        {birthdayNotifications.map((notif: any, index: any) => (
-                          <p key={index} className="text-sm border-b p-2">
-                            🎂 {notif}
-                          </p>
-                        ))}
-                        {anniversaryNotifications.map(
-                          (notif: any, index: any) => (
-                            <p key={index} className="text-sm border-b p-2">
-                              🎉 {notif}
-                            </p>
-                          )
+                    {/* Notification Icon */}
+                    <div className="relative">
+                      <button
+                        className="text-white text-2xl relative"
+                        onClick={toggleNotifDropdown}
+                      >
+                        <FiBell />
+                        {totalNotifications > 0 && (
+                          <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
+                            {totalNotifications}
+                          </span>
                         )}
-                      </div>
-                    )}
+                      </button>
+                      {isNotifOpen && (
+                        <div className="absolute right-0 mt-2 bg-white text-black rounded-md shadow-lg w-[250px] z-50 p-3">
+                          <div className="mt-2">
+                            {birthdayNotifications.map(
+                              (notif: any, index: any) => (
+                                <p key={index} className="text-sm border-b p-2">
+                                  🎂 {notif.firstName} {notif.lastName} Birthday
+                                  today!
+                                </p>
+                              )
+                            )}
+                            {anniversaryNotifications.map(
+                              (notif: any, index: any) => (
+                                <p key={index} className="text-sm border-b p-2">
+                                  🎉 Celebrating {notif.firstName}{" "}
+                                  {notif.lastName} for{" "}
+                                  {getYears(notif.createdAt)} year(s) of being
+                                  part of our community!
+                                </p>
+                              )
+                            )}
+                          </div>
+                        </div>
+                      )}
+                    </div>
                   </div>
-                )}
-              </div>
-            </div>
                 </div>
                 {isDropdownOpen && (
                   <div className="absolute right-0 mt-2 bg-white text-black rounded-md shadow-lg w-[150px] z-[100]">
