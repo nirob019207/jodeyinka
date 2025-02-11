@@ -5,7 +5,7 @@ import Sponsorship from "@/components/SponsarShip/SponsarShip";
 import { useGetMeQuery } from "@/redux/Api/userApi";
 import React from "react";
 
-export default function page() {
+export default function Page() {
   const { data: sponsor } = useGetMeQuery({});
 
   console.log("sponsor", sponsor)
@@ -21,3 +21,4 @@ export default function page() {
     </div>
   );
 }
+

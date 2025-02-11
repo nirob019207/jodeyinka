@@ -17,12 +17,7 @@ import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
 import { Eye } from "lucide-react";
 import { toast } from "sonner";
 
-type ResourceEvent = {
-  fileUrl: string;
-  title: string;
-  description: string;
-  type: string;
-};
+
 
 const ResourceList = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -51,13 +46,6 @@ const ResourceList = () => {
     type: string;
   }
 
-  interface ResourceListProps {
-    data: {
-      data: ResourceEvent[];
-    };
-    isLoading: boolean;
-    isError: boolean;
-  }
 
   const handleDelete = async (id: string): Promise<void> => {
     // Implementation for delete
