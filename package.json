@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev --port 5700 --turbopack",
     "build": "next build",
-    "start": "next start",
+    "start": "next start --port 5700 ",
     "lint": "next lint"
   },
   "dependencies": {
