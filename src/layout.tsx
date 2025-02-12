@@ -7,7 +7,7 @@ import { Toaster } from "sonner";
 import ReduxProvider from "./redux/ReduxProvider";
 
 export const metadata: Metadata = {
-  title: "Jodyenka",
+  title: "WCF",
   description:
     "Share your journey, save on stays, and find your perfect travel companion your adventure starts now",
 };

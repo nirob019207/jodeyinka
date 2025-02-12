@@ -33,7 +33,7 @@ export default function Footer() {
                     />
                   </svg>
                 </div>
-                <span className="text-[48px] font-[600] ">WSF</span>
+                <span className="text-[48px] font-[600] ">WCF</span>
               </div>
               <p className="text-gray-300 text-sm">
                 Dive into a space designed just for you. youre looking to engage
@@ -105,7 +105,7 @@ export default function Footer() {
                     href="/trending"
                     className="hover:text-white transition"
                   >
-                    Trending @ WSF
+                    Trending @ WCF
                   </Link>
                 </li>
               </ul>

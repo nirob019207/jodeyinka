@@ -126,7 +126,10 @@ export default function CreateBlog() {
       <div className="flex md:space-x-6 space-x-0  flex-col md:flex-row">
         {/* Product Image Section */}
         <div className="md:col-span-2 col-span-full">
-          <label htmlFor="resourceFile" className="block text-sm font-medium text-gray-700">
+          <label
+            htmlFor="resourceFile"
+            className="block text-sm font-medium text-gray-700"
+          >
             Image
           </label>
           <input
@@ -142,7 +145,10 @@ export default function CreateBlog() {
           <div className="grid md:grid-cols-2 col-span-full gap-4 mb-4 ">
             {/* Title Field */}
             <div className="col-span-2 mt-4 md:mt-0">
-              <label htmlFor="title" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="title"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Title
               </label>
               <input
@@ -158,9 +164,11 @@ export default function CreateBlog() {
 
             {/* Description Editor */}
             <div className="col-span-2">
-              <label className="block font-medium text-darkGray">Description</label>
+              <label className="block font-medium text-darkGray">
+                Description
+              </label>
               <Editor
-                apiKey="g68nc1d1w7r6ws2cu6q6c6trlsejbpqf5dylpj1b8hjeoc7d"
+                apiKey="4kjrncewwa4057zz04om0mle4q3to49bypq57bh6qgq5f0n3"
                 initialValue="<p>Product description</p>"
                 init={{
                   height: 200,
@@ -185,9 +193,9 @@ export default function CreateBlog() {
             <button
               type="submit"
               className="bg-blue-500 text-white px-8 py-3 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
-              disabled={isLoading} 
+              disabled={isLoading}
             >
-              {isLoading ? "Creating Blog..." : "Create Blog"} 
+              {isLoading ? "Creating Blog..." : "Create Blog"}
             </button>
           </div>
         </form>
