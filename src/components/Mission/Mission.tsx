@@ -11,9 +11,8 @@ const Mission = () => {
         <div className="flex flex-col justify-center">
           <h2 className="text-3xl md:text-[36px] font-semibold mb-4 text-[#FFFFFF]">Our Mission</h2>
           <p className="text-[#BDBDBD]">
-            At Of Ash and Fire, we strive to transform ideas into powerful digital solutions.
-            Our mission is to empower businesses and individuals with cutting-edge technology,
-            enabling them to thrive in the digital landscape.
+          &quot;Our mission is to empower individuals, organizations, and communities with the knowledge, tools, and resources to navigate the digital world securely. Through education, advocacy, and innovation, we strive to reduce cyber threats, promote privacy, and enhance resilience against evolving digital risks, ensuring a safer and more inclusive cyberspace for all.&quot;
+
           </p>
         </div>
         <div className="flex justify-center">
@@ -39,11 +38,9 @@ const Mission = () => {
         <div className="flex flex-col justify-center">
           <h2 className="text-3xl md:text-[36px] font-semibold mb-4 text-[#FFFFFF]">Our Vision</h2>
           <p className="text-[#BDBDBD]">
-            We envision a world where technology seamlessly integrates with human creativity,
-            driving innovation and progress. Our goal is to be at the forefront of this digital
-            revolution, crafting solutions that shape the future.
-          </p>
-        </div>
+              &quot;Empowering a secure digital future where individuals, communities, and organizations can thrive without fear of cyber threats. We envision a world where cybersecurity knowledge and resources are accessible to all, fostering resilience, trust, and innovation in a connected society.&quot;
+            </p>
+          </div>
       </div>
     </div>
   );

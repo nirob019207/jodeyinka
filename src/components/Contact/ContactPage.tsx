@@ -33,6 +33,18 @@ import { Textarea } from "../ui/textarea";
 import Image from "next/image";
 import { useContactMutation } from "@/redux/Api/userApi";
 import { toast } from "sonner";
+import { MdEmail, MdLocationOn } from "react-icons/md";
+
+
+
+const officeLocations = [
+  { region: "Africa", email: "info@worldcybersecurityforum.org" },
+  { region: "Asia", email: "info@worldcybersecurityforum.org" },
+  { region: "Europe", email: "info@worldcybersecurityforum.org" },
+  { region: "Middle East", email: "info@worldcybersecurityforum.org" },
+  { region: "North America", email: "info@worldcybersecurityforum.org" },
+  { region: "South America", email: "info@worldcybersecurityforum.org" },
+];
 
 const formSchemac = z.object({
   name: z.any().optional(),
@@ -87,13 +99,12 @@ const formSchemac = z.object({
       <div className="grid lg:grid-cols-2 items-center gap-[50px] md:gap-[100px]">
         <div>
           <h1 className="text-[#1D2939] text-[36px] leadiing-[43.2px] font-bold mb-4">
-            Get in Touch
+          Get in Touch with Us
           </h1>
           <p className="text-[16px] text-[#475467] leading-[25px] mb-8">
-            We&apos;d love to hear from you! Whether you have a question about
-            our services, pricing, or anything else, our team is ready to answer
-            all your questions.
-          </p>
+              We&apos;re here to help! Whether you have questions, need assistance, or are interested in learning more about our membership services, feel free to reach out. Our team is ready to provide the support you need to move forward with confidence.
+            </p>
+
 
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -265,50 +276,72 @@ const formSchemac = z.object({
         </div>
 
         <div className="lg:pl-8">
-          <div className="">
-            <h2 className="text-2xl font-semibold mb-4">Contact Information</h2>
-            <p className="text-muted-foreground mb-8">
-              Say something to start a live chat!
-            </p>
+      <div>
+        <h2 className="text-2xl font-semibold mb-4">Contact Information</h2>
+        <p className="text-muted-foreground mb-8 text-sm">
+          Say something to start a live chat!
+        </p>
 
-            <div className="space-y-6">
-              <div className="flex items-center gap-3">
-                <Phone className="h-5 w-5 text-primary" />
-                <span>+1012 3456 789</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <Mail className="h-5 w-5 text-primary" />
-                <span>demo@gmail.com</span>
-              </div>
-              <div className="flex items-start gap-3">
-                <MapPin className="h-5 w-5 text-primary mt-1" />
-                <span>
-                  132 Dartmouth Street Boston,
-                  <br />
-                  Massachusetts 02156 United States
-                </span>
-              </div>
-            </div>
-
-            <div className="mt-8">
-              <h3 className="text-lg font-medium mb-4">Social Media:</h3>
-              <div className="flex gap-4">
-                <a href="#" aria-label="Twitter">
-                  <Image src={twitter} alt="twitter logo" />
-                </a>
-                <a href="#" aria-label="Instagram">
-                  <Image src={insta} alt="twitter logo" />
-                </a>
-                <a href="#" aria-label="LinkedIn">
-                  <Image src={linkedin} alt="twitter logo" />
-                </a>
-                <a href="#" aria-label="Facebook">
-                  <Image src={fb} alt="twitter logo" />
-                </a>
-              </div>
-            </div>
+        <div className="space-y-4">
+          <div className="flex items-center gap-3 text-sm">
+            <Phone className="h-4 w-4 text-primary" />
+            <span>+1012 3456 789</span>
+          </div>
+          <div className="flex items-center gap-3 text-sm">
+            <Mail className="h-4 w-4 text-primary" />
+            <span>demo@gmail.com</span>
+          </div>
+          <div className="flex items-start gap-3 text-sm">
+            <MapPin className="h-4 w-4 text-primary mt-1" />
+            <span>
+              132 Dartmouth Street Boston,
+              <br />
+              Massachusetts 02156 United States
+            </span>
           </div>
         </div>
+
+        {/* Social Media Section */}
+        <div className="mt-6">
+          <h3 className="text-lg font-medium mb-3">Social Media:</h3>
+          <div className="flex gap-4">
+            <a href="#" aria-label="Twitter">
+              <Image src={twitter} alt="Twitter logo" width={28} height={28} />
+            </a>
+            <a href="#" aria-label="Instagram">
+              <Image src={insta} alt="Instagram logo" width={28} height={28} />
+            </a>
+            <a href="#" aria-label="LinkedIn">
+              <Image src={linkedin} alt="LinkedIn logo" width={28} height={28} />
+            </a>
+            <a href="#" aria-label="Facebook">
+              <Image src={fb} alt="Facebook logo" width={28} height={28} />
+            </a>
+          </div>
+        </div>
+
+        {/* Office Locations Section */}
+        <div className="mt-8 grid grid-cols-2 md:grid-cols-2 gap-6 px-4">
+          {officeLocations.map((office, index) => (
+            <div
+              key={index}
+              className="bg-white shadow-lg rounded-lg p-4 text-center flex flex-col items-center"
+            >
+              <MdLocationOn className="text-blue-600 text-3xl mb-2" />
+              <h3 className="text-sm font-semibold text-gray-800">{office.region}</h3>
+              <p className="text-xs text-gray-500">Office Address Coming Soon!</p>
+              {/* Email is INSIDE the div */}
+              <div className="flex  items-center mt-2 text-blue-600 text-wrap break-words">
+                <MdEmail className="mr-1" />
+                <a href={`mailto:${office.email}`} className="text-xs hover:underline ">
+                  {office.email}
+                </a>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
       </div>
     </div>
   );
