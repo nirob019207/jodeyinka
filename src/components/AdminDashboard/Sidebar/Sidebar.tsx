@@ -2,20 +2,14 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import adminlogo from "@/asset/admin/adminlogo.svg";
 import Image from "next/image";
-import { LucideLayoutDashboard } from "lucide-react";
-import { RxMagicWand } from "react-icons/rx";
-
-import { GrResources, GrTransaction } from "react-icons/gr";
-import { RiLogoutCircleLine } from "react-icons/ri"; // Removed close icon
-import { LuUser } from "react-icons/lu";
-import { MdOutlinePermMedia } from "react-icons/md";
-import { SiBlogger } from "react-icons/si";
-import { useGetMeQuery } from "@/redux/Api/userApi";
-import { setUser } from "@/redux/ReduxFunction";
+import { AiOutlineDashboard, AiOutlineClose, AiOutlineTransaction } from "react-icons/ai";
+import { FaUser, FaMoneyCheckAlt, FaBlogger, FaPhotoVideo, FaHandshake } from "react-icons/fa";
+import { MdEvent, MdLibraryBooks} from "react-icons/md";
 import { toast } from "sonner";
 import { useDispatch } from "react-redux";
 import cookies from "js-cookie";
-import { AiOutlineClose } from "react-icons/ai";
+import { useGetMeQuery } from "@/redux/Api/userApi";
+import { setUser } from "@/redux/ReduxFunction";
 
 interface SidebarProps {
   onCloseClick: () => void;
@@ -24,67 +18,79 @@ interface SidebarProps {
 const Sidebar = ({ onCloseClick }: SidebarProps) => {
   const pathname = usePathname();
   const { data } = useGetMeQuery({});
-  const role = data?.data?.role; // Current user role
-  console.log("role", role);
+  const role = data?.data?.role;
   const router = useRouter();
   const dispatch = useDispatch();
 
   const menuItems = [
     {
       href: "/admin/dashboard",
-      icon: LucideLayoutDashboard,
+      icon: AiOutlineDashboard,
       label: "Dashboard",
       roles: ["ADMIN"],
     },
     {
       href: "/admin/profile",
-      icon: LuUser,
+      icon: FaUser,
       label: "Profile",
       roles: ["ADMIN", "SPONSOR", "USER", "MEMBER"],
     },
     {
       href: "/admin/event-history",
-      icon: RxMagicWand,
+      icon: MdEvent,
       label: "Event",
       roles: ["ADMIN"],
     },
     {
       href: "/admin/all-transaction",
-      icon: GrTransaction,
+      icon: AiOutlineTransaction,
       label: "ALL Transaction",
       roles: ["ADMIN"],
     },
     {
       href: "/admin/transaction",
-      icon: GrTransaction,
+      icon: FaMoneyCheckAlt,
       label: "Transaction",
-      roles: ["MEMBER"],
+      roles: ["SPONSOR"],
     },
     {
       href: "/admin/sponsor",
-      icon: GrTransaction,
+      icon: FaHandshake,
       label: "Sponsor Request",
       roles: ["ADMIN"],
     },
     {
       href: "/admin/resource-list",
-      icon: GrResources,
+      icon: MdLibraryBooks,
       label: "Resource",
-      roles: ["ADMIN", "MEMBER"],
+      roles: ["ADMIN","MEMBER"],
     },
+    // {
+    //   href: "/member/resource",
+    //   icon: MdLibraryBooks,
+    //   label: "Resource",
+    //   roles: ["MEMBER"],
+    // },
     {
       href: "/admin/media-list",
-      icon: MdOutlinePermMedia,
+      icon: FaPhotoVideo,
       label: "Media",
-      roles: ["ADMIN", "MEMBER"],
+      roles: ["ADMIN"],
     },
     {
       href: "/admin/blog-list",
-      icon: SiBlogger,
+      icon: FaBlogger,
       label: "Blog",
-      roles: ["ADMIN", "MEMBER"],
+      roles: ["ADMIN"],
+    },
+    {
+      href: "/register-events",
+      icon: FaBlogger,
+      label: "Register Event",
+      roles: ["MEMBER"],
     },
   ];
+
 
   const filteredMenuItems = menuItems.filter((item) =>
     item.roles.includes(role)
@@ -141,7 +147,7 @@ const Sidebar = ({ onCloseClick }: SidebarProps) => {
             onClick={handleLogout}
             className="flex items-center space-x-2"
           >
-            <RiLogoutCircleLine className="text-[24px] font-bold" />
+    
             <span>Log Out</span>
           </button>
         </div>

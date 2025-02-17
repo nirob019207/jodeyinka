@@ -39,8 +39,16 @@ const eventApi = baseApi.injectEndpoints({
       
       invalidatesTags: ['Events'],
     }),
+    registerEve: build.query({
+      query: () => ({
+        url: `/event-users`,
+        method: "GET",
+    
+      }),
+      providesTags:['Events']
+    }),
 
   }),
 });
 
-export const { useEventQuery,useEventDetailsQuery,useCreateEventMutation, useRegisterForEventMutation} = eventApi
+export const { useEventQuery,useEventDetailsQuery,useCreateEventMutation, useRegisterForEventMutation,useRegisterEveQuery} = eventApi
