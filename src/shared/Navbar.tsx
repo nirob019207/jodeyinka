@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import logo from "@/asset/logo.svg";
+import logo from "@/asset/Forum_Logo-2.png";
 import Image from "next/image";
 import Link from "next/link";
 import banner from "@/asset/banner.svg";
@@ -115,13 +115,13 @@ export const Navbar = () => {
           backgroundPosition: "center",
           paddingBottom: currentSettings.paddingBottom,
         }}
-        className={`container mx-auto flex flex-col lg:flex-row justify-between pt-[50px] md:pt-[100px]  px-0`}
+        className={`container mx-auto flex flex-col lg:flex-row justify-between pt-[50px] md:pt-[50px]  px-0`}
       >
         {/* Left Section (Logo and Text) */}
         <div className="md:w-[548px] w-full text-center lg:text-left">
           <div className="flex items-center justify-between px-6 md:px-0">
             <Link href={"/"}>
-              <Image className="w-12 md:w-20" src={logo} alt="Logo" />
+              <Image className="w-12 md:w-20 rounded-sm" src={logo} alt="Logo" />
             </Link>
 
             {/* Hamburger Menu for Mobile */}

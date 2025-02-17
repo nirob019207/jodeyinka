@@ -1,3 +1,4 @@
+import Commitment from '@/components/Commitment/Commitment'
 import HeroSection from '@/components/HeroSection/HeroSection'
 import Mission from '@/components/Mission/Mission'
 import OurTeam from '@/components/OurTeam/OurTeam'
@@ -13,7 +14,8 @@ const AboutUsPage = () => {
         <Mission/>
         <OurValue/>
       <OurTeam></OurTeam>
-      <Resources/>
+        <Resources/>
+        <Commitment/>
     </div>
   )
 }

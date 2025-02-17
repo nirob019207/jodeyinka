@@ -5,12 +5,19 @@ import React from "react";
 const SearchFilter = () => {
   return (
     <div className="bg-[#F6F6F6] pt-[30px] md:pt-[60px] pb-[60px] font-inter">
+         <div className=" container mx-auto px-0">
+         <h2 className="text-2xl md:text-3xl font-medium  text-default mb-7 md:mb-0">
+        Protect, Detect, Respond: Your Cybersecurity Hub</h2>
+
+        <p className="text-lg md:text-lg mt-6 font-medium text-default mb-4 md:mb-0">
+           Welcome to our Cybersecurity Resource Center—your go-to hub for security and resilience. Explore expert guides, essential tools, actionable playbooks, and insightful videos to navigate the evolving threat landscape. Whether securing IoT devices, ensuring compliance, or handling incidents, these resources equip you with the knowledge and strategies to protect your digital assets.
+         </p>
+
+         </div>
       <div className="container mx-auto px-0 flex flex-col md:flex-row justify-between items-center">
         {/* Left Section - Title */}
-        <h2 className="text-2xl md:text-4xl font-medium text-default mb-4 md:mb-0">
-          Resources
-        </h2>
-
+        
+       
         {/* Right Section - Search and Filter */}
         <div className="flex flex-col md:flex-row items-center gap-4">
           {/* Search Input */}

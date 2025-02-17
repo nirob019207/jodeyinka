@@ -13,7 +13,7 @@ const PartnerShip = () => {
   return (
     <div className='bg-[#F6F6F6] px-6 md:px-0'>
 
-    <div className='container mx-auto px-0 pb-[60px]  md:pb-[120px]'>
+    <div className='container mx-auto px-0 pb-[60px]  md:pb-[50px]'>
         <div className='mb-6'>
           <h1 className='text-[32px] md:text-[36px] font-medium text-default mb-4 md:text-left text-center'>Partnership</h1>
           <p className='text-gray text-base text-center md:text-start'>WSF members represent the most innovative voices in the tech industry.</p>

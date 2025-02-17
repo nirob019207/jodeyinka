@@ -7,6 +7,7 @@ import membership from "@/asset/about/membership.svg";
 import { MdArrowRightAlt } from "react-icons/md";
 import chatbot from "@/asset/chatbot.svg";
 import Chatbot from "../Chatbot/Chatbot";
+import Link from "next/link";
 
 const AboutUs = () => {
   const [isOpenChatbot, setIsOpenChatbot] = useState(false);
@@ -23,7 +24,7 @@ const AboutUs = () => {
   return (
     // absolute code : absolute mx-auto md:ml-[352px] top-[500px]
     <div className="bg-[#F6F6F6]">
-      <div className="container px-0  flex flex-col lg:flex-row  relative bottom-[90px] md:bottom-[176px] ">
+      <div className="container px-0  flex flex-col lg:flex-row  relative bottom-[90px] md:bottom-[76px] ">
         {/* About Us Section */}
         <div className="bg-[#DEE8F7] rounded-bl-xl rounded-br-xl  flex-1 relative">
           <div className="absolute top-0 left-0 w-full bg-gradient-to-l from-[#0061FF] to-[#003A99] text-white py-2 px-4">
@@ -37,23 +38,17 @@ const AboutUs = () => {
           />
           <div className="px-[23px]">
             <h2 className="text-[20px] font-medium my-6">
-              Welcome to WSF  Your Hub for Connection, Collaboration, and
-              Community!
+            World Cybersecurity Forum (WCF) is a nonprofit organization dedicated to building a safer and more secure digital world for everyone. We focus on education, advocacy, collaboration, and security as code (SaC) to address the rapidly evolving challenges of cybersecurity.
             </h2>
             <p className="text-[#475467] text-base">
-              Welcome to WSF  Your Hub for Connection, Collaboration, and
-              Community! Dive into a space designed just for you. Whether you&apos;re
-              looking to engage with like-minded individuals, plan exciting
-              events, or access a treasure trove of valuable resources, we&apos;ve
-              created a platform tailored to fuel your passions and meet your
-              needs.
+            By providing accessible training, raising awareness about online safety, and fostering partnerships across public and private sectors, we aim to close the cybersecurity knowledge gap and promote a culture of resilience. Whether supporting underserved communities or advising policymakers, WCF is committed to making cyberspace a trusted and inclusive space for all.
             </p>
           </div>
           <div className="flex items-center justify-end pt-7 pb-6 text-blue-600 font-medium">
-            <a href="#" className="flex items-center gap-1">
+            <Link href="/about-us" className="flex items-center gap-1">
               See more
               <MdArrowRightAlt className="mr-6 text-[24px]" />
-            </a>
+            </Link>
           </div>
         </div>
 

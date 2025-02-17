@@ -12,6 +12,11 @@ import { Country, State, IState }  from 'country-state-city';
 import { GoogleReCaptchaProvider, useGoogleReCaptcha } from "react-google-recaptcha-v3";
 
 
+// Get today's date
+const today = new Date();
+// Calculate the minimum date of birth for someone who is at least 18 years old
+const minAgeDate = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate());
+
 
 
 
@@ -27,9 +32,12 @@ const formSchemar = z.object({
   email: z.string().email('Invalid email address'),
   address: z.string().min(1, 'Address is required'),
   password: z.string().min(8, 'Password must be at least 8 characters'),
-  dob: z.string().min(1, 'Date of birth is required'), // Add validation for dob
-
-  confirmPassword: z.string(),
+  dob: z.string()
+    .refine((dob) => {
+      const birthDate = new Date(dob);
+      return birthDate <= minAgeDate;
+    }, 'You must be at least 18 years old'),
+  confirmPassword: z.string(), // Add validation for dob
 }).refine((data) => data.password === data.confirmPassword, {
   message: "Passwords don't match",
   path: ["confirmPassword"],

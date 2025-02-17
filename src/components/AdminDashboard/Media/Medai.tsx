@@ -16,9 +16,21 @@ const resourceSchema = z.object({
   description: z.string().min(1, "Description is required"),
   resourceFile: z
     .instanceof(File)
-    .refine((file) => file.size <= 2 * 1024 * 1024, "File size must be less than 2MB")
     .refine(
-      (file) => ["image/jpeg", "image/png", "application/pdf", "video/mp4", "video/avi", "video/mpeg", "video/quicktime"].includes(file.type),
+      (file) => file.size <= 2 * 1024 * 1024,
+      "File size must be less than 2MB"
+    )
+    .refine(
+      (file) =>
+        [
+          "image/jpeg",
+          "image/png",
+          "application/pdf",
+          "video/mp4",
+          "video/avi",
+          "video/mpeg",
+          "video/quicktime",
+        ].includes(file.type),
       "Invalid file type"
     ),
 });
@@ -31,7 +43,7 @@ export default function Media() {
     description: "",
     resourceFile: null as File | null,
   });
-  const [isLoading, setIsLoading] = useState(false); 
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleEditorChange = (content: string) => {
     setFormData((prevData) => ({
@@ -119,7 +131,10 @@ export default function Media() {
       <div className="flex md:space-x-6 space-x-0 md:flex-row flex-col">
         {/* Product Image Section */}
         <div className="col-span-2">
-          <label htmlFor="resourceFile" className="block text-sm font-medium text-gray-700">
+          <label
+            htmlFor="resourceFile"
+            className="block text-sm font-medium text-gray-700"
+          >
             Image
           </label>
           <input
@@ -135,7 +150,10 @@ export default function Media() {
           <div className="grid grid-cols-2 gap-4 mb-4">
             {/* Title Field */}
             <div className="col-span-2 mt-4 md:mt-0">
-              <label htmlFor="title" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="title"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Title
               </label>
               <input
@@ -151,9 +169,11 @@ export default function Media() {
 
             {/* Description Editor */}
             <div className="col-span-2">
-              <label className="block font-medium text-darkGray">Description</label>
+              <label className="block font-medium text-darkGray">
+                Description
+              </label>
               <Editor
-                apiKey="g68nc1d1w7r6ws2cu6q6c6trlsejbpqf5dylpj1b8hjeoc7d"
+                apiKey="4kjrncewwa4057zz04om0mle4q3to49bypq57bh6qgq5f0n3"
                 initialValue="<p>Product description</p>"
                 init={{
                   height: 200,

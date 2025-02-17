@@ -277,66 +277,66 @@ const CreateEvent = () => {
         </div>
 
         <div className="flex gap-6 md:flex-row flex-col">
-  <div className="w-full">
-    <label className="block font-medium text-darkGray">
-      Start Date & Time
-    </label>
-    <input
-      type="datetime-local"
-      name="startDate"
-      min={new Date().toISOString().slice(0, 16)} // Disable dates before the current date and time
-      value={formData.startDate}
-      onChange={(e) => {
-        handleChange(e);
+          <div className="w-full">
+            <label className="block font-medium text-darkGray">
+              Start Date & Time
+            </label>
+            <input
+              type="datetime-local"
+              name="startDate"
+              min={new Date().toISOString().slice(0, 16)} // Disable dates before the current date and time
+              value={formData.startDate}
+              onChange={(e) => {
+                handleChange(e);
 
-        // Reset endDate if it is less than the new startDate
-        if (
-          formData.endDate &&
-          new Date(e.target.value) > new Date(formData.endDate)
-        ) {
-          setFormData((prevData) => ({
-            ...prevData,
-            endDate: "", // Clear the invalid endDate
-          }));
-        }
-      }}
-      className="mt-2 px-4 py-3 w-full border rounded-[8px] focus:outline-none text-darkGray bg-transparent"
-    />
-  </div>
-  <div className="w-full">
-    <label className="block font-medium text-darkGray">
-      End Date & Time
-    </label>
-    <input
-      type="datetime-local"
-      name="endDate"
-      min={formData.startDate || new Date().toISOString().slice(0, 16)} // End date must be after the selected start date
-      value={formData.endDate}
-      onChange={handleChange}
-      className="mt-2 px-4 py-3 w-full border rounded-[8px] focus:outline-none text-darkGray bg-transparent"
-      disabled={!formData.startDate} // Disable if startDate is not selected
-    />
-    {/* Show message when endDate is disabled */}
-    {!formData.startDate && (
-      <small className="text-red-500 mt-1 block">
-        Please select a start date first.
-      </small>
-    )}
-    {/* Show message when endDate is invalid */}
-    {formData.startDate && formData.endDate && 
-      new Date(formData.endDate) < new Date(formData.startDate) && (
-      <small className="text-red-500 mt-1 block">
-        End date cannot be earlier than the start date.
-      </small>
-    )}
-  </div>
-</div>
-
+                // Reset endDate if it is less than the new startDate
+                if (
+                  formData.endDate &&
+                  new Date(e.target.value) > new Date(formData.endDate)
+                ) {
+                  setFormData((prevData) => ({
+                    ...prevData,
+                    endDate: "", // Clear the invalid endDate
+                  }));
+                }
+              }}
+              className="mt-2 px-4 py-3 w-full border rounded-[8px] focus:outline-none text-darkGray bg-transparent"
+            />
+          </div>
+          <div className="w-full">
+            <label className="block font-medium text-darkGray">
+              End Date & Time
+            </label>
+            <input
+              type="datetime-local"
+              name="endDate"
+              min={formData.startDate || new Date().toISOString().slice(0, 16)} // End date must be after the selected start date
+              value={formData.endDate}
+              onChange={handleChange}
+              className="mt-2 px-4 py-3 w-full border rounded-[8px] focus:outline-none text-darkGray bg-transparent"
+              disabled={!formData.startDate} // Disable if startDate is not selected
+            />
+            {/* Show message when endDate is disabled */}
+            {!formData.startDate && (
+              <small className="text-red-500 mt-1 block">
+                Please select a start date first.
+              </small>
+            )}
+            {/* Show message when endDate is invalid */}
+            {formData.startDate &&
+              formData.endDate &&
+              new Date(formData.endDate) < new Date(formData.startDate) && (
+                <small className="text-red-500 mt-1 block">
+                  End date cannot be earlier than the start date.
+                </small>
+              )}
+          </div>
+        </div>
 
         <div>
           <label className="block font-medium text-darkGray">Description</label>
           <Editor
-            apiKey="g68nc1d1w7r6ws2cu6q6c6trlsejbpqf5dylpj1b8hjeoc7d"
+            apiKey="4kjrncewwa4057zz04om0mle4q3to49bypq57bh6qgq5f0n3"
             initialValue="<p>Product description</p>"
             init={{
               height: 200,

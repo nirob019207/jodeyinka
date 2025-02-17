@@ -74,14 +74,24 @@ const UpCommingEventPage = () => {
     <div className="bg-[#F6F6F6] pt-[60px] pb-[60px] md:pb-[120px] font-inter px-6 md:px-0">
       <div className="container mx-auto px-0">
         {/* Header */}
-        <div className="flex justify-between items-center mb-8">
+        <div className="flex justify-between items-center mb-4">
           <h2 className="text-[20px] md:text-[36px] font-medium text-default">
             Events
           </h2>
         </div>
 
+        <p className="text-[10px] md:text-[17px] font-medium md:mb-9 mb-4 text-default">Join us for the Cybersecurity Events, an exclusive event bringing together industry leaders, security experts, and technology innovators to discuss the latest cybersecurity threats, strategies, and solutions. These events are designed for IT professionals, business executives, compliance officers, and anyone invested in protecting digital assets in an evolving threat landscape.</p>
+       
+
+        <div className="flex justify-between items-center mb-8">
+          <h2 className="text-[20px] md:text-[30px] font-medium text-default">
+          Upcoming Event
+          </h2>
+        </div>
+
+
         {/* Event Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 md:gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2  lg:grid-cols-3 gap-10 md:gap-6">
           {isLoading
             ? Array.from({ length: 6 }).map((_, index) => (
                 <CardSkeleton key={index} />

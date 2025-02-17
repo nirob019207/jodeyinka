@@ -14,10 +14,10 @@ const HeroSection = () => {
             The World Security Forum
           </h2>
           <p className="text-gray mb-9">
-            The World Security Forum is an annual international gathering
-            Center. For several years, it has brought together an international
-            network of senior officials and experts, and consistently included
-            ministers.
+          World Cybersecurity Forum (WCF) is a nonprofit organization dedicated to building a safer and more secure digital world for everyone. We focus on education, advocacy, collaboration, and security as code (SaC) to address the rapidly evolving challenges of cybersecurity.
+          </p>
+          <p className="text-gray mb-9">
+          By providing accessible training, raising awareness about online safety, and fostering partnerships across public and private sectors, we aim to close the cybersecurity knowledge gap and promote a culture of resilience. Whether supporting underserved communities or advising policymakers, WCF is committed to making cyberspace a trusted and inclusive space for all.
           </p>
           <button className="px-4 py-3 text-white bg-gradient-to-l from-[#0061FF] to-[#003A99] rounded-xl hidden md:flex">
             Meet Our Team

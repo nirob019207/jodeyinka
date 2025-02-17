@@ -52,7 +52,7 @@ const MediaCarousel = () => {
   if (isError) return <p>Something went wrong!</p>;
 
   return (
-    <div className="bg-[#F6F6F6] pb-[60px] md:pb-[120px] font-inter px-6 md:px-0">
+    <div className="bg-[#F6F6F6] pb-[60px] md:pb-[50px] font-inter px-6 md:px-0">
       <div className="container mx-auto px-0">
         <div className="mb-8">
           <h2 className="text-[36px] md:text-[36px] font-medium text-default text-center md:text-start">
