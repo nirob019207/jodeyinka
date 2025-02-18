@@ -17,8 +17,8 @@ const resourceSchema = z.object({
   resourceFile: z
     .instanceof(File)
     .refine(
-      (file) => file.size <= 2 * 1024 * 1024,
-      "File size must be less than 2MB"
+      (file) => file.size <= 100 * 1024 * 1024,
+      "File size must be less than 100MB"
     )
     .refine(
       (file) =>

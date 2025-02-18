@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import adminlogo from "@/asset/admin/adminlogo.svg";
+import adminlogo from "@/asset/Forum_Logo-2.png";
 import Image from "next/image";
 import { LucideLayoutDashboard } from "lucide-react";
 import { RxMagicWand } from "react-icons/rx";
