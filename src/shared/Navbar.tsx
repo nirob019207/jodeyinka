@@ -6,7 +6,6 @@ import Link from "next/link";
 import banner from "@/asset/banner.svg";
 import anotherBanner from "@/asset/anotherBanner.svg";
 import { FiBell, FiMenu, FiX } from "react-icons/fi";
-// import { useRouter } from "next/router";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import { useGetMeQuery, useGetnotifyQuery } from "@/redux/Api/userApi";
 import profileavater from "@/asset/profilavater.webp";
@@ -119,9 +118,13 @@ export const Navbar = () => {
       >
         {/* Left Section (Logo and Text) */}
         <div className="md:w-[548px] w-full text-center lg:text-left">
-          <div className="flex items-center justify-between px-6 md:px-0">
+          <div className="flex items-center justify-between ml-4 px-6 md:px-0" >
             <Link href={"/"}>
-              <Image className="w-12 md:w-20 rounded-sm" src={logo} alt="Logo" />
+              <Image
+                className="w-12 md:w-20 rounded-sm"
+                src={logo}
+                alt="Logo"
+              />
             </Link>
 
             {/* Hamburger Menu for Mobile */}
@@ -152,7 +155,7 @@ export const Navbar = () => {
                   onClick={toggleDropdown}
                 >
                   <h1 className="text-white">{userInformation.firstName}</h1>
-                  <div className="w-12 h-12 bg-[#D9D9D9] rounded-full overflow-hidden">
+                  <div className="w-12 h-12 bg-[#D9D9D9] rounded-full overflow-hidden relative">
                     <Image
                       src={userInformation?.imageUrl || profileavater}
                       className="rounded-full"
@@ -180,23 +183,38 @@ export const Navbar = () => {
                       {isNotifOpen && (
                         <div className="absolute right-0 mt-2 bg-white text-black rounded-md shadow-lg w-[250px] z-50 p-3">
                           <div className="mt-2">
-                            {birthdayNotifications.map(
-                              (notif: any, index: any) => (
-                                <p key={index} className="text-sm border-b p-2">
-                                  🎂 {notif.firstName} {notif.lastName} Birthday
-                                  today!
-                                </p>
-                              )
-                            )}
-                            {anniversaryNotifications.map(
-                              (notif: any, index: any) => (
-                                <p key={index} className="text-sm border-b p-2">
-                                  🎉 Celebrating {notif.firstName}{" "}
-                                  {notif.lastName} for{" "}
-                                  {getYears(notif.createdAt)} year(s) of being
-                                  part of our community!
-                                </p>
-                              )
+                            {birthdayNotifications.length === 0 &&
+                            anniversaryNotifications.length === 0 ? (
+                              <p className="text-sm text-center text-gray-500 p-2">
+                                No notifications
+                              </p>
+                            ) : (
+                              <>
+                                {birthdayNotifications.map(
+                                  (notif: any, index: any) => (
+                                    <p
+                                      key={index}
+                                      className="text-sm border-b p-2"
+                                    >
+                                      🎂 {notif.firstName} {notif.lastName}{" "}
+                                      Birthday today!
+                                    </p>
+                                  )
+                                )}
+                                {anniversaryNotifications.map(
+                                  (notif: any, index: any) => (
+                                    <p
+                                      key={index}
+                                      className="text-sm border-b p-2"
+                                    >
+                                      🎉 Celebrating {notif.firstName}{" "}
+                                      {notif.lastName} for{" "}
+                                      {getYears(notif.createdAt)} year(s) of
+                                      being part of our community!
+                                    </p>
+                                  )
+                                )}
+                              </>
                             )}
                           </div>
                         </div>
@@ -204,38 +222,27 @@ export const Navbar = () => {
                     </div>
                   </div>
                 </div>
+
                 {isDropdownOpen && (
-                  <div className="absolute right-0 mt-2 bg-white text-black rounded-md shadow-lg w-[150px] z-[100]">
-                    {userInformation.role !== "MEMBER" &&
-                      userInformation.role == "SPONSOR" &&
-                      userInformation.sponsorStatus == "pending" && (
-                        <Link
-                          href="/membership"
-                          className="block w-full text-left px-4 py-2 hover:bg-gray-200"
-                        >
-                          Membership
-                        </Link>
-                      )}
-
-                    <Link
-                      href={
-                        userInformation.role === "ADMIN"
-                          ? "/admin/dashboard"
-                          : "/admin/profile"
-                      }
-                      className="block w-full text-left px-4 py-2 hover:bg-gray-200"
-                    >
-                      Dashboard
-                    </Link>
-
-                    <button
-                      className="block w-full text-left px-4 py-2 hover:bg-gray-200"
-                      onClick={handleLogout}
-                    >
-                      Logout
-                    </button>
-                  </div>
-                )}
+                <div className="absolute right-0 mt-36  bg-white text-black rounded-md shadow-lg w-[150px] z-50">
+                  {userInformation.role !== "MEMBER" &&
+                    userInformation.role === "SPONSOR" &&
+                    userInformation.sponsorStatus === "pending" && (
+                      <Link href="/membership" className="block px-4 py-2 hover:bg-gray-200">
+                        Membership
+                      </Link>
+                    )}
+                  <Link
+                    href={userInformation.role === "ADMIN" ? "/admin/dashboard" : "/admin/profile"}
+                    className="block px-4 py-2 hover:bg-gray-200"
+                  >
+                    Dashboard
+                  </Link>
+                  <button className="block w-full text-left px-4 py-2 hover:bg-gray-200" onClick={handleLogout}>
+                    Logout
+                  </button>
+                </div>
+              )}
               </div>
             ) : (
               <div className="flex items-center gap-6 text-center">

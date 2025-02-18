@@ -81,7 +81,7 @@ export default function Footer() {
                 </li>
                 <li>
                   <Link href="/blog" className="hover:text-white transition">
-                    TechWonk Blog
+                    Blog & News
                   </Link>
                 </li>
                 <li>
