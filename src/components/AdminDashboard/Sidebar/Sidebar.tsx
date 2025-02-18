@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import adminlogo from "@/asset/admin/adminlogo.svg";
+import adminlogo from "@/asset/Forum_Logo-2.png";
 import Image from "next/image";
 import { AiOutlineDashboard, AiOutlineClose, AiOutlineTransaction } from "react-icons/ai";
 import { FaUser, FaMoneyCheckAlt, FaBlogger, FaPhotoVideo, FaHandshake } from "react-icons/fa";

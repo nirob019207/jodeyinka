@@ -17,8 +17,8 @@ const resourceSchema = z.object({
   resourceFile: z
     .instanceof(File)
     .refine(
-      (file) => file.size <= 2 * 1024 * 1024,
-      "File size must be less than 2MB"
+      (file) => file.size <= 100 * 1024 * 1024,
+      "File size must be less than 100MB"
     )
     .refine(
       (file) =>
@@ -173,23 +173,25 @@ export default function Media() {
                 Description
               </label>
               <Editor
-                apiKey="4kjrncewwa4057zz04om0mle4q3to49bypq57bh6qgq5f0n3"
-                initialValue="<p>Product description</p>"
-                init={{
-                  height: 200,
-                  menubar: false,
-                  plugins: [
-                    "advlist autolink lists link image charmap print preview anchor",
-                    "searchreplace visualblocks code fullscreen",
-                    "insertdatetime media table paste code help wordcount",
-                  ],
-                  toolbar:
-                    "undo redo | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help",
-                  content_style:
-                    "body { font-family:Arial, Helvetica, sans-serif; font-size:14px }",
-                }}
-                onEditorChange={handleEditorChange}
-              />
+  apiKey="4kjrncewwa4057zz04om0mle4q3to49bypq57bh6qgq5f0n3"
+  initialValue="<h2>Product Title</h2><br /><p>Product description</p>"
+  init={{
+    height: 200,
+    menubar: false,
+    plugins: [
+      "advlist autolink lists link image",
+      "advlist autolink lists link image charmap print preview anchor",
+      "searchreplace visualblocks code fullscreen",
+      "insertdatetime media table paste code help wordcount",
+    ],
+    toolbar:
+      "undo redo | formatselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help h1 h2 h3 h4 h5 p | | bold | newline | paragraph",
+    content_style:
+      "body { font-family:Arial, Helvetica, sans-serif; font-size:14px }",
+  }}
+  onEditorChange={handleEditorChange}
+/>
+
             </div>
           </div>
 
